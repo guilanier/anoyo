@@ -6,10 +6,6 @@ import glsl from 'vite-plugin-glsl';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  build: {
-    outDir: './docs',
-    emptyOutDir: true,
-  },
   plugins: [vue(), glsl({
     exclude: undefined, // File paths/extensions to ignore
     include: /\.(glsl|wgsl|vert|frag|vs|fs)$/i, // File paths/extensions to import
