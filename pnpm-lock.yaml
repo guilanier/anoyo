@@ -10,7 +10,7 @@ dependencies:
     version: 3.0.3(sass@1.74.1)
   '@resn/gozer-vue':
     specifier: ^4.5.0
-    version: 4.5.0(@studio-freight/lenis@1.0.42)(@tweakpane/plugin-essentials@0.2.1)(@vueuse/core@10.9.0)(gsap@3.12.5)(postprocessing@6.35.3)(svg-path-generator@1.1.0)(svg-round-corners@0.9.0)(three@0.163.0)(tweakpane@4.0.3)
+    version: 4.5.0(@vueuse/core@10.9.0)(three@0.163.0)(tweakpane@4.0.3)
   '@vueuse/core':
     specifier: ^10.9.0
     version: 10.9.0(vue@3.4.21)
@@ -20,6 +20,9 @@ dependencies:
   tweakpane:
     specifier: ^4.0.3
     version: 4.0.3
+  vite-plugin-glsl:
+    specifier: ^1.3.0
+    version: 1.3.0(vite@5.2.8)
   vue:
     specifier: ^3.4.21
     version: 3.4.21
@@ -80,7 +83,6 @@ packages:
     cpu: [ppc64]
     os: [aix]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-arm64@0.20.2:
@@ -89,7 +91,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-arm@0.20.2:
@@ -98,7 +99,6 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/android-x64@0.20.2:
@@ -107,7 +107,6 @@ packages:
     cpu: [x64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/darwin-arm64@0.20.2:
@@ -116,7 +115,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/darwin-x64@0.20.2:
@@ -125,7 +123,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/freebsd-arm64@0.20.2:
@@ -134,7 +131,6 @@ packages:
     cpu: [arm64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/freebsd-x64@0.20.2:
@@ -143,7 +139,6 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-arm64@0.20.2:
@@ -152,7 +147,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-arm@0.20.2:
@@ -161,7 +155,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-ia32@0.20.2:
@@ -170,7 +163,6 @@ packages:
     cpu: [ia32]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-loong64@0.20.2:
@@ -179,7 +171,6 @@ packages:
     cpu: [loong64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-mips64el@0.20.2:
@@ -188,7 +179,6 @@ packages:
     cpu: [mips64el]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-ppc64@0.20.2:
@@ -197,7 +187,6 @@ packages:
     cpu: [ppc64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-riscv64@0.20.2:
@@ -206,7 +195,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-s390x@0.20.2:
@@ -215,7 +203,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/linux-x64@0.20.2:
@@ -224,7 +211,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/netbsd-x64@0.20.2:
@@ -233,7 +219,6 @@ packages:
     cpu: [x64]
     os: [netbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/openbsd-x64@0.20.2:
@@ -242,7 +227,6 @@ packages:
     cpu: [x64]
     os: [openbsd]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/sunos-x64@0.20.2:
@@ -251,7 +235,6 @@ packages:
     cpu: [x64]
     os: [sunos]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-arm64@0.20.2:
@@ -260,7 +243,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-ia32@0.20.2:
@@ -269,7 +251,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@esbuild/win32-x64@0.20.2:
@@ -278,7 +259,6 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@eslint-community/eslint-utils@4.4.0(eslint@8.57.0):
@@ -370,7 +350,7 @@ packages:
       sass: 1.74.1
     dev: false
 
-  /@resn/gozer-vue@4.5.0(@studio-freight/lenis@1.0.42)(@tweakpane/plugin-essentials@0.2.1)(@vueuse/core@10.9.0)(gsap@3.12.5)(postprocessing@6.35.3)(svg-path-generator@1.1.0)(svg-round-corners@0.9.0)(three@0.163.0)(tweakpane@4.0.3):
+  /@resn/gozer-vue@4.5.0(@vueuse/core@10.9.0)(three@0.163.0)(tweakpane@4.0.3):
     resolution: {integrity: sha512-WfDmWtrbYM0EUi7uSGvTukJvrQcWZpelizCknAQZ3MzOabTjygGuGV+co2tT08UUZr9kexD8xeh46DLojvVQPA==, tarball: https://npm.pkg.github.com/download/@resn/gozer-vue/4.5.0/1de991a0aafc398edaf28dce09607746331ebf8f}
     peerDependencies:
       '@studio-freight/lenis': ^1.0.29
@@ -382,14 +362,27 @@ packages:
       svg-round-corners: ^0.9.0
       three: ^0.163.0
       tweakpane: ^4.0.2
+    peerDependenciesMeta:
+      '@studio-freight/lenis':
+        optional: true
+      '@tweakpane/plugin-essentials':
+        optional: true
+      '@vueuse/core':
+        optional: true
+      gsap:
+        optional: true
+      postprocessing:
+        optional: true
+      svg-path-generator:
+        optional: true
+      svg-round-corners:
+        optional: true
+      three:
+        optional: true
+      tweakpane:
+        optional: true
     dependencies:
-      '@studio-freight/lenis': 1.0.42
-      '@tweakpane/plugin-essentials': 0.2.1(tweakpane@4.0.3)
       '@vueuse/core': 10.9.0(vue@3.4.21)
-      gsap: 3.12.5
-      postprocessing: 6.35.3(three@0.163.0)
-      svg-path-generator: 1.1.0
-      svg-round-corners: 0.9.0
       three: 0.163.0
       tweakpane: 4.0.3
       vue: 3.4.21
@@ -397,12 +390,25 @@ packages:
       - typescript
     dev: false
 
+  /@rollup/pluginutils@5.1.0:
+    resolution: {integrity: sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==, tarball: https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-5.1.0.tgz}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      rollup: ^1.20.0||^2.0.0||^3.0.0||^4.0.0
+    peerDependenciesMeta:
+      rollup:
+        optional: true
+    dependencies:
+      '@types/estree': 1.0.5
+      estree-walker: 2.0.2
+      picomatch: 2.3.1
+    dev: false
+
   /@rollup/rollup-android-arm-eabi@4.14.0:
     resolution: {integrity: sha512-jwXtxYbRt1V+CdQSy6Z+uZti7JF5irRKF8hlKfEnF/xJpcNGuuiZMBvuoYM+x9sr9iWGnzrlM0+9hvQ1kgkf1w==, tarball: https://registry.npmjs.org/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.14.0.tgz}
     cpu: [arm]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-android-arm64@4.14.0:
@@ -410,7 +416,6 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-darwin-arm64@4.14.0:
@@ -418,7 +423,6 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-darwin-x64@4.14.0:
@@ -426,7 +430,6 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-linux-arm-gnueabihf@4.14.0:
@@ -434,7 +437,6 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-linux-arm64-gnu@4.14.0:
@@ -442,7 +444,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-linux-arm64-musl@4.14.0:
@@ -450,7 +451,6 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-linux-powerpc64le-gnu@4.14.0:
@@ -458,7 +458,6 @@ packages:
     cpu: [ppc64le]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-linux-riscv64-gnu@4.14.0:
@@ -466,7 +465,6 @@ packages:
     cpu: [riscv64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-linux-s390x-gnu@4.14.0:
@@ -474,7 +472,6 @@ packages:
     cpu: [s390x]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-linux-x64-gnu@4.14.0:
@@ -482,7 +479,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-linux-x64-musl@4.14.0:
@@ -490,7 +486,6 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-win32-arm64-msvc@4.14.0:
@@ -498,7 +493,6 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-win32-ia32-msvc@4.14.0:
@@ -506,7 +500,6 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
 
   /@rollup/rollup-win32-x64-msvc@4.14.0:
@@ -514,24 +507,10 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
     optional: true
-
-  /@studio-freight/lenis@1.0.42:
-    resolution: {integrity: sha512-HJAGf2DeM+BTvKzHv752z6Z7zy6bA643nZM7W88Ft9tnw2GsJSp6iJ+3cekjyMIWH+cloL2U9X82dKXgdU8kPg==, tarball: https://registry.npmjs.org/@studio-freight/lenis/-/lenis-1.0.42.tgz}
-    dev: false
-
-  /@tweakpane/plugin-essentials@0.2.1(tweakpane@4.0.3):
-    resolution: {integrity: sha512-VbFU1/uD+CJNFQdfLXUOLjeG5HyUZH97Ox9CxmyVetg1hqjVun3C83HAGFULyhKzl8tSgii8jr304r8QpdHwzQ==, tarball: https://registry.npmjs.org/@tweakpane/plugin-essentials/-/plugin-essentials-0.2.1.tgz}
-    peerDependencies:
-      tweakpane: ^4.0.0
-    dependencies:
-      tweakpane: 4.0.3
-    dev: false
 
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==, tarball: https://registry.npmjs.org/@types/estree/-/estree-1.0.5.tgz}
-    dev: true
 
   /@types/web-bluetooth@0.0.20:
     resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==, tarball: https://registry.npmjs.org/@types/web-bluetooth/-/web-bluetooth-0.0.20.tgz}
@@ -832,7 +811,6 @@ packages:
       '@esbuild/win32-arm64': 0.20.2
       '@esbuild/win32-ia32': 0.20.2
       '@esbuild/win32-x64': 0.20.2
-    dev: true
 
   /escape-string-regexp@4.0.0:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==, tarball: https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz}
@@ -1051,10 +1029,6 @@ packages:
   /graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==, tarball: https://registry.npmjs.org/graphemer/-/graphemer-1.4.0.tgz}
     dev: true
-
-  /gsap@3.12.5:
-    resolution: {integrity: sha512-srBfnk4n+Oe/ZnMIOXt3gT605BX9x5+rh/prT2F1SsNJsU1XuMiP0E2aptW481OnonOGACZWBqseH5Z7csHxhQ==, tarball: https://registry.npmjs.org/gsap/-/gsap-3.12.5.tgz}
-    dev: false
 
   /has-flag@4.0.0:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==, tarball: https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz}
@@ -1289,15 +1263,6 @@ packages:
       picocolors: 1.0.0
       source-map-js: 1.2.0
 
-  /postprocessing@6.35.3(three@0.163.0):
-    resolution: {integrity: sha512-PH0/gqVYpp+vZjmSAohG/xH0u9FpbjfCGsFMsmsZVd8XXSmqJUR7b5C9ZFE/iMrWhe+tiTOFN9WvcEdjLI8LYQ==, tarball: https://registry.npmjs.org/postprocessing/-/postprocessing-6.35.3.tgz}
-    engines: {node: '>= 0.13.2'}
-    peerDependencies:
-      three: '>= 0.152.0 < 0.164.0'
-    dependencies:
-      three: 0.163.0
-    dev: false
-
   /prelude-ls@1.2.1:
     resolution: {integrity: sha512-vkcDPrRZo1QZLbn5RLGPpg/WmIQ65qoWWhcGKf/b5eplkkarX0m9z8ppCat4mlOqUsWpyNuYgO3VRyrYHSzX5g==, tarball: https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz}
     engines: {node: '>= 0.8.0'}
@@ -1358,7 +1323,6 @@ packages:
       '@rollup/rollup-win32-ia32-msvc': 4.14.0
       '@rollup/rollup-win32-x64-msvc': 4.14.0
       fsevents: 2.3.3
-    dev: true
 
   /run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==, tarball: https://registry.npmjs.org/run-parallel/-/run-parallel-1.2.0.tgz}
@@ -1418,14 +1382,6 @@ packages:
       has-flag: 4.0.0
     dev: true
 
-  /svg-path-generator@1.1.0:
-    resolution: {integrity: sha512-eapn3syFa828HJRI3Wv+ceq7K/TUo/wA31w5oyerA3CNz02YkLM8aSjXA851+0qhc1ibihiJHxy54eacm2/euQ==, tarball: https://registry.npmjs.org/svg-path-generator/-/svg-path-generator-1.1.0.tgz}
-    dev: false
-
-  /svg-round-corners@0.9.0:
-    resolution: {integrity: sha512-7L565Jnszjraz6pnH+neOmSCSqfnBRlY9G/MaQ5gJW++avWgaGENOiwe7gBq6hlU1A8LdZm1twteMgtUz9Z6CA==, tarball: https://registry.npmjs.org/svg-round-corners/-/svg-round-corners-0.9.0.tgz}
-    dev: false
-
   /text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==, tarball: https://registry.npmjs.org/text-table/-/text-table-0.2.0.tgz}
     dev: true
@@ -1470,6 +1426,18 @@ packages:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==, tarball: https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz}
     dev: true
 
+  /vite-plugin-glsl@1.3.0(vite@5.2.8):
+    resolution: {integrity: sha512-SzEoLet9Bp5VSozjrhUiSc3xX1+u7rCTjXAsq4qWM3u8UjilI76A9ucX/T+CRGQCe25j50GSY+9mKSGUVPET1w==, tarball: https://registry.npmjs.org/vite-plugin-glsl/-/vite-plugin-glsl-1.3.0.tgz}
+    engines: {node: '>= 16.15.1', npm: '>= 8.11.0'}
+    peerDependencies:
+      vite: ^3.0.0 || ^4.0.0 || ^5.0.0
+    dependencies:
+      '@rollup/pluginutils': 5.1.0
+      vite: 5.2.8(sass@1.74.1)
+    transitivePeerDependencies:
+      - rollup
+    dev: false
+
   /vite@5.2.8(sass@1.74.1):
     resolution: {integrity: sha512-OyZR+c1CE8yeHw5V5t59aXsUPPVTHMDjEZz8MgguLL/Q7NblxhZUlTu9xSPqlsUO/y+X7dlU05jdhvyycD55DA==, tarball: https://registry.npmjs.org/vite/-/vite-5.2.8.tgz}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -1504,7 +1472,6 @@ packages:
       sass: 1.74.1
     optionalDependencies:
       fsevents: 2.3.3
-    dev: true
 
   /vue-demi@0.14.7(vue@3.4.21):
     resolution: {integrity: sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==, tarball: https://registry.npmjs.org/vue-demi/-/vue-demi-0.14.7.tgz}
