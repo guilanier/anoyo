@@ -1,4 +1,8 @@
-# vue-js
+# Anoyo 世
+
+A place of experimentations and meant to exist projects
+
+———
 
 This template should help get you started developing with Vue 3 in Vite.
 
