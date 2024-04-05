@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 10px;
+}
+
 body {
   width: 100vw;
   position: relative;
@@ -51,7 +55,7 @@ body {
   }
 }
 .gradient-border::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
