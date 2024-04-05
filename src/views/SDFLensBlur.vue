@@ -1,6 +1,6 @@
 <template>
   <div class="component">
-    <h1>SDF Lens Blur</h1>
+    <h1>SDF Lens</h1>
   </div>
 </template>
 
