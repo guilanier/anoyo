@@ -1,7 +1,7 @@
 export const routeInfo = {
     SDFLendBlur: {
         name: 'SDF Lens Blur',
-        path: '/anoyo/sdf-lens-blur',
+        path: '/sdf-lens-blur',
         componentName: 'SDFLensBlur',
     },
 };
