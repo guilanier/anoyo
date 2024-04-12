@@ -2,7 +2,7 @@
 
 A place of experimentations and meant to exist projects
 
-`git push origin :gh-pages && git subtree push --prefix dist origin gh-pages`
+`git add . && git commit -am 'new dist' && git push origin :gh-pages && git subtree push --prefix dist origin gh-pages`
 ———
 
 This template should help get you started developing with Vue 3 in Vite.
