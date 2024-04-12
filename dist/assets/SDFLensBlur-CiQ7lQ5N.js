@@ -1,1 +1,0 @@
-import{_ as o,c as s,o as c,p as t,b as a,a as d}from"./index-DZ6xAnWv.js";const _={},n=e=>(t("data-v-91a60d4d"),e=e(),a(),e),p={class:"component"},r=n(()=>d("h1",null,"SDF Lens",-1)),i=[r];function l(e,h){return c(),s("div",p,i)}const u=o(_,[["render",l],["__scopeId","data-v-91a60d4d"]]);export{u as default};

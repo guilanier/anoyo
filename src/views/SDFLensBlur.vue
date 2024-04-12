@@ -1,14 +1,17 @@
 <template>
-  <div class="component">
-    <h1>SDF Lens</h1>
-  </div>
+    <div class="component">
+        <Renderer ref="refRenderer" :antialias="false" :autoResize="true" :autoRender="false">
+            <SDFLensBlur />
+        </Renderer>
+    </div>
 </template>
 
-<style scoped>
-.component {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  color: red;
-}
-</style>
+<script setup>
+    import { inject, ref } from 'vue';
+
+    import { Renderer } from '@resn/gozer-vue';
+
+    import SDFLensBlur from '@/components/SDFLensBlur/index.vue';
+</script>
+
+<style lang="scss"></style>
