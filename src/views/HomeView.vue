@@ -1,6 +1,6 @@
 <template>
     <div class="root">
-        <SandboxHub title="Components" :components="components" />
+        <SandboxHub title="Anoyo あの世" :components="components" />
     </div>
 </template>
 
@@ -23,7 +23,7 @@
         })
         .map((route) => ({
             title: route.title || route.name,
-            path: route.path,
+            path: route.path + '/',
             description: route.description,
             category: route.category || '0. General',
         }))
