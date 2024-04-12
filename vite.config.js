@@ -7,6 +7,9 @@ import glsl from 'vite-plugin-glsl';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: process.env.NODE_ENV === 'production'
+    ? '/anoyo/'
+    : '/',
   publicPath: process.env.NODE_ENV === 'production'
     ? '/anoyo/'
     : '/',
