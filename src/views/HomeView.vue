@@ -10,8 +10,6 @@
     import { routeInfo } from '@/route-info';
     import router from '@/router';
 
-    console.log('🚀 ~ import.meta.env.BASE_URL:', import.meta.env.BASE_URL);
-
     const components = router
         .getRoutes()
         .filter((route) => {
