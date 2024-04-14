@@ -7,11 +7,21 @@
 </template>
 
 <script setup>
-    import { inject, ref } from 'vue';
+    import { onMounted } from 'vue';
 
     import { Renderer } from '@resn/gozer-vue';
 
     import SDFLensBlur from '@/components/SDFLensBlur/index.vue';
+
+    onMounted(() => {
+        document.body.style.overflow = 'hidden';
+    });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+    .component {
+        position: fixed;
+        inset: 0;
+        cursor: pointer;
+    }
+</style>

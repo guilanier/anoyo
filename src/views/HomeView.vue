@@ -1,6 +1,6 @@
 <template>
     <div class="root">
-        <SandboxHub title="Anoyo あの世" :components="components" />
+        <SandboxHub title="Anoyo —" :components="components" />
     </div>
 </template>
 
@@ -10,22 +10,16 @@
     import { routeInfo } from '@/route-info';
     import router from '@/router';
 
-    const components = router
-        .getRoutes()
-        .filter((route) => {
-            const routeName = route.name.split('_')[0];
-            route.name = routeName.split('_')[0];
-            return routeName !== 'index';
-        })
+    const components = Object.values(routeInfo)
         .map((route) => {
             const info = routeInfo[route.name] || {};
             return { ...route, ...info };
         })
         .map((route) => ({
             title: route.title || route.name,
-            path: route.path,
+            path: (import.meta.env.BASE_URL + route.path).replace('//', '/'),
             description: route.description,
-            category: route.category || '0. General',
+            category: route.category || '',
         }))
         .sort((a, b) => {
             return a.category < b.category ? -1 : a.category > b.category ? 1 : 0;
