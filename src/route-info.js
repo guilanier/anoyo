@@ -4,4 +4,9 @@ export const routeInfo = {
         path: '/sdf-lens-blur',
         componentName: 'SDFLensBlur',
     },
+    LineType: {
+        name: 'Line Type',
+        path: '/line-type',
+        componentName: 'LineType',
+    },
 };

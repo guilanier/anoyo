@@ -13,9 +13,7 @@
 
     import SDFLensBlur from '@/components/SDFLensBlur/index.vue';
 
-    onMounted(() => {
-        document.body.style.overflow = 'hidden';
-    });
+    onMounted(() => (document.body.style.overflow = 'hidden'));
 </script>
 
 <style lang="scss">

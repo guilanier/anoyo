@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@resn/gozer-canvas':
+    specifier: ^3.0.8
+    version: 3.0.8
+  '@resn/gozer-color':
+    specifier: ^3.0.2
+    version: 3.0.2
   '@resn/gozer-env':
     specifier: ^3.0.2
     version: 3.0.2
@@ -703,6 +709,16 @@ packages:
   /@pkgr/core@0.1.1:
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==, tarball: https://registry.npmjs.org/@pkgr/core/-/core-0.1.1.tgz}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
+    dev: false
+
+  /@resn/gozer-canvas@3.0.8:
+    resolution: {integrity: sha512-hKj5PeN8hsCczCXqPCRuYKmk61UuZbLF9F1J7McOLDz3JBuy1OTRnmKIpmrrZbI4+Tl0SkTWexPV5R9AVI8AFA==, tarball: https://npm.pkg.github.com/download/@Resn/gozer-canvas/3.0.8/c167dce51e2b53b164ea5c6bae10bde414d60f41}
+    dependencies:
+      '@resn/gozer-math': 3.3.4
+    dev: false
+
+  /@resn/gozer-color@3.0.2:
+    resolution: {integrity: sha512-wjtIR1xvj6ktSztRtsAqBLvDlOn94A0jr7Y5DjKZrOolTG+mYtL8aEFlZkxjcId4ELOhnhcDpEEa9eT3T0ogHA==, tarball: https://npm.pkg.github.com/download/@Resn/gozer-color/3.0.2/9fccb74a27180ef4eb576fae80aa7cb93ded96dd}
     dev: false
 
   /@resn/gozer-env@3.0.2:

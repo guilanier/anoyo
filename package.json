@@ -11,6 +11,8 @@
         "preview": "vite preview"
     },
     "dependencies": {
+        "@resn/gozer-canvas": "^3.0.8",
+        "@resn/gozer-color": "^3.0.2",
         "@resn/gozer-env": "^3.0.2",
         "@resn/gozer-glsl": "^6.0.3",
         "@resn/gozer-math": "^3.3.4",
