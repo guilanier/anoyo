@@ -73,9 +73,9 @@ export default class Word {
         cx.save();
 
         // DEBUG MODE
-        /*         cx.fillStyle = '#0000ff';
-                drawCircle(cx, this.x, this.y, 2);
-                cx.fill(); */
+        cx.fillStyle = '#0000ff';
+        drawCircle(cx, this.x, this.y, 2);
+        cx.fill();
 
         const nChars = this.chars.length;
 

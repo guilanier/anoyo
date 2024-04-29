@@ -1,6 +1,16 @@
 ■ add lygia
-■ add tweakpane
+
+LineType:
+    ■ fix glitch
+    ■ adapt font size based on window size
+    ■ add line draw on hold
+    ■ find good copy
+    ■ find good font
+
+■ add oil from anoyo v0.1
+■ add sunrise from anoyo v0.1
 Archive:
+    ✓ add tweakpane @done(24-04-16 18:33)
     ✓ add favicon @done(24-04-15 12:01)
     ✓ automate 404.html generate @done(24-04-14 16:04)
     ✓ block scroll mobile sdflendblur @done(24-04-14 14:33)

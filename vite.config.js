@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from "node:url";
 
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import vueJsx from '@vitejs/plugin-vue-jsx'
 import glsl from 'vite-plugin-glsl';
 
 // https://vitejs.dev/config/
@@ -12,7 +11,6 @@ export default defineConfig({
     : '/',
   plugins: [
     vue(),
-    vueJsx(),
     glsl({
       exclude: undefined, // File paths/extensions to ignore
       include: /\.(glsl|wgsl|vert|frag|vs|fs)$/i, // File paths/extensions to import
