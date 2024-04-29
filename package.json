@@ -17,8 +17,8 @@
         "@resn/gozer-glsl": "^6.0.3",
         "@resn/gozer-math": "^3.3.4",
         "@resn/gozer-styles": "^3.0.3",
-        "@resn/gozer-three": "^5.6.2",
-        "@resn/gozer-vue": "^5.0.0",
+        "@resn/gozer-three": "^5.6.3",
+        "@resn/gozer-vue": "^5.0.2",
         "@resn/prettier-config": "^2.0.6",
         "@studio-freight/lenis": "^1.0.42",
         "@tweakpane/plugin-essentials": "^0.2.1",
@@ -40,6 +40,5 @@
         "gh-pages": "^6.1.1",
         "sass": "^1.75.0",
         "vite": "^5.2.8"
-    },
-    "packageManager": "pnpm@8.15.4"
+    }
 }

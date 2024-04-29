@@ -9,4 +9,9 @@ export const routeInfo = {
         path: '/line-type',
         componentName: 'LineType',
     },
+    FrameClipPath: {
+        name: 'Frame Clip Path',
+        path: '/frame-clip-path',
+        componentName: 'FrameClipPath',
+    },
 };
