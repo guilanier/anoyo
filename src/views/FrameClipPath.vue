@@ -2,27 +2,36 @@
     <div class="demo">
         <Frame
             ref="refFrame"
-            borderColor="none"
-            fillColor="none"
+            :borderColor="'#fff'"
             borderWidth="4"
             :hasElementSize="true"
+            :step="tutoStep"
         >
-            <template #content></template>
             <template #outer>
-                <div v-for="_ in ptsDemo" :key="_.id" class="ptDemo" ref="refsPtDemo">
-                    x: {{ ~~_.x }} - y: {{ ~~_.y }}
+                <div class="frame__points" :style="{ opacity: +(tutoStep == 0) }">
+                    <div v-for="_ in ptsDemo" :key="_.id" class="ptDemo" ref="refsPtDemo">
+                        x: {{ ~~_.x }} - y: {{ ~~_.y }}
+                    </div>
+                </div>
+                <div class="frame__outer" ref="refOuter">
+                    <img src="/images/FrameClipPath/outer.png" />
                 </div>
             </template>
-            <template #inner></template>
+            <template #inner>
+                <div class="frame__bg" :style="{ opacity: +(tutoStep > 1) }"></div>
+                <div class="frame__inner" ref="refInner">
+                    <img src="/images/FrameClipPath/inner.png" />
+                </div>
+            </template>
         </Frame>
     </div>
 </template>
 
 <script setup>
     import { Vector2, Vector3 } from 'three';
-    import { onMounted, reactive, ref } from 'vue';
+    import { onMounted, reactive, ref, watch } from 'vue';
 
-    import { useViewportResize } from '@resn/gozer-vue';
+    import { useDomElement, useViewportResize } from '@resn/gozer-vue';
     import { useWindowPointer } from '@resn/gozer-vue';
     import { useDamp } from '@resn/gozer-vue';
     import { useRafBool } from '@resn/gozer-vue';
@@ -39,7 +48,12 @@
     onMounted(() => (document.body.style.overflow = 'hidden'));
 
     const active = ref(true);
+    const tutoStep = ref(0);
+
     const refFrame = ref();
+    const refOuter = ref();
+    const refInner = ref();
+
     const refsPtDemo = ref([]);
 
     // ― transform frame
@@ -62,13 +76,16 @@
     const { set: setDampFramePos2 } = useDamp(vPosition2, { lambda: 7 }, ['x', 'y']);
     const { set: setDampFrameRot2 } = useDamp(vRotation2, { lambda: 6 }, ['x', 'y']);
 
+    const propsElOuter = useDomElement(refOuter, { w: null, h: null, s: 1, align: 'left' });
+    const propsElInner = useDomElement(refInner, { w: null, h: null, s: 1, align: 'left' });
+
     const propsFrameInner = { sc0: 1, sc1: 0 };
 
     useViewportResize(({ width, height }) => vViewport.set(width, height), { immediate: true });
 
     useWindowPointer(({ xPr, yPr }) => {
         vPointerNorm.set(xPr, yPr).subScalar(0.5).multiplyScalar(2);
-        vPointerFrame.copy(vPointerNorm.clone().multiplyScalar(vViewport.x * 0.03));
+        vPointerFrame.copy(vPointerNorm.clone().multiplyScalar(vViewport.x * 0.05));
 
         setDampFramePos2({ x: vPointerFrame.x, y: vPointerFrame.y });
         setDampFrameRot2({
@@ -91,7 +108,6 @@
         const propsContentTf = refFrame.value.propsContent;
         propsContentTf.s = propsFrameInner.sc0 + propsFrameInner.sc1;
 
-        // console.log(refFrame.value.clipMask.ptsProjected);
         for (let i = 0; i < refsPtDemo.value.length; i++) {
             const { x, y } = refFrame.value.clipMask.ptsProjected[i];
             const pt = refsPtDemo.value[i];
@@ -99,8 +115,35 @@
             ptDemo.x = x;
             ptDemo.y = y;
             pt.style.transform = `translate(${x}px, ${y}px)`;
+
+            propsElOuter.px = vPosition2.x * 0.4;
+            propsElOuter.py = vPosition2.y * 0.4;
+
+            propsElInner.px = vPosition2.x * 0.3;
+            propsElInner.py = vPosition2.y * 0.3;
         }
     };
+
+    onMounted(() => {
+        window.addEventListener('click', () => {
+            tutoStep.value = (tutoStep.value + 1) % 4;
+        });
+    });
+
+    watch(tutoStep, (step) => {
+        switch (step) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                break;
+        }
+    });
 
     useRafBool(active, update);
 </script>
@@ -109,6 +152,7 @@
     .demo {
         position: fixed;
         inset: 0;
+        user-select: none;
 
         display: flex;
         justify-content: center;
@@ -116,17 +160,54 @@
 
         .frame {
             position: relative;
-            width: min(60vmin, 60vmin);
+            width: min(70vmin, 70vmin);
             aspect-ratio: 1 / 1;
             .frame__border {
-                stroke-dasharray: 1230;
-                // stroke-dashoffset: 500;
+                transition:
+                    stroke-dashoffset 0.8s,
+                    fill 0.5s;
+                stroke-dasharray: 1640;
+                stroke-dashoffset: 1640;
+            }
+            &[step='1'],
+            &[step='2'],
+            &[step='3'] {
+                .frame__border {
+                    stroke-dashoffset: 0;
+                }
+            }
+            &[step='3'] {
+                .frame__inner img,
+                .frame__outer img {
+                    opacity: 1;
+                }
+            }
+
+            &__bg {
+                transition: opacity 0.5s;
+                background: #fff;
+            }
+
+            &__inner,
+            &__outer,
+            &__bg {
+                position: absolute;
+                inset: 0;
+                img {
+                    transition: opacity 0.5s;
+                    opacity: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transform: translateY(20%) scale(1.6);
+                }
             }
         }
+
         .ptDemo {
             position: absolute;
             pointer-events: none;
-            color: red;
+            color: white;
         }
     }
 </style>
