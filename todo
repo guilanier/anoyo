@@ -1,4 +1,3 @@
-■ add lygia
 
 LineType:
     ■ fix glitch
@@ -7,13 +6,14 @@ LineType:
     ■ find good copy
     ■ find good font
 FrameClipPath:
-    ■ animate different steps
-    ■ add image or inner content (maybe with 3d rotation)
-    ■ record
+    ■ add proper image or inner content 
 
 ■ add oil from anoyo v0.1
 ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ add lygia @done(24-05-03 11:09)
+    ✓ animate different steps @done(24-05-02 18:15) @project(FrameClipPath)
+    ✓ record @done(24-05-02 18:15) @project(FrameClipPath)
     ✓ add tweakpane @done(24-04-16 18:33)
     ✓ add favicon @done(24-04-15 12:01)
     ✓ automate 404.html generate @done(24-04-14 16:04)
