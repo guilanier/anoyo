@@ -17,6 +17,20 @@
 </script>
 
 <style lang="scss">
+    @import '@resn/gozer-styles';
+    html {
+        @include baseFontSizeVW(375);
+        font-synthesis: none;
+
+        @include breakpoint-width-min(450px) {
+            font-size: 12px;
+        }
+
+        @include desktop {
+            @include baseFontSizeVW(1000);
+        }
+    }
+
     body {
         overflow: hidden;
         cursor: pointer;

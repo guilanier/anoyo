@@ -36,6 +36,7 @@
             type: String,
             default:
                 'Consectetur ex irure est consectetur eu pariatur aliqua enim aute et ipsum culpa ullamco. Elit pariatur pariatur ullamco ipsum excepteur tempor',
+            // 'Consectetur Consectetur Consectetur pariatur pariatur pariatur pariatur pariatur pariatur',
         },
         textArr: { type: Array, default: [] },
     });
@@ -55,11 +56,11 @@
     const activeComputed = computed(() => props.active || propsReactive.activeLines);
 
     const config = reactive({
-        showLine: false,
+        showLine: true,
     });
 
     const lines = [];
-    let lineCurrent = null;
+    let lineCurr = null;
 
     const refRoot = ref(null);
 
@@ -110,6 +111,7 @@
         () => resizeRectHit({ width: sizeEl.width, height: sizeEl.height })
     );
 
+    let dRemoveLine;
     const update = () => {
         if (!vPointerVl.needsUpdate) vPointerVl.set(0, 0);
         vPointerVl.needsUpdate = false;
@@ -119,33 +121,32 @@
             const line = lines[l];
             line.update();
             // remove the line if it's too long to avoid bugs and add new line
-            if (line.curve.points.length && line.curve.getLength() > 6000) {
+            if (line.curve.points.length && line.curve.getLength() > 6000 && !dRemoveLine) {
                 removeLine(l);
                 addLine();
+                // in case of removing a line, wait 1s before removing another
+                dRemoveLine = true;
+                setTimeout(() => (dRemoveLine = false), 1200);
             }
         }
         propsReactive.activeLines = lines.length > 0;
     };
 
     const addLine = () => {
-        if (props.textArr.length > 0) {
-            propsReactive.text = props.textArr[propsReactive.textArrIndex];
-            propsReactive.textArrIndex = (propsReactive.textArrIndex + 1) % props.textArr.length;
-        }
-
         const { text, fontSize } = propsReactive;
         const { maxWordsVisible, color } = props;
 
         const l = new Line(cx, { text, vPointerVl, config, fontSize, color, maxWordsVisible });
         lines.push(l);
-        lineCurrent = lines[lines.length - 1];
-        lineCurrent.addPoint(vPointer.x, vPointer.y);
+        lineCurr = lines[lines.length - 1];
+        lineCurr.addPoint(vPointer.x, vPointer.y);
+        if (pointerDown.value) l.setPointerDown(true);
     };
 
     const removeLine = (i) => {
         if (i == -1) return;
         lines[i].hide({ onComplete: () => lines.splice(i, 1) });
-        lineCurrent = lines[lines.length - 1];
+        lineCurr = lines[lines.length - 1];
     };
 
     const startDrawing = () => {
@@ -172,7 +173,12 @@
         (bool) => (bool ? null : stopDrawing())
     );
 
-    watch(pointerDown, (val) => !val && (propsReactive.activePointer = false));
+    watch(pointerDown, (bool) => {
+        if (!bool) propsReactive.activePointer = false;
+        for (let i = 0; i < lines.length; i++) {
+            lines[i].setPointerDown(bool);
+        }
+    });
 
     watch(
         () => propsReactive.activePointer,
@@ -211,7 +217,7 @@
 
         // add point every 5 interations
         if (int >= propsReactive.nIterations) {
-            lineCurrent?.addPoint(x, y);
+            lineCurr?.addPoint(x, y);
             int = 0;
         }
         int++;
@@ -232,7 +238,6 @@
         height: 100dvh;
 
         color: v-bind(color);
-        font-size: 1.6rem;
         overflow: hidden;
     }
 </style>

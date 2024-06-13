@@ -1,16 +1,17 @@
 
 LineType:
-    ■ fix glitch
-    ■ adapt font size based on window size
-    ■ add line draw on hold
+    ■ themes
     ■ find good copy
     ■ find good font
-FrameClipPath:
-    ■ add proper image or inner content 
 
 ■ add oil from anoyo v0.1
 ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ add line draw on hold @done(24-06-13 12:16) @project(LineType)
+    ✓ adapt font size based on window size @done(24-06-11 18:07) @project(LineType)
+    ✓ fix repetition glitch @done(24-06-11 17:52) @project(LineType)
+    ✓ add proper image or inner content @done(24-06-11 17:24) @project(FrameClipPath)
+    ✓ fix glitch @done(24-06-11 17:24) @project(LineType)
     ✓ add lygia @done(24-05-03 11:09)
     ✓ animate different steps @done(24-05-02 18:15) @project(FrameClipPath)
     ✓ record @done(24-05-02 18:15) @project(FrameClipPath)

@@ -4,6 +4,7 @@ import { gsap } from "gsap";
 import { drawCircle } from "@resn/gozer-canvas";
 import { hexToRgb } from "@resn/gozer-color";
 
+const debug = new URLSearchParams(window.location.search).get('debug');
 export default class Word {
     i = 0;
     x = 0;
@@ -52,9 +53,7 @@ export default class Word {
             rStart: 1,
             duration: 0.5,
             ease: 'power1.out',
-            onComplete: () => {
-                this.visible = false;
-            }
+            onComplete: () => this.visible = false
         });
     }
 
@@ -72,21 +71,20 @@ export default class Word {
 
         cx.save();
 
-        // DEBUG MODE
-        cx.fillStyle = '#0000ff';
-        drawCircle(cx, this.x, this.y, 2);
-        cx.fill();
+        if (debug) {
+            cx.fillStyle = '#0000ff';
+            drawCircle(cx, this.x, this.y, 2);
+            cx.fill();
+        }
 
         const nChars = this.chars.length;
 
         const iEnd = Math.round(rEnd * nChars);
         const iStart = Math.min(Math.round(rStart * nChars), iEnd);
-
         let xChar = x;
 
         const textWidth = cx.measureText(text).width;
         const textAlign = direction == 1 ? 'left' : 'right';
-
         switch (textAlign) {
             case 'right':
                 xChar -= textWidth;
@@ -97,12 +95,10 @@ export default class Word {
         }
 
         for (let i = 0; i < nChars; i++) {
-            const v = inRange(i, iStart, iEnd);
+            const v = inRange(i, iStart, iEnd, true);
             const char = text.charAt(i);
-
             cx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${+v})`;
             cx.fillText(char, xChar, y);
-
             xChar += cx.measureText(char).width + kerning;
         }
 

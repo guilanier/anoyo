@@ -22,8 +22,7 @@ export default class Line {
         this.text = text;
         this.textArray = text.split(' ');
 
-        this.lengthDamp = 0;
-        this.lengthDampPr = 0;
+        this.lengthCurve = { start: 0, end: 0, start0: null, end0: 0 };
     }
 
     addPoint(x, y) {
@@ -35,7 +34,12 @@ export default class Line {
         this.curve.points = [];
         this.words.length = 0;
         this.textArray = this.text.split(' ');
-        this.lengthDamp = 0;
+        this.lengthCurve = 0;
+    }
+
+    setPointerDown(bool) {
+        if (bool) this.lengthCurve.start = this.lengthCurve.end0;
+        this.lengthCurve.start0 = this.lengthCurve.end0;
     }
 
     hide({ onComplete = noop } = {}) {
@@ -51,57 +55,62 @@ export default class Line {
                 this.reset();
             }
         });
+        this.lengthCurve.start0 = this.lengthCurve.end0; // hide line
     }
 
     update() {
         const { cx, curve, config } = this;
-        const cv = this.cx.canvas;
+
+        if (!curve.points.length) return
+        cx.save();
+
+        if (config.showLine) this.updateLine();
+        this.updateText();
+
+        cx.restore();
+    }
+
+    updateLine() {
+        const { cx, curve, config } = this;
 
         if (!this.tLst) this.tLst = performance.now();
         const t = performance.now();
         const dt = t - this.tLst; // real delta
         this.tLst = t;
 
+        const lengthCurveFull = this.lengthCurve.end0 = curve.getLength();
+        const { start, end, start0, end0 } = this.lengthCurve;
 
-        if (curve.points.length > 1) {
-            cx.save();
+        this.lengthCurve.start = damp(start, start0, 4, dt / 1000);
+        this.lengthCurve.end = damp(end, end0, 6, dt / 1000);
 
-            const lengthCurve = curve.getLength();
+        // draw the curve in cx 2d
+        const ptStart = start < lengthCurveFull ? curve.getPointAt(start / lengthCurveFull) : null;
+        if (!ptStart || start0 == null) return;
 
-            this.lengthDamp = damp(this.lengthDamp, lengthCurve, 6, dt / 1000);
-            this.lengthDampPr = this.lengthDamp / lengthCurve;
+        cx.beginPath();
+        cx.moveTo(ptStart.x, ptStart.y);
 
-            // draw the curve in cx 2d
-            if (config.showLine && this.lengthDampPr <= 1) {
-                cx.beginPath();
-                cx.moveTo(curve.points[0].x, curve.points[0].y);
-
-                for (let i = 0; i < this.lengthDamp * this.lengthDampPr; i++) {
-                    const pt = curve.getPointAt(i / this.lengthDamp);
-                    cx.lineTo(pt.x, pt.y);
-                }
-
-                cx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-                cx.lineWidth = 2;
-                cx.lineCap = 'round';
-
-                cx.stroke();
-            }
-
-            this.updateText();
-
-            cx.restore();
+        for (let i = start; i < end; i++) {
+            const pt = curve.getPointAt(i / lengthCurveFull);
+            cx.lineTo(pt.x, pt.y);
         }
+
+        cx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+        cx.lineWidth = 1;
+        cx.lineCap = 'round';
+
+        cx.stroke();
     }
 
     updateText() {
         const { cx, curve, text, textArray, kerning, maxWordsVisible, words, fontSize, color } = this;
 
         const lengthCurve = curve.getLength();
-        const unitDivision = fontSize + 10;
+        const unitDivision = fontSize + 12;
 
         const velocity = this.vPointerVl.toArray();
-        const wordSpacing = 10;
+        const wordSpacing = 12;
 
         cx.save();
 
@@ -116,21 +125,20 @@ export default class Line {
 
                 const tangent = curve.getTangentAt(pr);
 
-                const space =
-                    Math.abs(tangent.x) > 0.8
-                        ? cx.measureText(text).width + (wordSpacing + kerning * text.length)
-                        : unitDivision;
+                const direction = Math.sign(tangent.x);
+                const space = Math.abs(tangent.x) > 0.8
+                    ? cx.measureText(text).width + (wordSpacing + kerning * text.length)
+                    : unitDivision;
 
                 const pt = curve.getPointAt(pr);
 
                 const word =
                     this.words[d] ||
-                    new Word({ x: pt.x, y: pt.y, i: d, direction: this.direction, color, text, velocity });
+                    new Word({ x: pt.x, y: pt.y, i: d, direction, color, text, velocity });
                 if (!this.words[d]) {
                     this.words.push(word);
                     word.show();
                 }
-
                 const wordsVisible = this.words.filter((_) => _.visible);
                 if (wordsVisible.length >= maxWordsVisible) {
                     const w = wordsVisible[wordsVisible.length - maxWordsVisible];

@@ -6,7 +6,7 @@
         </div>
         <div class="frame__mask" ref="refMask">
             <div class="frame__content" ref="refContent">
-                <slot name="content"></slot>
+                <slot name="content" />
             </div>
             <slot name="inner" />
 
@@ -17,7 +17,7 @@
                 :fill="fillColor"
                 :stroke-width="borderWidth"
             >
-                <path class="frame__borderPath" ref="refBorderPath" />
+                <path class="frame__path" ref="refPath" />
             </svg>
         </div>
     </div>
@@ -28,7 +28,7 @@
     import { Vector3 } from 'three';
     import { computed, ref, watchEffect } from 'vue';
 
-    import { useDomElement, useRafBool, useWindowPointer } from '@resn/gozer-vue';
+    import { useDomElement, useRafBool } from '@resn/gozer-vue';
 
     import { useCssClipMask } from './useCssClipMask';
 
@@ -36,7 +36,7 @@
     const refContent = ref();
     const refMask = ref();
     const refMedia = ref();
-    const refBorderPath = ref();
+    const refPath = ref();
 
     const props = defineProps({
         active: { default: true },
@@ -100,7 +100,7 @@
 
         const path = clipMask.update();
         refMask.value.style.clipPath = `path('${path}')`;
-        refBorderPath.value?.setAttribute('d', path);
+        refPath.value?.setAttribute('d', path);
 
         show.value = tf.scale[0] > 0.01;
     };
@@ -108,6 +108,7 @@
 
     defineExpose({
         refMedia,
+        refPath,
 
         propsRoot,
         propsFrame,
@@ -150,7 +151,7 @@
         }
 
         &__border,
-        &__borderPath {
+        &__path {
             position: absolute;
             width: 100%;
             height: 100%;

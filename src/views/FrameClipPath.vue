@@ -1,8 +1,8 @@
 <template>
-    <div class="demo">
+    <div class="demo" ref="refRoot" @click="onClick">
         <Frame
             ref="refFrame"
-            :borderColor="'#fff'"
+            borderColor="#fff"
             borderWidth="4"
             :hasElementSize="true"
             :step="tutoStep"
@@ -18,7 +18,7 @@
                 </div>
             </template>
             <template #inner>
-                <div class="frame__bg" :style="{ opacity: +(tutoStep > 1) }"></div>
+                <div class="frame__bg" :style="{ opacity: +(tutoStep > 1) }" />
                 <div class="frame__inner" ref="refInner">
                     <img src="/images/FrameClipPath/inner.png" />
                 </div>
@@ -29,12 +29,15 @@
 
 <script setup>
     import { Vector2, Vector3 } from 'three';
-    import { onMounted, reactive, ref, watch } from 'vue';
+    import { onMounted, reactive, ref } from 'vue';
 
-    import { useDomElement, useViewportResize } from '@resn/gozer-vue';
-    import { useWindowPointer } from '@resn/gozer-vue';
-    import { useDamp } from '@resn/gozer-vue';
-    import { useRafBool } from '@resn/gozer-vue';
+    import {
+        useDamp,
+        useDomElement,
+        useRafBool,
+        useViewportResize,
+        useWindowPointer,
+    } from '@resn/gozer-vue';
 
     import Frame from '@/components/FrameClipPath/Frame.vue';
 
@@ -50,6 +53,7 @@
     const active = ref(true);
     const tutoStep = ref(0);
 
+    const refRoot = ref();
     const refFrame = ref();
     const refOuter = ref();
     const refInner = ref();
@@ -81,7 +85,19 @@
 
     const propsFrameInner = { sc0: 1, sc1: 0 };
 
-    useViewportResize(({ width, height }) => vViewport.set(width, height), { immediate: true });
+    const computePathLength = () => {
+        const path = refFrame.value.refPath;
+        const pathLength = path.getTotalLength();
+        if (pathLength) refRoot.value.style.setProperty('--path-length', pathLength);
+    };
+
+    useViewportResize(
+        ({ width, height }) => {
+            vViewport.set(width, height), { immediate: true };
+            computePathLength();
+        },
+        { immediate: true }
+    );
 
     useWindowPointer(({ xPr, yPr }) => {
         vPointerNorm.set(xPr, yPr).subScalar(0.5).multiplyScalar(2);
@@ -124,25 +140,15 @@
         }
     };
 
-    onMounted(() => {
-        window.addEventListener('click', () => {
-            tutoStep.value = (tutoStep.value + 1) % 4;
-        });
-    });
+    const onClick = () => {
+        tutoStep.value = (tutoStep.value + 1) % 4;
+    };
 
-    watch(tutoStep, (step) => {
-        switch (step) {
-            case 0:
-                break;
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                break;
-            default:
-                break;
-        }
+    onMounted(() => {
+        setTimeout(() => {
+            computePathLength();
+            setTimeout(() => refRoot.value.style.setProperty('--path-dur', '0.8s'), 1000);
+        }, 100);
     });
 
     useRafBool(active, update);
@@ -150,13 +156,20 @@
 
 <style lang="scss">
     .demo {
+        --path-length: -1;
+        --path-dur: 0;
+
         position: fixed;
         inset: 0;
         user-select: none;
 
+        cursor: pointer;
+
         display: flex;
         justify-content: center;
         align-items: center;
+
+        background: #000;
 
         .frame {
             position: relative;
@@ -164,10 +177,10 @@
             aspect-ratio: 1 / 1;
             .frame__border {
                 transition:
-                    stroke-dashoffset 0.8s,
+                    stroke-dashoffset var(--path-dur, 0s),
                     fill 0.5s;
-                stroke-dasharray: 1640;
-                stroke-dashoffset: 1640;
+                stroke-dasharray: var(--path-length);
+                stroke-dashoffset: var(--path-length);
             }
             &[step='1'],
             &[step='2'],
