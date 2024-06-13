@@ -2,27 +2,37 @@ import { SplineCurve, Vector2 } from "three";
 import { damp } from 'three/src/math/MathUtils';
 import Word from "./word";
 import { gsap } from "gsap";
+import { hexToRgb } from "@resn/gozer-color";
 
 export default class Line {
 
-    constructor(context, { text = 'lorem ipsum', vPointerVl = new Vector2(), kerning = 1, fontSize = 16, maxWordsVisible = 38, color = '', config = {} } = {}) {
+    constructor(context, { text = 'lorem ipsum', vPointerVl = new Vector2(), kerning = 1, fontSize = 16, maxWordsVisible = 38, color = '', pointerDown = false, config = {} } = {}) {
         this.cx = context;
         this.curve = new SplineCurve();
+        this.words = [];
 
         this.vPointerVl = vPointerVl;
         this.kerning = kerning;
         this.fontSize = fontSize;
-        this.color = color;
         this.maxWordsVisible = maxWordsVisible;
 
         this.tLst = 0;
         this.config = config;
-        this.words = [];
 
         this.text = text;
         this.textArray = text.split(' ');
 
-        this.lengthCurve = { start: 0, end: 0, start0: null, end0: 0 };
+        this.setColor(color);
+
+        this.lengthCurve = { start: 0, end: 0, start0: null, end0: null };
+        if (pointerDown) this.setPointerDown(true);
+    }
+
+    setColor(color) {
+        const { r, g, b } = hexToRgb(color);
+        this.colorLineStr = `rgba(${r}, ${g}, ${b}, 0.5)`;
+        this.color = color;
+        this.words.forEach((_) => _.setColor(color));
     }
 
     addPoint(x, y) {
@@ -39,7 +49,7 @@ export default class Line {
 
     setPointerDown(bool) {
         if (bool) this.lengthCurve.start = this.lengthCurve.end0;
-        this.lengthCurve.start0 = this.lengthCurve.end0;
+        this.lengthCurve.start0 = this.lengthCurve.end0 || 0;
     }
 
     hide({ onComplete = noop } = {}) {
@@ -55,7 +65,7 @@ export default class Line {
                 this.reset();
             }
         });
-        this.lengthCurve.start0 = this.lengthCurve.end0; // hide line
+        this.lengthCurve.start0 = this.lengthCurve.start0 !== null ? this.lengthCurve.end0 : null;
     }
 
     update() {
@@ -79,9 +89,10 @@ export default class Line {
         this.tLst = t;
 
         const lengthCurveFull = this.lengthCurve.end0 = curve.getLength();
+
         const { start, end, start0, end0 } = this.lengthCurve;
 
-        this.lengthCurve.start = damp(start, start0, 4, dt / 1000);
+        this.lengthCurve.start = damp(start, start0, 10, dt / 1000);
         this.lengthCurve.end = damp(end, end0, 6, dt / 1000);
 
         // draw the curve in cx 2d
@@ -96,7 +107,7 @@ export default class Line {
             cx.lineTo(pt.x, pt.y);
         }
 
-        cx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+        cx.strokeStyle = this.colorLineStr;
         cx.lineWidth = 1;
         cx.lineCap = 'round';
 

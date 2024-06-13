@@ -1,5 +1,7 @@
 <template>
-    <div class="line-type" ref="refRoot"></div>
+    <div class="line-type" ref="refRoot">
+        <slot></slot>
+    </div>
 </template>
 
 <script setup>
@@ -69,7 +71,7 @@
     onMounted(() => init());
 
     const resize = ({ width, height }) => {
-        propsReactive.fontSize = parseInt(getComputedStyle(refRoot.value).fontSize);
+        propsReactive.fontSize = parseInt(getComputedStyle(refRoot.value).fontSize) * 1.6;
 
         resizeRectHit({ width, height });
         resizeCanvas(cx, width, height);
@@ -78,7 +80,7 @@
         sizeEl.height = height;
     };
 
-    const viewport = useViewportResize(resize);
+    useViewportResize(resize);
 
     const resizeRectHit = ({ width, height }) => {
         const { w: wNorm, h: hNorm } = props.rectHit;
@@ -110,8 +112,12 @@
         () => props.rectHit,
         () => resizeRectHit({ width: sizeEl.width, height: sizeEl.height })
     );
+    watch(
+        () => props.color,
+        (c) => lines.forEach((line) => line.setColor(c))
+    );
 
-    let dRemoveLine;
+    let dRemovingLine, toRemovingLine;
     const update = () => {
         if (!vPointerVl.needsUpdate) vPointerVl.set(0, 0);
         vPointerVl.needsUpdate = false;
@@ -121,12 +127,13 @@
             const line = lines[l];
             line.update();
             // remove the line if it's too long to avoid bugs and add new line
-            if (line.curve.points.length && line.curve.getLength() > 6000 && !dRemoveLine) {
+            if (line.curve.points.length && line.curve.getLength() > 8000 && !dRemovingLine) {
                 removeLine(l);
                 addLine();
                 // in case of removing a line, wait 1s before removing another
-                dRemoveLine = true;
-                setTimeout(() => (dRemoveLine = false), 1200);
+                dRemovingLine = true;
+                toRemovingLine = setTimeout(() => (dRemovingLine = false), 1200);
+                if (toRemovingLine) clearTimeout(toRemovingLine);
             }
         }
         propsReactive.activeLines = lines.length > 0;
@@ -136,16 +143,25 @@
         const { text, fontSize } = propsReactive;
         const { maxWordsVisible, color } = props;
 
-        const l = new Line(cx, { text, vPointerVl, config, fontSize, color, maxWordsVisible });
+        const l = new Line(cx, {
+            text,
+            vPointerVl,
+            config,
+            fontSize,
+            color,
+            maxWordsVisible,
+            pointerDown: pointerDown.value,
+        });
         lines.push(l);
         lineCurr = lines[lines.length - 1];
         lineCurr.addPoint(vPointer.x, vPointer.y);
-        if (pointerDown.value) l.setPointerDown(true);
     };
 
     const removeLine = (i) => {
         if (i == -1) return;
-        lines[i].hide({ onComplete: () => lines.splice(i, 1) });
+        lines[i].hide({
+            onComplete: () => lines.splice(i, 1),
+        });
         lineCurr = lines[lines.length - 1];
     };
 

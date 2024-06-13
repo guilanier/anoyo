@@ -28,7 +28,6 @@ export default class Word {
         this.text = text;
         this.direction = direction;
         this.kerning = kerning;
-        this.rgb = hexToRgb(color);
 
         this.vVelocity = new Vector2().fromArray(velocity);
 
@@ -39,6 +38,12 @@ export default class Word {
         this.vOffsetVel = new Vector2();
 
         this.chars = this.text.split('');
+
+        this.setColor(color);
+    }
+
+    setColor(c) {
+        this.rgb = hexToRgb(c);
     }
 
     show() {

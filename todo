@@ -1,12 +1,12 @@
-
 LineType:
-    ■ themes
+    ■ mobile
     ■ find good copy
     ■ find good font
 
 ■ add oil from anoyo v0.1
 ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ themes @done(24-06-13 16:55) @project(LineType)
     ✓ add line draw on hold @done(24-06-13 12:16) @project(LineType)
     ✓ adapt font size based on window size @done(24-06-11 18:07) @project(LineType)
     ✓ fix repetition glitch @done(24-06-11 17:52) @project(LineType)
