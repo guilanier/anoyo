@@ -3,6 +3,7 @@ import { damp } from 'three/src/math/MathUtils';
 import Word from "./word";
 import { gsap } from "gsap";
 import { hexToRgb } from "@resn/gozer-color";
+import { isMobile } from "@resn/gozer-env";
 
 export default class Line {
 
@@ -30,7 +31,7 @@ export default class Line {
 
     setColor(color) {
         const { r, g, b } = hexToRgb(color);
-        this.colorLineStr = `rgba(${r}, ${g}, ${b}, 0.5)`;
+        this.colorLineStr = `rgba(${r}, ${g}, ${b}, ${isMobile ? 0.25 : 0.5})`;
         this.color = color;
         this.words.forEach((_) => _.setColor(color));
     }
@@ -118,10 +119,10 @@ export default class Line {
         const { cx, curve, text, textArray, kerning, maxWordsVisible, words, fontSize, color } = this;
 
         const lengthCurve = curve.getLength();
-        const unitDivision = fontSize + 12;
+        const unitDivision = fontSize + 10;
 
         const velocity = this.vPointerVl.toArray();
-        const wordSpacing = 12;
+        const wordSpacing = 10;
 
         cx.save();
 
@@ -140,12 +141,11 @@ export default class Line {
                 const space = Math.abs(tangent.x) > 0.8
                     ? cx.measureText(text).width + (wordSpacing + kerning * text.length)
                     : unitDivision;
-
                 const pt = curve.getPointAt(pr);
 
                 const word =
                     this.words[d] ||
-                    new Word({ x: pt.x, y: pt.y, i: d, direction, color, text, velocity });
+                    new Word({ x: pt.x, y: pt.y, i: d, direction, color, text, velocity, kerning: isMobile ? 0 : 1 });
                 if (!this.words[d]) {
                     this.words.push(word);
                     word.show();

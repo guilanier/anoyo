@@ -18,8 +18,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2
       '@resn/gozer-glsl':
-        specifier: ^6.0.3
-        version: 6.0.3
+        specifier: ^6.0.4
+        version: 6.0.4
       '@resn/gozer-math':
         specifier: ^3.3.4
         version: 3.3.4
@@ -30,8 +30,8 @@ importers:
         specifier: ^5.6.3
         version: 5.6.3
       '@resn/gozer-vue':
-        specifier: ^5.0.2
-        version: 5.0.2(@resn/gozer-env@3.0.2)(@resn/gozer-math@3.3.4)(@studio-freight/lenis@1.0.42)(@tweakpane/plugin-essentials@0.2.1(tweakpane@4.0.3))(@vueuse/core@10.9.0(vue@3.4.21))(eventemitter3@5.0.1)(gsap@file:src/libs/gsap-shockingly-green/npm-install-this/gsap-bonus.tgz)(postprocessing@6.35.3(three@0.163.0))(svg-path-generator@1.1.0)(svg-round-corners@0.9.0)(three@0.163.0)(tweakpane@4.0.3)
+        specifier: ^5.1.1
+        version: 5.1.1(@resn/gozer-env@3.0.2)(@resn/gozer-math@3.3.4)(@studio-freight/lenis@1.0.42)(@tweakpane/plugin-essentials@0.2.1(tweakpane@4.0.3))(@vueuse/core@10.9.0(vue@3.4.21))(eventemitter3@5.0.1)(gsap@file:src/libs/gsap-shockingly-green/npm-install-this/gsap-bonus.tgz)(postprocessing@6.35.3(three@0.163.0))(svg-path-generator@1.1.0)(svg-round-corners@0.9.0)(three@0.163.0)(tweakpane@4.0.3)
       '@resn/prettier-config':
         specifier: ^2.0.6
         version: 2.0.6(@vue/compiler-sfc@3.4.21)(prettier@3.2.5)
@@ -464,8 +464,8 @@ packages:
   '@resn/gozer-env@3.0.2':
     resolution: {integrity: sha512-WkrAn3iZ9b1agRKwZwIlqRnOtCCjEJCwFE5CBPcNpRfYfjOAVPsvQfezmvrxokdm0KwjMTmbiCUPT1HLYcD7IA==, tarball: https://npm.pkg.github.com/download/@Resn/gozer-env/3.0.2/e11774e9fcb9260e7eb3586ca4c2971262f8621c}
 
-  '@resn/gozer-glsl@6.0.3':
-    resolution: {integrity: sha512-7smifSK5FMB00sB2Xc+AFrT3f5YUGnxdQhMrIIdqEvm9LhKJXowWNsDDqtQsbv/hck3E/aEV7fMpf+RPgXrp8w==, tarball: https://npm.pkg.github.com/download/@Resn/gozer-glsl/6.0.3/1652fa37a19299aa94929720ce6be59c90f7d282}
+  '@resn/gozer-glsl@6.0.4':
+    resolution: {integrity: sha512-/9AA0r4erpHP6KfmUhe1/pISIyDuiP6kcHzEuecZimOIaFvIELmuHnyTtYQVZPfMJ7kFCyAneF5yMIj6derv/Q==, tarball: https://npm.pkg.github.com/download/@Resn/gozer-glsl/6.0.4/039321bd289623099e04c1a56aa633ca760de5ae}
 
   '@resn/gozer-math@3.3.4':
     resolution: {integrity: sha512-FTyfhm6Mql+cOqdMBib8r37cX+i13CDKADC5iyhRUMBbBC21+zdQY73TQKa+pz9bfO5fpCDVL7QZsYdLfSh/8Q==, tarball: https://npm.pkg.github.com/download/@Resn/gozer-math/3.3.4/64a669b5f0c8353858e265a14605276b1dc5d5f5}
@@ -478,9 +478,9 @@ packages:
   '@resn/gozer-three@5.6.3':
     resolution: {integrity: sha512-O7gv8QSKKMWKPM9p2idusmB6hod4DrxI1NQc4YBnF/2bPpF4NZbQOocDkLNOWUvUNJVCw8JG7qoZ7NZhlbiKfg==, tarball: https://npm.pkg.github.com/download/@Resn/gozer-three/5.6.3/242719aeb7b1205136a661574f6c278be87c9f16}
 
-  '@resn/gozer-vue@5.0.2':
-    resolution: {integrity: sha512-/O4+N681vMFMCPOQlyup5yPUSTHQZjxq6xydnVSbIapTbvA5/zfWXvkgQE770TvZGvD0ZtI5RI13tQoYLIV0eQ==, tarball: https://npm.pkg.github.com/download/@resn/gozer-vue/5.0.2/7324ea53841f3eb7b4987f05ab70349c40859979}
-    version: 5.0.2
+  '@resn/gozer-vue@5.1.1':
+    resolution: {integrity: sha512-p3OkZy6T2hOgVW0kl8R3a2F/sNs0XMSAYSUwerTmpM065x6ZOcFBBRqbHAG8sdXy/wAqS1D6F/1AeE7wF7JNrQ==, tarball: https://npm.pkg.github.com/download/@resn/gozer-vue/5.1.1/bc744640300929bc742a563f4dd5b036b08d9e7d}
+    version: 5.1.1
     peerDependencies:
       '@resn/gozer-env': ^3.0.2
       '@resn/gozer-math': ^3.3.4
@@ -1899,7 +1899,7 @@ snapshots:
 
   '@resn/gozer-env@3.0.2': {}
 
-  '@resn/gozer-glsl@6.0.3': {}
+  '@resn/gozer-glsl@6.0.4': {}
 
   '@resn/gozer-math@3.3.4':
     dependencies:
@@ -1911,10 +1911,10 @@ snapshots:
 
   '@resn/gozer-three@5.6.3':
     dependencies:
-      '@resn/gozer-glsl': 6.0.3
+      '@resn/gozer-glsl': 6.0.4
       three: 0.163.0
 
-  '@resn/gozer-vue@5.0.2(@resn/gozer-env@3.0.2)(@resn/gozer-math@3.3.4)(@studio-freight/lenis@1.0.42)(@tweakpane/plugin-essentials@0.2.1(tweakpane@4.0.3))(@vueuse/core@10.9.0(vue@3.4.21))(eventemitter3@5.0.1)(gsap@file:src/libs/gsap-shockingly-green/npm-install-this/gsap-bonus.tgz)(postprocessing@6.35.3(three@0.163.0))(svg-path-generator@1.1.0)(svg-round-corners@0.9.0)(three@0.163.0)(tweakpane@4.0.3)':
+  '@resn/gozer-vue@5.1.1(@resn/gozer-env@3.0.2)(@resn/gozer-math@3.3.4)(@studio-freight/lenis@1.0.42)(@tweakpane/plugin-essentials@0.2.1(tweakpane@4.0.3))(@vueuse/core@10.9.0(vue@3.4.21))(eventemitter3@5.0.1)(gsap@file:src/libs/gsap-shockingly-green/npm-install-this/gsap-bonus.tgz)(postprocessing@6.35.3(three@0.163.0))(svg-path-generator@1.1.0)(svg-round-corners@0.9.0)(three@0.163.0)(tweakpane@4.0.3)':
     dependencies:
       '@resn/gozer-env': 3.0.2
       '@resn/gozer-math': 3.3.4

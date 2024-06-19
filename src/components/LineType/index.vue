@@ -7,7 +7,7 @@
 <script setup>
     import { Vector2 } from 'three';
     import { computed, defineEmits, defineProps, onMounted, reactive, ref, watch } from 'vue';
-    import { watchEffect } from 'vue';
+    import { inject, watchEffect } from 'vue';
 
     import { createCanvas, resizeCanvas } from '@resn/gozer-canvas';
     import { isHandheld, isMobile } from '@resn/gozer-env';
@@ -37,8 +37,7 @@
         text: {
             type: String,
             default:
-                'Consectetur ex irure est consectetur eu pariatur aliqua enim aute et ipsum culpa ullamco. Elit pariatur pariatur ullamco ipsum excepteur tempor',
-            // 'Consectetur Consectetur Consectetur pariatur pariatur pariatur pariatur pariatur pariatur',
+                'Consectetur ex irure est consectetur eu pariatur aliqua enim aute et ipsum culpa ullamco.',
         },
         textArr: { type: Array, default: [] },
     });
@@ -46,7 +45,7 @@
     const propsReactive = reactive({
         direction: 0,
         fontSize: 16,
-        nIterations: 5,
+        nIterations: 4,
 
         activePointer: false,
         activePointerIdle: true,
@@ -57,8 +56,16 @@
     });
     const activeComputed = computed(() => props.active || propsReactive.activeLines);
 
+    const propsPane = reactive({
+        text: props.text,
+    });
+
+    watch(propsPane, ({ text }) => {
+        propsReactive.text = text;
+    });
+
     const config = reactive({
-        showLine: true,
+        showLineOnHold: true,
     });
 
     const lines = [];
@@ -102,6 +109,9 @@
 
         const { stop, start } = useRaf(update);
         watchEffect(() => (activeComputed.value ? start() : stop()));
+
+        const { pane } = inject('tweakpane');
+        pane.fpsGraph.hidden = true;
     };
 
     watch(
@@ -133,7 +143,6 @@
                 // in case of removing a line, wait 1s before removing another
                 dRemovingLine = true;
                 toRemovingLine = setTimeout(() => (dRemovingLine = false), 1200);
-                if (toRemovingLine) clearTimeout(toRemovingLine);
             }
         }
         propsReactive.activeLines = lines.length > 0;
@@ -146,11 +155,13 @@
         const l = new Line(cx, {
             text,
             vPointerVl,
-            config,
             fontSize,
             color,
             maxWordsVisible,
             pointerDown: pointerDown.value,
+            config: {
+                showLine: config.showLineOnHold,
+            },
         });
         lines.push(l);
         lineCurr = lines[lines.length - 1];
@@ -241,7 +252,7 @@
 
     watch(pointer, ({ x, y }) => handlePointer({ x, y }));
 
-    usePane([{ value: propsReactive, options: { step: 1 } }, { value: config }], {
+    usePane([{ value: propsPane }, { value: config }], {
         title: 'Line Type',
         expanded: true,
     });
