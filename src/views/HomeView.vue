@@ -1,6 +1,6 @@
 <template>
     <div class="root">
-        <SandboxHub title="Anoyo —" :components="components" />
+        <SandboxHub title="ANOYO —" :components="components" />
     </div>
 </template>
 

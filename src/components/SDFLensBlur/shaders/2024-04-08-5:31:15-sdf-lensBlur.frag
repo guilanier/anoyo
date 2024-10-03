@@ -24,10 +24,10 @@ uniform float u_borderRadius;
 #define uResolution u_resolution
 #define uPointer u_mouse
 
-#include "/node_modules/@resn/gozer-glsl/functions/coord.glsl"
-#include "/node_modules/@resn/gozer-glsl/shapes/draw.glsl"
-#include "/node_modules/@resn/gozer-glsl/sdf/sdRect.glsl"
-#include "/node_modules/@resn/gozer-glsl/sdf/sdCircle.glsl"
+#include "node_modules/@resn/gozer-glsl/functions/coord.glsl"
+#include "node_modules/@resn/gozer-glsl/shapes/draw.glsl"
+#include "node_modules/@resn/gozer-glsl/sdf/sdRect.glsl"
+#include "node_modules/@resn/gozer-glsl/sdf/sdCircle.glsl"
 
 void main() {
     

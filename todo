@@ -1,10 +1,15 @@
+■ have a generic component GL that can handle components
+■ add fps meters
+■ add define for UV check
 LineType:
     ■ glitch fix
     ■ offset in x
     ■ find good copy
     ■ find good font
 
+
 ■ add oil from anoyo v0.1
+■ add space from glslPlayground
 ■ add sunrise from anoyo v0.1
 Archive:
     ✓ fix overlap @done(24-06-14 16:08) @project(LineType)

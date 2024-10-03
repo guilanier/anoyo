@@ -14,4 +14,9 @@ export const routeInfo = {
         path: '/frame-clip-path',
         componentName: 'FrameClipPath',
     },
+    SphareSpaceNeon: {
+        name: 'Sphere Space Neon',
+        path: '/sphere-space-neon',
+        componentName: 'GLComponent',
+    },
 };
