@@ -1,17 +1,28 @@
-■ have a generic component GL that can handle components
-■ add fps meters
-■ add define for UV check
+Global:
+    ■ --
 LineType:
-    ■ glitch fix
+    ■ set theme properly
+    ■ draw at least one word on tap
+    ■ glitches fix
     ■ offset in x
     ■ find good copy
     ■ find good font
+SpaceTest:
+    ■ rename
+    ■ add interaction (rise up + camera motion + light motion)
+    ■ colors updates
 
-
-■ add oil from anoyo v0.1
-■ add space from glslPlayground
-■ add sunrise from anoyo v0.1
+Others:
+    ■ add oil from anoyo v0.1
+    ■ add space from glslPlayground
+    ■ add sunrise from anoyo v0.1
 Archive:
+    X check eslint stuff @cancelled(24-10-04 12:37) @project(Global)
+    ✓ COLORS defines @done(24-10-04 12:26) @project(Global)
+    ✓ add defines for UV check and COLORS defines @done(24-10-04 11:43) @project(Global)
+    ✓ add fps meters @done(24-10-04 11:34)
+    ✓ have a generic component GL that can handle components @done(24-10-04 11:14)
+    ✓ move some shader chonks into glsl playground @done(24-10-04 10:51)
     ✓ fix overlap @done(24-06-14 16:08) @project(LineType)
     ✓ mobile @done(24-06-14 14:53) @project(LineType)
     ✓ themes @done(24-06-13 16:55) @project(LineType)

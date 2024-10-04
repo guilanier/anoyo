@@ -14,13 +14,16 @@
 </template>
 
 <script setup>
+    import { usePreferredColorScheme } from '@vueuse/core';
     import { onMounted, ref } from 'vue';
 
     import { TweakPane, usePane } from '@resn/gozer-vue';
 
     import LineType from '@/components/LineType/index.vue';
 
-    const theme = ref('dark');
+    const colorScheme = usePreferredColorScheme();
+    console.log('🚀 ~ colorScheme:', colorScheme);
+    const theme = ref(colorScheme);
     const switchTheme = () => {
         theme.value = theme.value === 'dark' ? 'light' : 'dark';
     };

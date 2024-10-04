@@ -8,7 +8,6 @@
     import { SandboxHub } from '@resn/gozer-vue/sandbox';
 
     import { routeInfo } from '@/route-info';
-    import router from '@/router';
 
     const components = Object.values(routeInfo)
         .map((route) => {

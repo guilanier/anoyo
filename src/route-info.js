@@ -17,6 +17,6 @@ export const routeInfo = {
     SphareSpaceNeon: {
         name: 'Sphere Space Neon',
         path: '/sphere-space-neon',
-        componentName: 'GLComponent',
+        componentName: 'ComponentGl',
     },
 };

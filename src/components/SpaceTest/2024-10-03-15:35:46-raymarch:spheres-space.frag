@@ -1,8 +1,13 @@
 /*
-glslViewer 2024-10-03-15:35:46-raymarch:spheres-neon.frag -e camera_position,-1.4,6.,2. -e floor,on -l
---fxaa -e floor,on
+glslViewer 2024-10-03-15:35:46-raymarch:spheres-space-neon.frag -e camera_position,-1.4,6.,2. -e floor,on -l
 */
+
+#ifdef GLSLVIEWER
+varying vec2 v_texcoord;
+#else
 varying vec2 vUv;
+#define v_texcoord vUv
+#endif
 
 uniform vec3 u_camera;
 uniform vec3 u_target;
@@ -130,7 +135,7 @@ Material raymarchMap(vec3 pos) {
 
 void main() {
     vec3 color = vec3(0.0);
-    vec2 uv = vUv;
+    vec2 uv = v_texcoord;
     vec2 st = ratio(uv, u_resolution);
     vec4 res = raymarch(u_camera, u_target, st);
     
@@ -140,6 +145,5 @@ void main() {
     float a = res.a;
     
     gl_FragColor = vec4(color, a);
-    // gl_FragColor = vec4(vec3(st.x), 1.0);
 }
 

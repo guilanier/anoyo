@@ -110,8 +110,8 @@
         const { stop, start } = useRaf(update);
         watchEffect(() => (activeComputed.value ? start() : stop()));
 
-        const { pane } = inject('tweakpane');
-        pane.fpsGraph.hidden = true;
+        // const { pane } = inject('tweakpane');
+        // pane.fpsGraph.hidden = true;
     };
 
     watch(
