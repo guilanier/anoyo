@@ -5,7 +5,7 @@
 </template>
 
 <script setup>
-    import { Vector2 } from 'three';
+    import { LinearSRGBColorSpace, SRGBColorSpace, Vector2 } from 'three';
     import { computed, defineEmits, defineProps, onMounted, reactive, ref, watch } from 'vue';
     import { inject, watchEffect } from 'vue';
 
@@ -40,12 +40,13 @@
                 'Consectetur ex irure est consectetur eu pariatur aliqua enim aute et ipsum culpa ullamco.',
         },
         textArr: { type: Array, default: [] },
+        colorFill: { type: Object, default: () => new Color() },
     });
 
     const propsReactive = reactive({
         direction: 0,
         fontSize: 16,
-        nIterations: 4,
+        nIterations: 2,
 
         activePointer: false,
         activePointerIdle: true,
@@ -78,7 +79,7 @@
     onMounted(() => init());
 
     const resize = ({ width, height }) => {
-        propsReactive.fontSize = parseInt(getComputedStyle(refRoot.value).fontSize) * 1.6;
+        propsReactive.fontSize = parseInt(getComputedStyle(refRoot.value).fontSize);
 
         resizeRectHit({ width, height });
         resizeCanvas(cx, width, height);
@@ -109,9 +110,6 @@
 
         const { stop, start } = useRaf(update);
         watchEffect(() => (activeComputed.value ? start() : stop()));
-
-        // const { pane } = inject('tweakpane');
-        // pane.fpsGraph.hidden = true;
     };
 
     watch(
@@ -132,12 +130,17 @@
         if (!vPointerVl.needsUpdate) vPointerVl.set(0, 0);
         vPointerVl.needsUpdate = false;
 
+        const cStr = props.colorFill.getStyle();
+        // const cStr = `#${props.colorFill.getHexString()}`;
         cx.clearRect(0, 0, cv.width, cv.height);
+        cx.fillStyle = cStr;
+        cx.fillRect(0, 0, cv.width, cv.height);
+
         for (let l = 0; l < lines.length; l++) {
             const line = lines[l];
             line.update();
             // remove the line if it's too long to avoid bugs and add new line
-            if (line.curve.points.length && line.curve.getLength() > 8000 && !dRemovingLine) {
+            if (line.curve.points.length && line.curve.getLength() > 6000 && !dRemovingLine) {
                 removeLine(l);
                 addLine();
                 // in case of removing a line, wait 1s before removing another
@@ -165,7 +168,10 @@
         });
         lines.push(l);
         lineCurr = lines[lines.length - 1];
+
+        // make sure the line is added to the canvas on tap
         lineCurr.addPoint(vPointer.x, vPointer.y);
+        lineCurr.addPoint(vPointer.x + 1, vPointer.y + 1);
     };
 
     const removeLine = (i) => {
@@ -259,12 +265,19 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '@resn/gozer-styles';
+
     .line-type {
         position: fixed;
         height: 100vh;
-        height: 100dvh;
+        height: 100lvh;
 
         color: v-bind(color);
         overflow: hidden;
+
+        font-size: 2.4rem;
+        @include mobile {
+            font-size: 1.6rem;
+        }
     }
 </style>

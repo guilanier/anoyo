@@ -1,22 +1,31 @@
 Global:
-    ■ --
+    ■ —
 LineType:
-    ■ set theme properly
-    ■ draw at least one word on tap
-    ■ glitches fix
-    ■ offset in x
+    fix glitches:
+        ■ bug on cursor
+        ■ bad killing words
+        ■ long lines
+    ■ set right colors
     ■ find good copy
-    ■ find good font
+    ■ record video
+    ■ tweet
 SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
     ■ colors updates
 
 Others:
-    ■ add oil from anoyo v0.1
+    ■ add oil / tulip from anoyo v0.1
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ do colors update on mouseout @done(24-10-08 23:31) @project(LineType)
+    ✓ small cursor for the video @done(24-10-08 16:50) @project(LineType)
+    ✓ draw at least one word on tap @done(24-10-08 16:40) @project(LineType)
+    ✓ fix font @done(24-10-08 16:20) @project(LineType)
+    ✓ offset in x `??` @done(24-10-07 15:15) @project(LineType)
+    ✓ glitches fix @done(24-10-07 15:14) @project(LineType)
+    ✓ set color scheme properly @done(24-10-07 11:28) @project(LineType)
     X check eslint stuff @cancelled(24-10-04 12:37) @project(Global)
     ✓ COLORS defines @done(24-10-04 12:26) @project(Global)
     ✓ add defines for UV check and COLORS defines @done(24-10-04 11:43) @project(Global)

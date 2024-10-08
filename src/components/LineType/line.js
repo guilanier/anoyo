@@ -11,6 +11,7 @@ export default class Line {
         this.cx = context;
         this.curve = new SplineCurve();
         this.words = [];
+        this.cursor = { x: 0, y: 0, r: 0 };
 
         this.vPointerVl = vPointerVl;
         this.kerning = kerning;
@@ -76,6 +77,7 @@ export default class Line {
         cx.save();
 
         if (config.showLine) this.updateLine();
+        if (config.showLine) this.updateCursor();
         this.updateText();
 
         cx.restore();
@@ -93,7 +95,7 @@ export default class Line {
 
         const { start, end, start0, end0 } = this.lengthCurve;
 
-        this.lengthCurve.start = damp(start, start0, 10, dt / 1000);
+        this.lengthCurve.start = damp(start, start0, 6, dt / 1000);
         this.lengthCurve.end = damp(end, end0, 6, dt / 1000);
 
         // draw the curve in cx 2d
@@ -115,6 +117,26 @@ export default class Line {
         cx.stroke();
     }
 
+    updateCursor() {
+        const { cx, curve, cursor, lengthCurve, config } = this;
+        const { start, end, start0, end0 } = lengthCurve;
+
+        const lengthCurveFull = lengthCurve.end0;
+
+        if (end > lengthCurveFull) return;
+        const pt = curve.getPointAt(end / lengthCurveFull);
+
+        cursor.x = pt.x;
+        cursor.y = pt.y;
+
+        cx.save();
+        cx.fillStyle = this.colorLineStr;
+        cx.beginPath();
+        cx.arc(cursor.x, cursor.y + 1, 2, 0, Math.PI * 2);
+        cx.fill();
+        cx.restore();
+    }
+
     updateText() {
         const { cx, curve, text, textArray, kerning, maxWordsVisible, words, fontSize, color } = this;
 
@@ -122,11 +144,11 @@ export default class Line {
         const unitDivision = fontSize + 10;
 
         const velocity = this.vPointerVl.toArray();
-        const wordSpacing = 10;
+        const wordSpacing = 8;
 
         cx.save();
 
-        cx.font = `bold ${fontSize}px Reckless`;
+        cx.font = `${fontSize}px Reckless`;
         cx.textBaseline = 'middle';
 
         let distanceOnCurve = 0;
