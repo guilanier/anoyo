@@ -1,5 +1,5 @@
 export const routeInfo = {
-    SDFLendBlur: {
+    SDFLensBlur: {
         name: 'SDF Lens Blur',
         path: '/sdf-lens-blur',
         componentName: 'SDFLensBlur',
@@ -14,9 +14,14 @@ export const routeInfo = {
         path: '/frame-clip-path',
         componentName: 'FrameClipPath',
     },
-    SphareSpaceNeon: {
+    SphereSpaceNeon: {
         name: 'Sphere Space Neon',
         path: '/sphere-space-neon',
+        componentName: 'ComponentGl',
+    },
+    TitleBlur: {
+        name: 'Title Blur',
+        path: '/title-blur',
         componentName: 'ComponentGl',
     },
 };

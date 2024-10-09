@@ -15,13 +15,17 @@
     import { Renderer, TweakPane } from '@resn/gozer-vue';
 
     import SpaceTest from '@/components/SpaceTest/index.vue';
+    import TitleBlur from '@/components/TitleBlur/index.vue';
 
     const route = useRoute();
 
     const refComponent = ref();
     const component = shallowRef();
 
-    const componentTypes = [{ id: 'sphere-space-neon', component: SpaceTest }];
+    const componentTypes = [
+        { id: 'sphere-space-neon', component: SpaceTest },
+        { id: 'title-blur', component: TitleBlur },
+    ];
     const componentData = componentTypes.find((c) => {
         const test = new RegExp(`\\b${c.id}\\b`, 'i').test(route.path);
         return test;
