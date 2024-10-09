@@ -1,5 +1,5 @@
 <template>
-    <TweakPane :hidden-on-start="false">
+    <TweakPane :hidden-on-start="true">
         <LineType
             class="lineType"
             ref="refLineType"
@@ -21,19 +21,17 @@
     import { Color } from 'three';
     import { onMounted, reactive, ref, watch } from 'vue';
 
-    import { TweakPane, useDamp, usePane, useRaf } from '@resn/gozer-vue';
+    import { TweakPane, useRaf } from '@resn/gozer-vue';
 
     import LineType from '@/components/LineType/index.vue';
 
     const refLineType = ref();
 
-    const colors = ['#000000', '#ffa441', '#ff6359', '#4596ff', 'rgb(22, 161, 71)'];
-
+    const colors = ['#000000', '#ffa441', '#ff6359', '#4596ff'];
     const scheme = usePreferredColorScheme();
-
     const theme = ref();
     const copy = ref(
-        'Kiss, suddenly alive Happiness arrive Hunger like a storm How do I begin? A room within a room A door behind a door Touch, where do you lead? I need something more Tell me what you see I need something more See pop shows near Amsterdam Get tickets as low as $38 You might also like Gmail and the Restraining Orders Death Grips Bread Anya Nami'
+        "Hey, Bob I'm lookin' at what, uh, Jack was talkin' about And, uh, it's definitely not a particle that's nearby It is a, uh, bright object And it's, uh, obviously rotating because it's flashing It's, uh, way out in the distance Currently rotating in a very rhythmic fashion Because the, uh, flashes come around, uh, almost on time As we look back at the earth, it's, uh, up at about 11 o'clock About, uh, well, maybe ten or twelve dianrers—diameters, uh I don't know whether that does you any good But there's somethin' out there . . . . . . . . . . . ."
     );
 
     const colorIx = ref(0);
@@ -61,7 +59,7 @@
             props0.colorLrp = 0;
 
             gsap.killTweensOf(props0, { colorLrp: true });
-            gsap.to(props0, { colorLrp: 1, duration: 1.2, ease: 'sine.onOut' });
+            gsap.to(props0, { colorLrp: 1, duration: 1.2, ease: 'sine.inOut' });
         },
         { immediate: true }
     );
@@ -73,6 +71,7 @@
     useRaf(() => {
         colorFill.lerpColors(color0, color1, props0.colorLrp);
 
+        // Record mode stuff (switch color and theme automatically, etc…)
         if (RECORD_MODE) {
             if (refLineType.value && refLineType.value.lines.length) {
                 let tmp = 0;
@@ -83,14 +82,10 @@
                 curr = tmp;
                 acc += delta > 0 ? delta : 0;
             }
-            if (acc > 1000) {
+            if (acc > 760) {
                 switchColor();
                 acc = 0;
                 ite++;
-                if (ite > 3) {
-                    ite = 0;
-                    switchTheme();
-                }
             }
         }
     });
