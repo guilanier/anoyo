@@ -10,7 +10,9 @@ export default class Word {
     x = 0;
     y = 0;
     text = '';
+
     visible = false;
+    active = false;
 
     propsTween = {
         xIn: 0,
@@ -48,17 +50,19 @@ export default class Word {
 
     show() {
         this.visible = true;
-        gsap.to(this.propsTween, { rEnd: 1, duration: 0.5, ease: 'power1.out' });
+        this.active = true;
 
+        gsap.to(this.propsTween, { rEnd: 1, duration: 0.5, ease: 'power1.out' });
         this.vOffsetTg.set(0, 0);
     }
 
     hide() {
+        this.visible = false;
         gsap.to(this.propsTween, {
             rStart: 1,
             duration: 0.5,
             ease: 'power1.out',
-            onComplete: () => this.visible = false
+            onComplete: () => this.active = false
         });
     }
 
@@ -72,7 +76,6 @@ export default class Word {
 
         const x = this.x + vOffset.x + xIn + xOut + xPr;
         const y = this.y + vOffset.y;
-
 
         cx.save();
 

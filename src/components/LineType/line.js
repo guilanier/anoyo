@@ -177,10 +177,11 @@ export default class Line {
                     const w = wordsVisible[wordsVisible.length - maxWordsVisible];
                     w.hide();
                 }
-                if (word.visible) word.update(cx);
+                if (word.active || word.visible) word.update(cx);
                 distanceOnCurve += space;
             }
         }
+
         // deplicate the text if limit reached
         if (words.length >= textArray.length) textArray.push(...text.split(' '));
 

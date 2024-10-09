@@ -32,7 +32,7 @@
         active: { type: Boolean, default: false },
 
         rectHit: { type: Object, default: { w: 1, h: 1 } },
-        maxWordsVisible: { type: Number, default: isMobile ? 19 : 38 },
+        maxWordsVisible: { type: Number, default: isMobile ? 20 : 38 },
 
         text: {
             type: String,
@@ -56,14 +56,6 @@
         textArrIndex: 0,
     });
     const activeComputed = computed(() => props.active || propsReactive.activeLines);
-
-    const propsPane = reactive({
-        text: props.text,
-    });
-
-    watch(propsPane, ({ text }) => {
-        propsReactive.text = text;
-    });
 
     const config = reactive({
         showLineOnHold: true,
@@ -258,9 +250,13 @@
 
     watch(pointer, ({ x, y }) => handlePointer({ x, y }));
 
-    usePane([{ value: propsPane }, { value: config }], {
+    usePane([{ value: config }], {
         title: 'Line Type',
         expanded: true,
+    });
+
+    defineExpose({
+        lines,
     });
 </script>
 
