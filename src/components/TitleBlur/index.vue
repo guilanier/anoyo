@@ -1,17 +1,42 @@
 <template>
-    <slot />
+    <Item />
 </template>
 
 <script setup>
     import { Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
-    import { inject } from 'vue';
+    import { inject, onMounted } from 'vue';
+
+    import { LoaderEvent } from '@resn/gozer-loading';
+    import { TextureLoader } from '@resn/gozer-loading';
+    import { JSONLoader } from '@resn/gozer-loading';
+    import { useJSON, useLoader, useLoaderContext } from '@resn/gozer-vue/loading';
+
+    import Item from './Item.vue';
 
     const { renderer, scene, registerRenderFn, camera, orthoCamera } = inject('renderer');
 
-    const mesh = new Mesh(new PlaneGeometry(2, 2), new MeshBasicMaterial({ color: 0x0000ff }));
-    mesh.name = 'MeshText';
-    // mesh.layers.set(1);
-    scene.add(mesh);
+    const context = useLoaderContext({
+        concurrency: 10,
+        loaders: [JSONLoader, TextureLoader],
+    });
+    TextureLoader.setGlobals({ renderer });
+    /* 
+    useJSON('/assets/textures/font/fellix-bold.json').then((data) => {
+        jsonRef.value.innerHTML = JSON.stringify(data, null, 4);
+    }); */
+
+    /*     useLoader({
+        fontMap: 'assets/textures/font/fellix-bold.png#texture',
+        fontData: '/assets/textures/font/fellix-bold.json',
+    }).once(LoaderEvent.LOAD_COMPLETE, ({ data }) => {
+        const { fontMap, fontData } = data;
+        console.log('🚀 ~ setup ~ { fontMap, fontData }:', { fontMap, fontData });
+    });
+ */
+    onMounted(() => {
+        context.start();
+        context.lock();
+    });
 
     registerRenderFn(() => {
         renderer.clear();
