@@ -1,4 +1,4 @@
-import{i as V,r as H,w as h,b as X,d as g,s as y,e as B,c as b,f as u,g as v,u as F,h as Y,o as m,j as w,k as z}from"./index-TeOFf2kV.js";import{V as k,T as W}from"./usePane-DR2p7wrR.js";import{y as q,r as K}from"./index-BN-vFYT-.js";import{R as j,P as Z,V as a,C as Q,M as C,T as r,Q as U,S as D,a as S,b as J,c as $,d as nn,e as en,f as An,E as En}from"./three.module-y6bheD5U.js";import"./SmoothScrollGsap-C4mrJViF.js";const x={type:"change"},c={type:"start"},G={type:"end"},l=new j,p=new Z,fn=Math.cos(70*J.DEG2RAD),_=new a,T=2*Math.PI,f={NONE:-1,ROTATE:0,DOLLY:1,PAN:2,TOUCH_ROTATE:3,TOUCH_PAN:4,TOUCH_DOLLY_PAN:5,TOUCH_DOLLY_ROTATE:6},s=1e-6;class Mn extends Q{constructor(n,e=null){super(n,e),this.state=f.NONE,this.enabled=!0,this.target=new a,this.cursor=new a,this.minDistance=0,this.maxDistance=1/0,this.minZoom=0,this.maxZoom=1/0,this.minTargetRadius=0,this.maxTargetRadius=1/0,this.minPolarAngle=0,this.maxPolarAngle=Math.PI,this.minAzimuthAngle=-1/0,this.maxAzimuthAngle=1/0,this.enableDamping=!1,this.dampingFactor=.05,this.enableZoom=!0,this.zoomSpeed=1,this.enableRotate=!0,this.rotateSpeed=1,this.enablePan=!0,this.panSpeed=1,this.screenSpacePanning=!0,this.keyPanSpeed=7,this.zoomToCursor=!1,this.autoRotate=!1,this.autoRotateSpeed=2,this.keys={LEFT:"ArrowLeft",UP:"ArrowUp",RIGHT:"ArrowRight",BOTTOM:"ArrowDown"},this.mouseButtons={LEFT:C.ROTATE,MIDDLE:C.DOLLY,RIGHT:C.PAN},this.touches={ONE:r.ROTATE,TWO:r.DOLLY_PAN},this.target0=this.target.clone(),this.position0=this.object.position.clone(),this.zoom0=this.object.zoom,this._domElementKeyEvents=null,this._lastPosition=new a,this._lastQuaternion=new U,this._lastTargetPosition=new a,this._quat=new U().setFromUnitVectors(n.up,new a(0,1,0)),this._quatInverse=this._quat.clone().invert(),this._spherical=new D,this._sphericalDelta=new D,this._scale=1,this._panOffset=new a,this._rotateStart=new S,this._rotateEnd=new S,this._rotateDelta=new S,this._panStart=new S,this._panEnd=new S,this._panDelta=new S,this._dollyStart=new S,this._dollyEnd=new S,this._dollyDelta=new S,this._dollyDirection=new a,this._mouse=new S,this._performCursorZoom=!1,this._pointers=[],this._pointerPositions={},this._controlActive=!1,this._onPointerMove=_n.bind(this),this._onPointerDown=dn.bind(this),this._onPointerUp=Ln.bind(this),this._onContextMenu=rn.bind(this),this._onMouseWheel=Sn.bind(this),this._onKeyDown=an.bind(this),this._onTouchStart=tn.bind(this),this._onTouchMove=In.bind(this),this._onMouseDown=Rn.bind(this),this._onMouseMove=Tn.bind(this),this._interceptControlDown=Cn.bind(this),this._interceptControlUp=On.bind(this),this.domElement!==null&&this.connect(),this.update()}connect(){this.domElement.addEventListener("pointerdown",this._onPointerDown),this.domElement.addEventListener("pointercancel",this._onPointerUp),this.domElement.addEventListener("contextmenu",this._onContextMenu),this.domElement.addEventListener("wheel",this._onMouseWheel,{passive:!1}),this.domElement.getRootNode().addEventListener("keydown",this._interceptControlDown,{passive:!0,capture:!0}),this.domElement.style.touchAction="none"}disconnect(){this.domElement.removeEventListener("pointerdown",this._onPointerDown),this.domElement.removeEventListener("pointermove",this._onPointerMove),this.domElement.removeEventListener("pointerup",this._onPointerUp),this.domElement.removeEventListener("pointercancel",this._onPointerUp),this.domElement.removeEventListener("wheel",this._onMouseWheel),this.domElement.removeEventListener("contextmenu",this._onContextMenu),this.stopListenToKeyEvents(),this.domElement.getRootNode().removeEventListener("keydown",this._interceptControlDown,{capture:!0}),this.domElement.style.touchAction="auto"}dispose(){this.disconnect()}getPolarAngle(){return this._spherical.phi}getAzimuthalAngle(){return this._spherical.theta}getDistance(){return this.object.position.distanceTo(this.target)}listenToKeyEvents(n){n.addEventListener("keydown",this._onKeyDown),this._domElementKeyEvents=n}stopListenToKeyEvents(){this._domElementKeyEvents!==null&&(this._domElementKeyEvents.removeEventListener("keydown",this._onKeyDown),this._domElementKeyEvents=null)}saveState(){this.target0.copy(this.target),this.position0.copy(this.object.position),this.zoom0=this.object.zoom}reset(){this.target.copy(this.target0),this.object.position.copy(this.position0),this.object.zoom=this.zoom0,this.object.updateProjectionMatrix(),this.dispatchEvent(x),this.update(),this.state=f.NONE}update(n=null){const e=this.object.position;_.copy(e).sub(this.target),_.applyQuaternion(this._quat),this._spherical.setFromVector3(_),this.autoRotate&&this.state===f.NONE&&this._rotateLeft(this._getAutoRotationAngle(n)),this.enableDamping?(this._spherical.theta+=this._sphericalDelta.theta*this.dampingFactor,this._spherical.phi+=this._sphericalDelta.phi*this.dampingFactor):(this._spherical.theta+=this._sphericalDelta.theta,this._spherical.phi+=this._sphericalDelta.phi);let E=this.minAzimuthAngle,i=this.maxAzimuthAngle;isFinite(E)&&isFinite(i)&&(E<-Math.PI?E+=T:E>Math.PI&&(E-=T),i<-Math.PI?i+=T:i>Math.PI&&(i-=T),E<=i?this._spherical.theta=Math.max(E,Math.min(i,this._spherical.theta)):this._spherical.theta=this._spherical.theta>(E+i)/2?Math.max(E,this._spherical.theta):Math.min(i,this._spherical.theta)),this._spherical.phi=Math.max(this.minPolarAngle,Math.min(this.maxPolarAngle,this._spherical.phi)),this._spherical.makeSafe(),this.enableDamping===!0?this.target.addScaledVector(this._panOffset,this.dampingFactor):this.target.add(this._panOffset),this.target.sub(this.cursor),this.target.clampLength(this.minTargetRadius,this.maxTargetRadius),this.target.add(this.cursor);let M=!1;if(this.zoomToCursor&&this._performCursorZoom||this.object.isOrthographicCamera)this._spherical.radius=this._clampDistance(this._spherical.radius);else{const d=this._spherical.radius;this._spherical.radius=this._clampDistance(this._spherical.radius*this._scale),M=d!=this._spherical.radius}if(_.setFromSpherical(this._spherical),_.applyQuaternion(this._quatInverse),e.copy(this.target).add(_),this.object.lookAt(this.target),this.enableDamping===!0?(this._sphericalDelta.theta*=1-this.dampingFactor,this._sphericalDelta.phi*=1-this.dampingFactor,this._panOffset.multiplyScalar(1-this.dampingFactor)):(this._sphericalDelta.set(0,0,0),this._panOffset.set(0,0,0)),this.zoomToCursor&&this._performCursorZoom){let d=null;if(this.object.isPerspectiveCamera){const R=_.length();d=this._clampDistance(R*this._scale);const I=R-d;this.object.position.addScaledVector(this._dollyDirection,I),this.object.updateMatrixWorld(),M=!!I}else if(this.object.isOrthographicCamera){const R=new a(this._mouse.x,this._mouse.y,0);R.unproject(this.object);const I=this.object.zoom;this.object.zoom=Math.max(this.minZoom,Math.min(this.maxZoom,this.object.zoom/this._scale)),this.object.updateProjectionMatrix(),M=I!==this.object.zoom;const t=new a(this._mouse.x,this._mouse.y,0);t.unproject(this.object),this.object.position.sub(t).add(R),this.object.updateMatrixWorld(),d=_.length()}else console.warn("WARNING: OrbitControls.js encountered an unknown camera type - zoom to cursor disabled."),this.zoomToCursor=!1;d!==null&&(this.screenSpacePanning?this.target.set(0,0,-1).transformDirection(this.object.matrix).multiplyScalar(d).add(this.object.position):(l.origin.copy(this.object.position),l.direction.set(0,0,-1).transformDirection(this.object.matrix),Math.abs(this.object.up.dot(l.direction))<fn?this.object.lookAt(this.target):(p.setFromNormalAndCoplanarPoint(this.object.up,this.target),l.intersectPlane(p,this.target))))}else if(this.object.isOrthographicCamera){const d=this.object.zoom;this.object.zoom=Math.max(this.minZoom,Math.min(this.maxZoom,this.object.zoom/this._scale)),d!==this.object.zoom&&(this.object.updateProjectionMatrix(),M=!0)}return this._scale=1,this._performCursorZoom=!1,M||this._lastPosition.distanceToSquared(this.object.position)>s||8*(1-this._lastQuaternion.dot(this.object.quaternion))>s||this._lastTargetPosition.distanceToSquared(this.target)>s?(this.dispatchEvent(x),this._lastPosition.copy(this.object.position),this._lastQuaternion.copy(this.object.quaternion),this._lastTargetPosition.copy(this.target),!0):!1}_getAutoRotationAngle(n){return n!==null?T/60*this.autoRotateSpeed*n:T/60/60*this.autoRotateSpeed}_getZoomScale(n){const e=Math.abs(n*.01);return Math.pow(.95,this.zoomSpeed*e)}_rotateLeft(n){this._sphericalDelta.theta-=n}_rotateUp(n){this._sphericalDelta.phi-=n}_panLeft(n,e){_.setFromMatrixColumn(e,0),_.multiplyScalar(-n),this._panOffset.add(_)}_panUp(n,e){this.screenSpacePanning===!0?_.setFromMatrixColumn(e,1):(_.setFromMatrixColumn(e,0),_.crossVectors(this.object.up,_)),_.multiplyScalar(n),this._panOffset.add(_)}_pan(n,e){const E=this.domElement;if(this.object.isPerspectiveCamera){const i=this.object.position;_.copy(i).sub(this.target);let M=_.length();M*=Math.tan(this.object.fov/2*Math.PI/180),this._panLeft(2*n*M/E.clientHeight,this.object.matrix),this._panUp(2*e*M/E.clientHeight,this.object.matrix)}else this.object.isOrthographicCamera?(this._panLeft(n*(this.object.right-this.object.left)/this.object.zoom/E.clientWidth,this.object.matrix),this._panUp(e*(this.object.top-this.object.bottom)/this.object.zoom/E.clientHeight,this.object.matrix)):(console.warn("WARNING: OrbitControls.js encountered an unknown camera type - pan disabled."),this.enablePan=!1)}_dollyOut(n){this.object.isPerspectiveCamera||this.object.isOrthographicCamera?this._scale/=n:(console.warn("WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled."),this.enableZoom=!1)}_dollyIn(n){this.object.isPerspectiveCamera||this.object.isOrthographicCamera?this._scale*=n:(console.warn("WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled."),this.enableZoom=!1)}_updateZoomParameters(n,e){if(!this.zoomToCursor)return;this._performCursorZoom=!0;const E=this.domElement.getBoundingClientRect(),i=n-E.left,M=e-E.top,d=E.width,R=E.height;this._mouse.x=i/d*2-1,this._mouse.y=-(M/R)*2+1,this._dollyDirection.set(this._mouse.x,this._mouse.y,1).unproject(this.object).sub(this.object.position).normalize()}_clampDistance(n){return Math.max(this.minDistance,Math.min(this.maxDistance,n))}_handleMouseDownRotate(n){this._rotateStart.set(n.clientX,n.clientY)}_handleMouseDownDolly(n){this._updateZoomParameters(n.clientX,n.clientX),this._dollyStart.set(n.clientX,n.clientY)}_handleMouseDownPan(n){this._panStart.set(n.clientX,n.clientY)}_handleMouseMoveRotate(n){this._rotateEnd.set(n.clientX,n.clientY),this._rotateDelta.subVectors(this._rotateEnd,this._rotateStart).multiplyScalar(this.rotateSpeed);const e=this.domElement;this._rotateLeft(T*this._rotateDelta.x/e.clientHeight),this._rotateUp(T*this._rotateDelta.y/e.clientHeight),this._rotateStart.copy(this._rotateEnd),this.update()}_handleMouseMoveDolly(n){this._dollyEnd.set(n.clientX,n.clientY),this._dollyDelta.subVectors(this._dollyEnd,this._dollyStart),this._dollyDelta.y>0?this._dollyOut(this._getZoomScale(this._dollyDelta.y)):this._dollyDelta.y<0&&this._dollyIn(this._getZoomScale(this._dollyDelta.y)),this._dollyStart.copy(this._dollyEnd),this.update()}_handleMouseMovePan(n){this._panEnd.set(n.clientX,n.clientY),this._panDelta.subVectors(this._panEnd,this._panStart).multiplyScalar(this.panSpeed),this._pan(this._panDelta.x,this._panDelta.y),this._panStart.copy(this._panEnd),this.update()}_handleMouseWheel(n){this._updateZoomParameters(n.clientX,n.clientY),n.deltaY<0?this._dollyIn(this._getZoomScale(n.deltaY)):n.deltaY>0&&this._dollyOut(this._getZoomScale(n.deltaY)),this.update()}_handleKeyDown(n){let e=!1;switch(n.code){case this.keys.UP:n.ctrlKey||n.metaKey||n.shiftKey?this._rotateUp(T*this.rotateSpeed/this.domElement.clientHeight):this._pan(0,this.keyPanSpeed),e=!0;break;case this.keys.BOTTOM:n.ctrlKey||n.metaKey||n.shiftKey?this._rotateUp(-T*this.rotateSpeed/this.domElement.clientHeight):this._pan(0,-this.keyPanSpeed),e=!0;break;case this.keys.LEFT:n.ctrlKey||n.metaKey||n.shiftKey?this._rotateLeft(T*this.rotateSpeed/this.domElement.clientHeight):this._pan(this.keyPanSpeed,0),e=!0;break;case this.keys.RIGHT:n.ctrlKey||n.metaKey||n.shiftKey?this._rotateLeft(-T*this.rotateSpeed/this.domElement.clientHeight):this._pan(-this.keyPanSpeed,0),e=!0;break}e&&(n.preventDefault(),this.update())}_handleTouchStartRotate(n){if(this._pointers.length===1)this._rotateStart.set(n.pageX,n.pageY);else{const e=this._getSecondPointerPosition(n),E=.5*(n.pageX+e.x),i=.5*(n.pageY+e.y);this._rotateStart.set(E,i)}}_handleTouchStartPan(n){if(this._pointers.length===1)this._panStart.set(n.pageX,n.pageY);else{const e=this._getSecondPointerPosition(n),E=.5*(n.pageX+e.x),i=.5*(n.pageY+e.y);this._panStart.set(E,i)}}_handleTouchStartDolly(n){const e=this._getSecondPointerPosition(n),E=n.pageX-e.x,i=n.pageY-e.y,M=Math.sqrt(E*E+i*i);this._dollyStart.set(0,M)}_handleTouchStartDollyPan(n){this.enableZoom&&this._handleTouchStartDolly(n),this.enablePan&&this._handleTouchStartPan(n)}_handleTouchStartDollyRotate(n){this.enableZoom&&this._handleTouchStartDolly(n),this.enableRotate&&this._handleTouchStartRotate(n)}_handleTouchMoveRotate(n){if(this._pointers.length==1)this._rotateEnd.set(n.pageX,n.pageY);else{const E=this._getSecondPointerPosition(n),i=.5*(n.pageX+E.x),M=.5*(n.pageY+E.y);this._rotateEnd.set(i,M)}this._rotateDelta.subVectors(this._rotateEnd,this._rotateStart).multiplyScalar(this.rotateSpeed);const e=this.domElement;this._rotateLeft(T*this._rotateDelta.x/e.clientHeight),this._rotateUp(T*this._rotateDelta.y/e.clientHeight),this._rotateStart.copy(this._rotateEnd)}_handleTouchMovePan(n){if(this._pointers.length===1)this._panEnd.set(n.pageX,n.pageY);else{const e=this._getSecondPointerPosition(n),E=.5*(n.pageX+e.x),i=.5*(n.pageY+e.y);this._panEnd.set(E,i)}this._panDelta.subVectors(this._panEnd,this._panStart).multiplyScalar(this.panSpeed),this._pan(this._panDelta.x,this._panDelta.y),this._panStart.copy(this._panEnd)}_handleTouchMoveDolly(n){const e=this._getSecondPointerPosition(n),E=n.pageX-e.x,i=n.pageY-e.y,M=Math.sqrt(E*E+i*i);this._dollyEnd.set(0,M),this._dollyDelta.set(0,Math.pow(this._dollyEnd.y/this._dollyStart.y,this.zoomSpeed)),this._dollyOut(this._dollyDelta.y),this._dollyStart.copy(this._dollyEnd);const d=(n.pageX+e.x)*.5,R=(n.pageY+e.y)*.5;this._updateZoomParameters(d,R)}_handleTouchMoveDollyPan(n){this.enableZoom&&this._handleTouchMoveDolly(n),this.enablePan&&this._handleTouchMovePan(n)}_handleTouchMoveDollyRotate(n){this.enableZoom&&this._handleTouchMoveDolly(n),this.enableRotate&&this._handleTouchMoveRotate(n)}_addPointer(n){this._pointers.push(n.pointerId)}_removePointer(n){delete this._pointerPositions[n.pointerId];for(let e=0;e<this._pointers.length;e++)if(this._pointers[e]==n.pointerId){this._pointers.splice(e,1);return}}_isTrackingPointer(n){for(let e=0;e<this._pointers.length;e++)if(this._pointers[e]==n.pointerId)return!0;return!1}_trackPointer(n){let e=this._pointerPositions[n.pointerId];e===void 0&&(e=new S,this._pointerPositions[n.pointerId]=e),e.set(n.pageX,n.pageY)}_getSecondPointerPosition(n){const e=n.pointerId===this._pointers[0]?this._pointers[1]:this._pointers[0];return this._pointerPositions[e]}_customWheelEvent(n){const e=n.deltaMode,E={clientX:n.clientX,clientY:n.clientY,deltaY:n.deltaY};switch(e){case 1:E.deltaY*=16;break;case 2:E.deltaY*=100;break}return n.ctrlKey&&!this._controlActive&&(E.deltaY*=10),E}}function dn(A){this.enabled!==!1&&(this._pointers.length===0&&(this.domElement.setPointerCapture(A.pointerId),this.domElement.addEventListener("pointermove",this._onPointerMove),this.domElement.addEventListener("pointerup",this._onPointerUp)),!this._isTrackingPointer(A)&&(this._addPointer(A),A.pointerType==="touch"?this._onTouchStart(A):this._onMouseDown(A)))}function _n(A){this.enabled!==!1&&(A.pointerType==="touch"?this._onTouchMove(A):this._onMouseMove(A))}function Ln(A){switch(this._removePointer(A),this._pointers.length){case 0:this.domElement.releasePointerCapture(A.pointerId),this.domElement.removeEventListener("pointermove",this._onPointerMove),this.domElement.removeEventListener("pointerup",this._onPointerUp),this.dispatchEvent(G),this.state=f.NONE;break;case 1:const n=this._pointers[0],e=this._pointerPositions[n];this._onTouchStart({pointerId:n,pageX:e.x,pageY:e.y});break}}function Rn(A){let n;switch(A.button){case 0:n=this.mouseButtons.LEFT;break;case 1:n=this.mouseButtons.MIDDLE;break;case 2:n=this.mouseButtons.RIGHT;break;default:n=-1}switch(n){case C.DOLLY:if(this.enableZoom===!1)return;this._handleMouseDownDolly(A),this.state=f.DOLLY;break;case C.ROTATE:if(A.ctrlKey||A.metaKey||A.shiftKey){if(this.enablePan===!1)return;this._handleMouseDownPan(A),this.state=f.PAN}else{if(this.enableRotate===!1)return;this._handleMouseDownRotate(A),this.state=f.ROTATE}break;case C.PAN:if(A.ctrlKey||A.metaKey||A.shiftKey){if(this.enableRotate===!1)return;this._handleMouseDownRotate(A),this.state=f.ROTATE}else{if(this.enablePan===!1)return;this._handleMouseDownPan(A),this.state=f.PAN}break;default:this.state=f.NONE}this.state!==f.NONE&&this.dispatchEvent(c)}function Tn(A){switch(this.state){case f.ROTATE:if(this.enableRotate===!1)return;this._handleMouseMoveRotate(A);break;case f.DOLLY:if(this.enableZoom===!1)return;this._handleMouseMoveDolly(A);break;case f.PAN:if(this.enablePan===!1)return;this._handleMouseMovePan(A);break}}function Sn(A){this.enabled===!1||this.enableZoom===!1||this.state!==f.NONE||(A.preventDefault(),this.dispatchEvent(c),this._handleMouseWheel(this._customWheelEvent(A)),this.dispatchEvent(G))}function an(A){this.enabled===!1||this.enablePan===!1||this._handleKeyDown(A)}function tn(A){switch(this._trackPointer(A),this._pointers.length){case 1:switch(this.touches.ONE){case r.ROTATE:if(this.enableRotate===!1)return;this._handleTouchStartRotate(A),this.state=f.TOUCH_ROTATE;break;case r.PAN:if(this.enablePan===!1)return;this._handleTouchStartPan(A),this.state=f.TOUCH_PAN;break;default:this.state=f.NONE}break;case 2:switch(this.touches.TWO){case r.DOLLY_PAN:if(this.enableZoom===!1&&this.enablePan===!1)return;this._handleTouchStartDollyPan(A),this.state=f.TOUCH_DOLLY_PAN;break;case r.DOLLY_ROTATE:if(this.enableZoom===!1&&this.enableRotate===!1)return;this._handleTouchStartDollyRotate(A),this.state=f.TOUCH_DOLLY_ROTATE;break;default:this.state=f.NONE}break;default:this.state=f.NONE}this.state!==f.NONE&&this.dispatchEvent(c)}function In(A){switch(this._trackPointer(A),this.state){case f.TOUCH_ROTATE:if(this.enableRotate===!1)return;this._handleTouchMoveRotate(A),this.update();break;case f.TOUCH_PAN:if(this.enablePan===!1)return;this._handleTouchMovePan(A),this.update();break;case f.TOUCH_DOLLY_PAN:if(this.enableZoom===!1&&this.enablePan===!1)return;this._handleTouchMoveDollyPan(A),this.update();break;case f.TOUCH_DOLLY_ROTATE:if(this.enableZoom===!1&&this.enableRotate===!1)return;this._handleTouchMoveDollyRotate(A),this.update();break;default:this.state=f.NONE}}function rn(A){this.enabled!==!1&&A.preventDefault()}function Cn(A){A.key==="Control"&&(this._controlActive=!0,this.domElement.getRootNode().addEventListener("keyup",this._interceptControlUp,{passive:!0,capture:!0}))}function On(A){A.key==="Control"&&(this._controlActive=!1,this.domElement.getRootNode().removeEventListener("keyup",this._interceptControlUp,{passive:!0,capture:!0}))}var on=`#ifdef GLSLVIEWER
+var on=Object.defineProperty;var Cn=(E,n,e)=>n in E?on(E,n,{enumerable:!0,configurable:!0,writable:!0,value:e}):E[n]=e;var L=(E,n,e)=>Cn(E,typeof n!="symbol"?n+"":n,e);import{i as H,r as An,w as b,b as En,p as On,d as ln,_ as sn,e as Pn,f as fn,o as Y,g as Mn,h as cn,s as Nn,c as un,j as K,k as Z,u as Q,l as vn,m as Fn}from"./index-BNOMOm4z.js";import{V as dn,g as mn,T as Un}from"./index-DvTy-yfn.js";import{y as Dn,T as xn,g as pn,j as Gn,N as hn,r as Vn}from"./index-D1-50SKk.js";import{R as Hn,P as gn,V as I,C as Xn,M as v,T as N,Q as $,S as J,a as S,b as yn,c as p,d as _n,e as Ln,f as Bn,E as bn,N as Yn,O as wn,B as zn,h as kn,F as y,U as Wn}from"./three.module-DyJIhdyR.js";import{x as Rn}from"./SmoothScrollGsap-DDpAk_S8.js";const nn={type:"change"},k={type:"start"},Tn={type:"end"},x=new Hn,en=new gn,qn=Math.cos(70*yn.DEG2RAD),R=new I,o=2*Math.PI,_={NONE:-1,ROTATE:0,DOLLY:1,PAN:2,TOUCH_ROTATE:3,TOUCH_PAN:4,TOUCH_DOLLY_PAN:5,TOUCH_DOLLY_ROTATE:6},B=1e-6;class jn extends Xn{constructor(n,e=null){super(n,e),this.state=_.NONE,this.enabled=!0,this.target=new I,this.cursor=new I,this.minDistance=0,this.maxDistance=1/0,this.minZoom=0,this.maxZoom=1/0,this.minTargetRadius=0,this.maxTargetRadius=1/0,this.minPolarAngle=0,this.maxPolarAngle=Math.PI,this.minAzimuthAngle=-1/0,this.maxAzimuthAngle=1/0,this.enableDamping=!1,this.dampingFactor=.05,this.enableZoom=!0,this.zoomSpeed=1,this.enableRotate=!0,this.rotateSpeed=1,this.enablePan=!0,this.panSpeed=1,this.screenSpacePanning=!0,this.keyPanSpeed=7,this.zoomToCursor=!1,this.autoRotate=!1,this.autoRotateSpeed=2,this.keys={LEFT:"ArrowLeft",UP:"ArrowUp",RIGHT:"ArrowRight",BOTTOM:"ArrowDown"},this.mouseButtons={LEFT:v.ROTATE,MIDDLE:v.DOLLY,RIGHT:v.PAN},this.touches={ONE:N.ROTATE,TWO:N.DOLLY_PAN},this.target0=this.target.clone(),this.position0=this.object.position.clone(),this.zoom0=this.object.zoom,this._domElementKeyEvents=null,this._lastPosition=new I,this._lastQuaternion=new $,this._lastTargetPosition=new I,this._quat=new $().setFromUnitVectors(n.up,new I(0,1,0)),this._quatInverse=this._quat.clone().invert(),this._spherical=new J,this._sphericalDelta=new J,this._scale=1,this._panOffset=new I,this._rotateStart=new S,this._rotateEnd=new S,this._rotateDelta=new S,this._panStart=new S,this._panEnd=new S,this._panDelta=new S,this._dollyStart=new S,this._dollyEnd=new S,this._dollyDelta=new S,this._dollyDirection=new I,this._mouse=new S,this._performCursorZoom=!1,this._pointers=[],this._pointerPositions={},this._controlActive=!1,this._onPointerMove=Zn.bind(this),this._onPointerDown=Kn.bind(this),this._onPointerUp=Qn.bind(this),this._onContextMenu=ie.bind(this),this._onMouseWheel=ne.bind(this),this._onKeyDown=ee.bind(this),this._onTouchStart=Ae.bind(this),this._onTouchMove=Ee.bind(this),this._onMouseDown=$n.bind(this),this._onMouseMove=Jn.bind(this),this._interceptControlDown=fe.bind(this),this._interceptControlUp=Me.bind(this),this.domElement!==null&&this.connect(),this.update()}connect(){this.domElement.addEventListener("pointerdown",this._onPointerDown),this.domElement.addEventListener("pointercancel",this._onPointerUp),this.domElement.addEventListener("contextmenu",this._onContextMenu),this.domElement.addEventListener("wheel",this._onMouseWheel,{passive:!1}),this.domElement.getRootNode().addEventListener("keydown",this._interceptControlDown,{passive:!0,capture:!0}),this.domElement.style.touchAction="none"}disconnect(){this.domElement.removeEventListener("pointerdown",this._onPointerDown),this.domElement.removeEventListener("pointermove",this._onPointerMove),this.domElement.removeEventListener("pointerup",this._onPointerUp),this.domElement.removeEventListener("pointercancel",this._onPointerUp),this.domElement.removeEventListener("wheel",this._onMouseWheel),this.domElement.removeEventListener("contextmenu",this._onContextMenu),this.stopListenToKeyEvents(),this.domElement.getRootNode().removeEventListener("keydown",this._interceptControlDown,{capture:!0}),this.domElement.style.touchAction="auto"}dispose(){this.disconnect()}getPolarAngle(){return this._spherical.phi}getAzimuthalAngle(){return this._spherical.theta}getDistance(){return this.object.position.distanceTo(this.target)}listenToKeyEvents(n){n.addEventListener("keydown",this._onKeyDown),this._domElementKeyEvents=n}stopListenToKeyEvents(){this._domElementKeyEvents!==null&&(this._domElementKeyEvents.removeEventListener("keydown",this._onKeyDown),this._domElementKeyEvents=null)}saveState(){this.target0.copy(this.target),this.position0.copy(this.object.position),this.zoom0=this.object.zoom}reset(){this.target.copy(this.target0),this.object.position.copy(this.position0),this.object.zoom=this.zoom0,this.object.updateProjectionMatrix(),this.dispatchEvent(nn),this.update(),this.state=_.NONE}update(n=null){const e=this.object.position;R.copy(e).sub(this.target),R.applyQuaternion(this._quat),this._spherical.setFromVector3(R),this.autoRotate&&this.state===_.NONE&&this._rotateLeft(this._getAutoRotationAngle(n)),this.enableDamping?(this._spherical.theta+=this._sphericalDelta.theta*this.dampingFactor,this._spherical.phi+=this._sphericalDelta.phi*this.dampingFactor):(this._spherical.theta+=this._sphericalDelta.theta,this._spherical.phi+=this._sphericalDelta.phi);let A=this.minAzimuthAngle,i=this.maxAzimuthAngle;isFinite(A)&&isFinite(i)&&(A<-Math.PI?A+=o:A>Math.PI&&(A-=o),i<-Math.PI?i+=o:i>Math.PI&&(i-=o),A<=i?this._spherical.theta=Math.max(A,Math.min(i,this._spherical.theta)):this._spherical.theta=this._spherical.theta>(A+i)/2?Math.max(A,this._spherical.theta):Math.min(i,this._spherical.theta)),this._spherical.phi=Math.max(this.minPolarAngle,Math.min(this.maxPolarAngle,this._spherical.phi)),this._spherical.makeSafe(),this.enableDamping===!0?this.target.addScaledVector(this._panOffset,this.dampingFactor):this.target.add(this._panOffset),this.target.sub(this.cursor),this.target.clampLength(this.minTargetRadius,this.maxTargetRadius),this.target.add(this.cursor);let f=!1;if(this.zoomToCursor&&this._performCursorZoom||this.object.isOrthographicCamera)this._spherical.radius=this._clampDistance(this._spherical.radius);else{const M=this._spherical.radius;this._spherical.radius=this._clampDistance(this._spherical.radius*this._scale),f=M!=this._spherical.radius}if(R.setFromSpherical(this._spherical),R.applyQuaternion(this._quatInverse),e.copy(this.target).add(R),this.object.lookAt(this.target),this.enableDamping===!0?(this._sphericalDelta.theta*=1-this.dampingFactor,this._sphericalDelta.phi*=1-this.dampingFactor,this._panOffset.multiplyScalar(1-this.dampingFactor)):(this._sphericalDelta.set(0,0,0),this._panOffset.set(0,0,0)),this.zoomToCursor&&this._performCursorZoom){let M=null;if(this.object.isPerspectiveCamera){const d=R.length();M=this._clampDistance(d*this._scale);const T=d-M;this.object.position.addScaledVector(this._dollyDirection,T),this.object.updateMatrixWorld(),f=!!T}else if(this.object.isOrthographicCamera){const d=new I(this._mouse.x,this._mouse.y,0);d.unproject(this.object);const T=this.object.zoom;this.object.zoom=Math.max(this.minZoom,Math.min(this.maxZoom,this.object.zoom/this._scale)),this.object.updateProjectionMatrix(),f=T!==this.object.zoom;const r=new I(this._mouse.x,this._mouse.y,0);r.unproject(this.object),this.object.position.sub(r).add(d),this.object.updateMatrixWorld(),M=R.length()}else console.warn("WARNING: OrbitControls.js encountered an unknown camera type - zoom to cursor disabled."),this.zoomToCursor=!1;M!==null&&(this.screenSpacePanning?this.target.set(0,0,-1).transformDirection(this.object.matrix).multiplyScalar(M).add(this.object.position):(x.origin.copy(this.object.position),x.direction.set(0,0,-1).transformDirection(this.object.matrix),Math.abs(this.object.up.dot(x.direction))<qn?this.object.lookAt(this.target):(en.setFromNormalAndCoplanarPoint(this.object.up,this.target),x.intersectPlane(en,this.target))))}else if(this.object.isOrthographicCamera){const M=this.object.zoom;this.object.zoom=Math.max(this.minZoom,Math.min(this.maxZoom,this.object.zoom/this._scale)),M!==this.object.zoom&&(this.object.updateProjectionMatrix(),f=!0)}return this._scale=1,this._performCursorZoom=!1,f||this._lastPosition.distanceToSquared(this.object.position)>B||8*(1-this._lastQuaternion.dot(this.object.quaternion))>B||this._lastTargetPosition.distanceToSquared(this.target)>B?(this.dispatchEvent(nn),this._lastPosition.copy(this.object.position),this._lastQuaternion.copy(this.object.quaternion),this._lastTargetPosition.copy(this.target),!0):!1}_getAutoRotationAngle(n){return n!==null?o/60*this.autoRotateSpeed*n:o/60/60*this.autoRotateSpeed}_getZoomScale(n){const e=Math.abs(n*.01);return Math.pow(.95,this.zoomSpeed*e)}_rotateLeft(n){this._sphericalDelta.theta-=n}_rotateUp(n){this._sphericalDelta.phi-=n}_panLeft(n,e){R.setFromMatrixColumn(e,0),R.multiplyScalar(-n),this._panOffset.add(R)}_panUp(n,e){this.screenSpacePanning===!0?R.setFromMatrixColumn(e,1):(R.setFromMatrixColumn(e,0),R.crossVectors(this.object.up,R)),R.multiplyScalar(n),this._panOffset.add(R)}_pan(n,e){const A=this.domElement;if(this.object.isPerspectiveCamera){const i=this.object.position;R.copy(i).sub(this.target);let f=R.length();f*=Math.tan(this.object.fov/2*Math.PI/180),this._panLeft(2*n*f/A.clientHeight,this.object.matrix),this._panUp(2*e*f/A.clientHeight,this.object.matrix)}else this.object.isOrthographicCamera?(this._panLeft(n*(this.object.right-this.object.left)/this.object.zoom/A.clientWidth,this.object.matrix),this._panUp(e*(this.object.top-this.object.bottom)/this.object.zoom/A.clientHeight,this.object.matrix)):(console.warn("WARNING: OrbitControls.js encountered an unknown camera type - pan disabled."),this.enablePan=!1)}_dollyOut(n){this.object.isPerspectiveCamera||this.object.isOrthographicCamera?this._scale/=n:(console.warn("WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled."),this.enableZoom=!1)}_dollyIn(n){this.object.isPerspectiveCamera||this.object.isOrthographicCamera?this._scale*=n:(console.warn("WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled."),this.enableZoom=!1)}_updateZoomParameters(n,e){if(!this.zoomToCursor)return;this._performCursorZoom=!0;const A=this.domElement.getBoundingClientRect(),i=n-A.left,f=e-A.top,M=A.width,d=A.height;this._mouse.x=i/M*2-1,this._mouse.y=-(f/d)*2+1,this._dollyDirection.set(this._mouse.x,this._mouse.y,1).unproject(this.object).sub(this.object.position).normalize()}_clampDistance(n){return Math.max(this.minDistance,Math.min(this.maxDistance,n))}_handleMouseDownRotate(n){this._rotateStart.set(n.clientX,n.clientY)}_handleMouseDownDolly(n){this._updateZoomParameters(n.clientX,n.clientX),this._dollyStart.set(n.clientX,n.clientY)}_handleMouseDownPan(n){this._panStart.set(n.clientX,n.clientY)}_handleMouseMoveRotate(n){this._rotateEnd.set(n.clientX,n.clientY),this._rotateDelta.subVectors(this._rotateEnd,this._rotateStart).multiplyScalar(this.rotateSpeed);const e=this.domElement;this._rotateLeft(o*this._rotateDelta.x/e.clientHeight),this._rotateUp(o*this._rotateDelta.y/e.clientHeight),this._rotateStart.copy(this._rotateEnd),this.update()}_handleMouseMoveDolly(n){this._dollyEnd.set(n.clientX,n.clientY),this._dollyDelta.subVectors(this._dollyEnd,this._dollyStart),this._dollyDelta.y>0?this._dollyOut(this._getZoomScale(this._dollyDelta.y)):this._dollyDelta.y<0&&this._dollyIn(this._getZoomScale(this._dollyDelta.y)),this._dollyStart.copy(this._dollyEnd),this.update()}_handleMouseMovePan(n){this._panEnd.set(n.clientX,n.clientY),this._panDelta.subVectors(this._panEnd,this._panStart).multiplyScalar(this.panSpeed),this._pan(this._panDelta.x,this._panDelta.y),this._panStart.copy(this._panEnd),this.update()}_handleMouseWheel(n){this._updateZoomParameters(n.clientX,n.clientY),n.deltaY<0?this._dollyIn(this._getZoomScale(n.deltaY)):n.deltaY>0&&this._dollyOut(this._getZoomScale(n.deltaY)),this.update()}_handleKeyDown(n){let e=!1;switch(n.code){case this.keys.UP:n.ctrlKey||n.metaKey||n.shiftKey?this._rotateUp(o*this.rotateSpeed/this.domElement.clientHeight):this._pan(0,this.keyPanSpeed),e=!0;break;case this.keys.BOTTOM:n.ctrlKey||n.metaKey||n.shiftKey?this._rotateUp(-o*this.rotateSpeed/this.domElement.clientHeight):this._pan(0,-this.keyPanSpeed),e=!0;break;case this.keys.LEFT:n.ctrlKey||n.metaKey||n.shiftKey?this._rotateLeft(o*this.rotateSpeed/this.domElement.clientHeight):this._pan(this.keyPanSpeed,0),e=!0;break;case this.keys.RIGHT:n.ctrlKey||n.metaKey||n.shiftKey?this._rotateLeft(-o*this.rotateSpeed/this.domElement.clientHeight):this._pan(-this.keyPanSpeed,0),e=!0;break}e&&(n.preventDefault(),this.update())}_handleTouchStartRotate(n){if(this._pointers.length===1)this._rotateStart.set(n.pageX,n.pageY);else{const e=this._getSecondPointerPosition(n),A=.5*(n.pageX+e.x),i=.5*(n.pageY+e.y);this._rotateStart.set(A,i)}}_handleTouchStartPan(n){if(this._pointers.length===1)this._panStart.set(n.pageX,n.pageY);else{const e=this._getSecondPointerPosition(n),A=.5*(n.pageX+e.x),i=.5*(n.pageY+e.y);this._panStart.set(A,i)}}_handleTouchStartDolly(n){const e=this._getSecondPointerPosition(n),A=n.pageX-e.x,i=n.pageY-e.y,f=Math.sqrt(A*A+i*i);this._dollyStart.set(0,f)}_handleTouchStartDollyPan(n){this.enableZoom&&this._handleTouchStartDolly(n),this.enablePan&&this._handleTouchStartPan(n)}_handleTouchStartDollyRotate(n){this.enableZoom&&this._handleTouchStartDolly(n),this.enableRotate&&this._handleTouchStartRotate(n)}_handleTouchMoveRotate(n){if(this._pointers.length==1)this._rotateEnd.set(n.pageX,n.pageY);else{const A=this._getSecondPointerPosition(n),i=.5*(n.pageX+A.x),f=.5*(n.pageY+A.y);this._rotateEnd.set(i,f)}this._rotateDelta.subVectors(this._rotateEnd,this._rotateStart).multiplyScalar(this.rotateSpeed);const e=this.domElement;this._rotateLeft(o*this._rotateDelta.x/e.clientHeight),this._rotateUp(o*this._rotateDelta.y/e.clientHeight),this._rotateStart.copy(this._rotateEnd)}_handleTouchMovePan(n){if(this._pointers.length===1)this._panEnd.set(n.pageX,n.pageY);else{const e=this._getSecondPointerPosition(n),A=.5*(n.pageX+e.x),i=.5*(n.pageY+e.y);this._panEnd.set(A,i)}this._panDelta.subVectors(this._panEnd,this._panStart).multiplyScalar(this.panSpeed),this._pan(this._panDelta.x,this._panDelta.y),this._panStart.copy(this._panEnd)}_handleTouchMoveDolly(n){const e=this._getSecondPointerPosition(n),A=n.pageX-e.x,i=n.pageY-e.y,f=Math.sqrt(A*A+i*i);this._dollyEnd.set(0,f),this._dollyDelta.set(0,Math.pow(this._dollyEnd.y/this._dollyStart.y,this.zoomSpeed)),this._dollyOut(this._dollyDelta.y),this._dollyStart.copy(this._dollyEnd);const M=(n.pageX+e.x)*.5,d=(n.pageY+e.y)*.5;this._updateZoomParameters(M,d)}_handleTouchMoveDollyPan(n){this.enableZoom&&this._handleTouchMoveDolly(n),this.enablePan&&this._handleTouchMovePan(n)}_handleTouchMoveDollyRotate(n){this.enableZoom&&this._handleTouchMoveDolly(n),this.enableRotate&&this._handleTouchMoveRotate(n)}_addPointer(n){this._pointers.push(n.pointerId)}_removePointer(n){delete this._pointerPositions[n.pointerId];for(let e=0;e<this._pointers.length;e++)if(this._pointers[e]==n.pointerId){this._pointers.splice(e,1);return}}_isTrackingPointer(n){for(let e=0;e<this._pointers.length;e++)if(this._pointers[e]==n.pointerId)return!0;return!1}_trackPointer(n){let e=this._pointerPositions[n.pointerId];e===void 0&&(e=new S,this._pointerPositions[n.pointerId]=e),e.set(n.pageX,n.pageY)}_getSecondPointerPosition(n){const e=n.pointerId===this._pointers[0]?this._pointers[1]:this._pointers[0];return this._pointerPositions[e]}_customWheelEvent(n){const e=n.deltaMode,A={clientX:n.clientX,clientY:n.clientY,deltaY:n.deltaY};switch(e){case 1:A.deltaY*=16;break;case 2:A.deltaY*=100;break}return n.ctrlKey&&!this._controlActive&&(A.deltaY*=10),A}}function Kn(E){this.enabled!==!1&&(this._pointers.length===0&&(this.domElement.setPointerCapture(E.pointerId),this.domElement.addEventListener("pointermove",this._onPointerMove),this.domElement.addEventListener("pointerup",this._onPointerUp)),!this._isTrackingPointer(E)&&(this._addPointer(E),E.pointerType==="touch"?this._onTouchStart(E):this._onMouseDown(E)))}function Zn(E){this.enabled!==!1&&(E.pointerType==="touch"?this._onTouchMove(E):this._onMouseMove(E))}function Qn(E){switch(this._removePointer(E),this._pointers.length){case 0:this.domElement.releasePointerCapture(E.pointerId),this.domElement.removeEventListener("pointermove",this._onPointerMove),this.domElement.removeEventListener("pointerup",this._onPointerUp),this.dispatchEvent(Tn),this.state=_.NONE;break;case 1:const n=this._pointers[0],e=this._pointerPositions[n];this._onTouchStart({pointerId:n,pageX:e.x,pageY:e.y});break}}function $n(E){let n;switch(E.button){case 0:n=this.mouseButtons.LEFT;break;case 1:n=this.mouseButtons.MIDDLE;break;case 2:n=this.mouseButtons.RIGHT;break;default:n=-1}switch(n){case v.DOLLY:if(this.enableZoom===!1)return;this._handleMouseDownDolly(E),this.state=_.DOLLY;break;case v.ROTATE:if(E.ctrlKey||E.metaKey||E.shiftKey){if(this.enablePan===!1)return;this._handleMouseDownPan(E),this.state=_.PAN}else{if(this.enableRotate===!1)return;this._handleMouseDownRotate(E),this.state=_.ROTATE}break;case v.PAN:if(E.ctrlKey||E.metaKey||E.shiftKey){if(this.enableRotate===!1)return;this._handleMouseDownRotate(E),this.state=_.ROTATE}else{if(this.enablePan===!1)return;this._handleMouseDownPan(E),this.state=_.PAN}break;default:this.state=_.NONE}this.state!==_.NONE&&this.dispatchEvent(k)}function Jn(E){switch(this.state){case _.ROTATE:if(this.enableRotate===!1)return;this._handleMouseMoveRotate(E);break;case _.DOLLY:if(this.enableZoom===!1)return;this._handleMouseMoveDolly(E);break;case _.PAN:if(this.enablePan===!1)return;this._handleMouseMovePan(E);break}}function ne(E){this.enabled===!1||this.enableZoom===!1||this.state!==_.NONE||(E.preventDefault(),this.dispatchEvent(k),this._handleMouseWheel(this._customWheelEvent(E)),this.dispatchEvent(Tn))}function ee(E){this.enabled===!1||this.enablePan===!1||this._handleKeyDown(E)}function Ae(E){switch(this._trackPointer(E),this._pointers.length){case 1:switch(this.touches.ONE){case N.ROTATE:if(this.enableRotate===!1)return;this._handleTouchStartRotate(E),this.state=_.TOUCH_ROTATE;break;case N.PAN:if(this.enablePan===!1)return;this._handleTouchStartPan(E),this.state=_.TOUCH_PAN;break;default:this.state=_.NONE}break;case 2:switch(this.touches.TWO){case N.DOLLY_PAN:if(this.enableZoom===!1&&this.enablePan===!1)return;this._handleTouchStartDollyPan(E),this.state=_.TOUCH_DOLLY_PAN;break;case N.DOLLY_ROTATE:if(this.enableZoom===!1&&this.enableRotate===!1)return;this._handleTouchStartDollyRotate(E),this.state=_.TOUCH_DOLLY_ROTATE;break;default:this.state=_.NONE}break;default:this.state=_.NONE}this.state!==_.NONE&&this.dispatchEvent(k)}function Ee(E){switch(this._trackPointer(E),this.state){case _.TOUCH_ROTATE:if(this.enableRotate===!1)return;this._handleTouchMoveRotate(E),this.update();break;case _.TOUCH_PAN:if(this.enablePan===!1)return;this._handleTouchMovePan(E),this.update();break;case _.TOUCH_DOLLY_PAN:if(this.enableZoom===!1&&this.enablePan===!1)return;this._handleTouchMoveDollyPan(E),this.update();break;case _.TOUCH_DOLLY_ROTATE:if(this.enableZoom===!1&&this.enableRotate===!1)return;this._handleTouchMoveDollyRotate(E),this.update();break;default:this.state=_.NONE}}function ie(E){this.enabled!==!1&&E.preventDefault()}function fe(E){E.key==="Control"&&(this._controlActive=!0,this.domElement.getRootNode().addEventListener("keyup",this._interceptControlUp,{passive:!0,capture:!0}))}function Me(E){E.key==="Control"&&(this._controlActive=!1,this.domElement.getRootNode().removeEventListener("keyup",this._interceptControlUp,{passive:!0,capture:!0}))}var de=`#ifdef GLSLVIEWER
 varying vec2 v_texcoord;
 #else
 varying vec2 vUv;
@@ -19465,4 +19465,336 @@ void main() {
     float a = res.a;
     
     gl_FragColor = vec4(color, a);
-}`;const Pn={__name:"index",setup(A){const{renderer:n,scene:e,registerRenderFn:E,camera:i,orthoCamera:M}=V("renderer");i.position.set(-.821371,3.52016,1.17339);const d=new S,R=new a;new Mn(i,n.domElement);const I=new $,t=L=>L==="#000"||!L?!1:`vec3(${I.set(L).convertLinearToSRGB().toArray().join(",")})`,N=H({COLOR_BCK:"#000",COLOR_AMB:"#000",COLOR_LIGHT:"#000",COLOR_BAC:"#000",COLOR_FRE:"#000",COLOR_DOM:"#000"}),o=new nn({vertexShader:q,fragmentShader:on,uniforms:{u_resolution:{value:d},u_camera:{value:R},u_time:{value:0}}}),P=new en(new An(1,1),o);return P.name="Mesh",P.layers.set(1),e.add(P),En(({width:L,height:O})=>{P.scale.set(L,O,1),d.set(L,O)}),E(()=>{o.uniforms.u_time.value=performance.now()/1e3,R.copy(i.position),n.clear(),n.render(e,M)}),h(N,L=>{const O={COLOR_BCK:t(L.COLOR_BCK),COLOR_AMB:t(L.COLOR_AMB),COLOR_LIG:t(L.COLOR_LIGHT),COLOR_BAC:t(L.COLOR_BAC),COLOR_FRE:t(L.COLOR_FRE),COLOR_DOM:t(L.COLOR_DOM)};Object.assign(o.defines,O),o.needsUpdate=!0},{immediate:!0}),k([{value:N}],{title:"SpaceTest",expanded:!0}),(L,O)=>X(L.$slots,"default")}},ln={class:"component"},mn={__name:"ComponentGl",setup(A){const n=Y(),e=g(),E=y(),M=[{id:"sphere-space-neon",component:Pn}].find(d=>new RegExp(`\\b${d.id}\\b`,"i").test(n.path));return E.value=M.component,B(()=>document.body.style.overflow="hidden"),(d,R)=>(m(),b("div",ln,[u(F(W),{hiddenOnStart:!0},{default:v(()=>[u(F(K),{ref:"refRenderer",antialias:!1,autoResize:!0,autoRender:!0},{default:v(()=>[(m(),w(z(E.value),{ref_key:"refComponent",ref:e},null,512))]),_:1},512)]),_:1})]))}};export{mn as default};
+}`;const _e={__name:"index",setup(E){const{renderer:n,scene:e,registerRenderFn:A,camera:i,orthoCamera:f}=H("renderer");i.position.set(-.821371,3.52016,1.17339);const M=new S,d=new I;new jn(i,n.domElement);const T=new p,r=a=>a==="#000"||!a?!1:`vec3(${T.set(a).convertLinearToSRGB().toArray().join(",")})`,s=An({COLOR_BCK:"#000",COLOR_AMB:"#000",COLOR_LIGHT:"#000",COLOR_BAC:"#000",COLOR_FRE:"#000",COLOR_DOM:"#000"}),P=new _n({vertexShader:Dn,fragmentShader:de,uniforms:{u_resolution:{value:M},u_camera:{value:d},u_time:{value:0}}}),c=new Ln(new Bn(1,1),P);return c.name="Mesh",c.layers.set(1),e.add(c),bn(({width:a,height:C})=>{c.scale.set(a,C,1),M.set(a,C)}),A(()=>{P.uniforms.u_time.value=performance.now()/1e3,d.copy(i.position),n.clear(),n.render(e,f)}),b(s,a=>{const C={COLOR_BCK:r(a.COLOR_BCK),COLOR_AMB:r(a.COLOR_AMB),COLOR_LIG:r(a.COLOR_LIGHT),COLOR_BAC:r(a.COLOR_BAC),COLOR_FRE:r(a.COLOR_FRE),COLOR_DOM:r(a.COLOR_DOM)};Object.assign(P.defines,C),P.needsUpdate=!0},{immediate:!0}),dn([{value:s}],{title:"SpaceTest",expanded:!0}),(a,C)=>En(a.$slots,"default")}};var l;(function(E){E.LOAD_START="load-start",E.LOAD_PRIORITY="load-priority",E.LOAD_COMPLETE="load-complete",E.LOAD_PROGRESS="load-progress",E.LOAD_ERROR="load-error",E.LOAD_CANCELLED="load-cancelled"})(l||(l={}));var t;(function(E){E.QUEUED="queued",E.LOADING="loading",E.ERROR="error",E.COMPLETE="complete",E.CANCELLED="cancelled"})(t||(t={}));class G extends Rn{constructor(e,A){super();L(this,"id");L(this,"url");L(this,"state",t.QUEUED);L(this,"type");L(this,"opts");L(this,"priority",0);L(this,"_accuratePercentage",null);L(this,"_parent");this.url=e,this.opts=A}get parent(){return this._parent}async start(){return this.setState(t.LOADING),this.emitProgress(),this.load(this.opts||{}).then(e=>(this.emitProgress(),this.state!==t.CANCELLED&&this.setState(t.COMPLETE),e)).catch(e=>(console.error("Failed to load : ",e),this.setState(t.ERROR,e),e))}setState(e,A){if(this.state!==e)switch(this.state=e,this.state){case t.LOADING:this.emit(l.LOAD_START,{loader:this});break;case t.COMPLETE:this.emit(l.LOAD_COMPLETE,{loader:this,data:this.data});break;case t.ERROR:this.emit(l.LOAD_ERROR,{loader:this,error:A});break;case t.CANCELLED:this.emit(l.LOAD_CANCELLED,{loader:this});break}}emitProgress(){this.emit(l.LOAD_PROGRESS,{loader:this,progress:this.progress()})}setAccuratePercentage(e){this._accuratePercentage=e}progress(){return this.state===t.COMPLETE||this.state===t.CANCELLED||this.state===t.ERROR?{count:1,total:1,percentage:1}:{count:0,total:1,percentage:this._accuratePercentage>0?this._accuratePercentage:0}}setParent(e){this._parent=e}}class m{constructor(){L(this,"register",{})}static create(n=[]){const e=new m;return n.forEach(A=>e.merge(A)),e}registerLoader(n,e){const A=n,{RESOLVE:i}=A;if(i)(!this.register[i.type]||e)&&(this.register[i.type]={Construct:A,...i});else throw new Error("No resolve metadata found on Loader.")}loaderFromURL(n){const[e,A]=n.split("#"),i=`.${e.split(".").pop()}`;let f=null;if(A){const M=this.register[A];f=M?new M.Construct(e):null}else if(i){const M=Object.values(this.register).filter(d=>d.extensions.filter(T=>i===T).length>0);f=M.length>0?new M[0].Construct(e):null}else throw new Error(`Couldn't parse url when trying to resolve: ${n}`);if(f)return f;throw new Error(`Couldn't find Loader to handle url : ${n} / ${i}`)}merge(n){Object.entries(n.register).forEach(([,e])=>{this.registerLoader(e.Construct,!0)})}}var w;(function(E){E.STATS_UPDATE="stats-update"})(w||(w={}));const V=class V extends Rn{constructor(e={}){super();L(this,"opts");L(this,"_queue",new Map);L(this,"_locked",!1);this.opts=e,e.concurrency=e.concurrency||V.DEFAULT_CONCURRENCY}add(e,A){if(this._locked)throw new Error(`LoaderScheduler is locked. Cannot add new loaders. This may be because new loaders should not be added outside the Vue lifecycle. URL: ${e.url||void 0}`);this._queue.has(e)||(this._queue.set(e,{loader:e,cb:A}),this.next())}next(){const e=this.stats(),A=Math.max(0,this.opts.concurrency-e.loading),{queued:i}=e.loaders;A>0&&e.queued>0?(i.sort((f,M)=>M.priority-f.priority),i.slice(0,A).forEach(f=>{f.start().then(()=>{this._queue.get(f).cb(f),this.next()})})):e.queued,this.emit(w.STATS_UPDATE,e)}lock(){this._locked=!0}unlock(){this._locked=!1}dispose(){this._queue.clear()}stats(){const e=[],A=[],i=[],f=[];for(const M of this._queue.values()){const d=M.loader.state;d===t.COMPLETE?e.push(M.loader):d===t.QUEUED?A.push(M.loader):d===t.LOADING?M.loader instanceof D||i.push(M.loader):d===t.ERROR&&f.push(M.loader)}return{queued:A.length,loading:i.length,complete:e.length,errored:f.length,loaders:{queued:A,loading:i,complete:e,errored:f}}}};L(V,"DEFAULT_CONCURRENCY",10);let U=V;const Le=E=>Object.getPrototypeOf(E)===Object.prototype,F=class F extends G{constructor(e,A={}){super("",A);L(this,"_loaders",[]);L(this,"_resolvable",[]);L(this,"_resolver");L(this,"_scheduler");L(this,"_returnRecord",!1);if(A.resolver&&A.resolver instanceof m&&(this._resolver=A.resolver),A.scheduler&&A.scheduler instanceof U&&(this._scheduler=A.scheduler),e instanceof Array)this._returnRecord=!1,e.forEach((i,f)=>{typeof i=="string"?this._resolvable.push([f.toString(),i]):this.addLoader(i)});else if(Le(e))this._returnRecord=!0,Object.entries(e).forEach(([i,f])=>{if(f instanceof G)f.id=i,this.addLoader(f);else if(typeof f=="string")this._resolvable.push([i,f]);else throw new Error("Unhandled LoaderRecord type.")});else throw new Error("Unknown supplied loader format.")}get resolver(){return this._resolver}get scheduler(){return this._scheduler}get loaders(){return this._loaders}addLoader(e){this._loaders.indexOf(e)===-1&&(this._loaders.push(e),e.setParent(this))}start(){return this.resolve(!0),super.start()}schedulerNearestParent(){if(this._scheduler)return this._scheduler;{let e=null,A=this.parent;for(;A&&!e;)e=A.scheduler,A=A.parent;return e}}async load(){const e=this.schedulerNearestParent();return e?new Promise(A=>{this.loaders.length===0&&A(this.data),this.loaders.forEach(i=>{const f=()=>{this.emitProgress()};i.on(l.LOAD_PROGRESS,f),e.add(i,()=>{i.removeListener(l.LOAD_PROGRESS,f);const M=this.progress();M.count===M.total&&A(this.data)})})}):this.loaders.length===0?this.data:Promise.all(this.loaders.map(A=>A.start().then(()=>{this.emitProgress()}))).then(()=>this.data)}progress(){const e=this.loaders.reduce((A,i)=>{const f=i.progress();return A.count+=f.count,A.total+=f.total,A.percentage+=f.percentage,A},{count:0,percentage:0,total:0});return this.loaders.length>0?e.percentage/=this.loaders.length:e.percentage,e}resolverChain(){const e=this._resolver?[this._resolver]:[];let A=this.parent;for(;A;)A.resolver&&e.unshift(A.resolver),A=A.parent;return e}resolve(e=!0){if(this._resolvable.length>0){const A=this.resolverChain(),i=m.create(A);this._resolvable.forEach(([f,M],d)=>{const T=i.loaderFromURL(M);T&&(T.id=f,this._loaders.push(T),this._resolvable[d]=null)}),this._resolvable=this._resolvable.filter(f=>f!==null)}e&&this._loaders.forEach(A=>{A instanceof F&&A.resolve(!0)})}loadersRecursive(){return this._loaders.flatMap(e=>e instanceof F?e.loadersRecursive():e)}async cancel(){this.loaders.forEach(e=>e.cancel())}async dispose(){this.loaders.forEach(e=>e.dispose()),this._scheduler&&this._scheduler.dispose()}get data(){return this._returnRecord?this._loaders.reduce((e,A)=>(e[A.id]=A.data,e),{}):this._loaders.map(e=>e.data)}};L(F,"DEFAULT_CONCURRENCY",10);let D=F;class Re extends D{constructor(n={}){super([],{resolver:new m,scheduler:new U({concurrency:n.concurrency||U.DEFAULT_CONCURRENCY})}),n.loaders&&n.loaders.forEach(e=>this.registerLoader(e))}registerLoader(n){this.resolver.registerLoader(n)}lock(){this.scheduler.lock()}unlock(){this.scheduler.unlock()}}class tn extends G{constructor(e,A){super(e,A);L(this,"_controller");L(this,"_data");this._controller=new AbortController}async load(e){return new Promise((A,i)=>{fetch(this.url,{...e,signal:this._controller.signal}).then(f=>{if(f.status===200)return f.json();i({status:f.status,statusText:f.statusText})}).then(f=>(this._data=f,f)).then(A)})}async cancel(){this._controller&&this._controller.abort()}async dispose(){this._data=null}get data(){return this._data}}L(tn,"RESOLVE",{type:"json",extensions:[".json"]});const Te=E=>({decode:!1,crossOrigin:"",decoding:"async",initTexture:!0,...E}),u=class u extends G{constructor(){super(...arguments);L(this,"_image",null);L(this,"_data",null)}static setGlobals(e){u.globals=e}async load(e){const A=Te(e),i=this._image=new Image,f=new xn,M=A.renderer||u.globals.renderer;if(!M&&A.initTexture)throw new Error("TextureLoader: Could not initialise texture. No renderer set.");return new Promise((d,T)=>{i.addEventListener("error",s=>{T(s.error)});const r=s=>{f.image=s,f.needsUpdate=!0,A.initTexture&&M&&M.initTexture(f),this._data=f,d(f)};i.addEventListener("load",()=>A.decode?i.decode().then(()=>r):r(i)),i.decoding=A.decoding,i.crossOrigin=A.crossOrigin,i.src=this.url})}async cancel(){this._image&&(this._image.src="")}async dispose(){this._image=null,this._data&&this._data.dispose()}get data(){return this._data}};L(u,"RESOLVE",{type:"texture",extensions:[".jpg",".jpeg",".png",".gif",".webp"]}),L(u,"globals",{});let h=u;const an=(E,n)=>{const e=H(E,()=>null,!0),A=n.add(e==null?void 0:e.current),i={chain:[...e?e.chain:[],A],current:A,root:e?e.root:A,parent:e?e.current:void 0};return On(E,i),ln(()=>{n.remove(i.current,i.parent)}),i},z="LOADER_CHAIN",te=E=>{let n;return E?n=an(z,{add:e=>{const A=new Re(E);return e&&e.addLoader(A),A},remove:(e,A)=>{A&&e.cancel()}}):n=H(z),n.root},ae=E=>an(z,{add:n=>{const e=new D(E);return n&&n.addLoader(e),e},remove:(n,e)=>{if(e){n.dispose();const A=e.loaders.indexOf(n);e.loaders.splice(A,1),n.setParent(null)}}}).current;var Se=`#ifndef FNC_COORD
+#define FNC_COORD
+vec2 coord(in vec2 p) {
+	p = p / uResolution.xy;
+	
+	if (uResolution.x > uResolution.y) {
+		p.x *= uResolution.x / uResolution.y;
+		p.x += (uResolution.y - uResolution.x) / uResolution.y / 2.0;
+	} else {
+		p.y *= uResolution.y / uResolution.x;
+		p.y += (uResolution.x - uResolution.y) / uResolution.x / 2.0;
+	}
+	
+	p -= 0.5;
+	p *= vec2(-1.0, 1.0);
+	return p;
+}
+#endif
+
+#define rx 1.0 / min(uResolution.x, uResolution.y)
+#define uv0 gl_FragCoord.xy / uResolution.xy
+#define st0 coord(gl_FragCoord.xy)
+#define mx coord(uPointer)`,re=`float median(float r, float g, float b) {
+    return max(min(r, g), min(max(r, g), b));
+}
+
+float median(vec3 rgb) {
+    return max(min(rgb.r, rgb.g), min(max(rgb.r, rgb.g), rgb.b));
+}`,Ie=`#ifndef FNC_SATURATE
+#define FNC_SATURATE
+float saturate(float x) { return clamp(x, 0.0, 1.0); }
+vec2 saturate(vec2 x) { return clamp(x, 0.0, 1.0); }
+vec3 saturate(vec3 x) { return clamp(x, 0.0, 1.0); }
+vec4 saturate(vec4 x) { return clamp(x, 0.0, 1.0); }
+#endif
+
+#ifndef FNC_MAP
+#define FNC_MAP
+
+float map( float value, float inMin, float inMax ) {
+    return saturate( (value-inMin)/(inMax-inMin));
+}
+
+vec2 map( vec2 value, vec2 inMin, vec2 inMax ) {
+    return saturate( (value-inMin)/(inMax-inMin));
+}
+
+vec3 map( vec3 value, vec3 inMin, vec3 inMax ) {
+    return saturate( (value-inMin)/(inMax-inMin));
+}
+
+vec4 map( vec4 value, vec4 inMin, vec4 inMax ) {
+    return saturate( (value-inMin)/(inMax-inMin));
+}
+
+float map(in float value, in float inMin, in float inMax, in float outMin, in float outMax) {
+  return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
+}
+
+vec2 map(in vec2 value, in vec2 inMin, in vec2 inMax, in vec2 outMin, in vec2 outMax) {
+  return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
+}
+
+vec3 map(in vec3 value, in vec3 inMin, in vec3 inMax, in vec3 outMin, in vec3 outMax) {
+  return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
+}
+
+vec4 map(in vec4 value, in vec4 inMin, in vec4 inMax, in vec4 outMin, in vec4 outMax) {
+  return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
+}
+
+float map(float value, float inMin, float inMax, float outMin, float outMax, bool clamped) {
+    if (clamped) value = min(inMax, max(inMin, value));
+    return outMin + (outMax - outMin) * (value - inMin) / (inMax - inMin);
+}
+
+#endif`,oe=`#ifndef FNC_SATURATE
+#define FNC_SATURATE
+float saturate(float x) { return clamp(x, 0.0, 1.0); }
+vec2 saturate(vec2 x) { return clamp(x, 0.0, 1.0); }
+vec3 saturate(vec3 x) { return clamp(x, 0.0, 1.0); }
+vec4 saturate(vec4 x) { return clamp(x, 0.0, 1.0); }
+#endif`,Ce=`#ifndef FNC_SDFCIRCLE
+#define FNC_SDFCIRCLE
+
+float sdCircle(in vec2 st, in vec2 center) {
+    return length(st - center) * 2.;
+}
+
+float sdCircle(in vec2 st) {
+    return sdCircle(st, vec2(.5));
+}
+
+#endif`,Oe=`float aastep(float threshold, float value) {
+    float afwidth = length(vec2(dFdx(value), dFdy(value))) * 0.70710678118654757;
+    return smoothstep(threshold - afwidth, threshold + afwidth, value);
+}
+
+float aaedge(vec2 uv, float thresh) {
+    vec2 st = abs((uv - 0.5) * 2.0);
+    float border = aastep(0.5, smoothstep(1.0, thresh, length(st.x))) *
+    aastep(0.5, smoothstep(1.0, thresh, length(st.y)));
+    return border;
+}
+
+#define BLACK           vec3(0.0, 0.0, 0.0)
+#define WHITE           vec3(1.0, 1.0, 1.0)
+#define RED             vec3(1.0, 0.0, 0.0)
+#define GREEN           vec3(0.0, 1.0, 0.0)
+#define BLUE            vec3(0.0, 0.0, 1.0)
+#define YELLOW          vec3(1.0, 1.0, 0.0)
+#define CYAN            vec3(0.0, 1.0, 1.0)
+#define MAGENTA         vec3(1.0, 0.0, 1.0)
+#define ORANGE          vec3(1.0, 0.5, 0.0)
+#define PURPLE          vec3(1.0, 0.0, 0.5)
+#define LIME            vec3(0.5, 1.0, 0.0)
+#define ACQUA           vec3(0.0, 1.0, 0.5)
+#define VIOLET          vec3(0.5, 0.0, 1.0)
+#define AZUR            vec3(0.0, 0.5, 1.0)
+
+/* Signed distance drawing methods */
+float fill(in float x) { return 1.0 - aastep(0.0, x); }
+float fill(float x, float size, float edge) {
+    return 1.0 - smoothstep(size - edge, size + edge, x);
+}
+float fill(float x, float size) {
+    return 1.0 - aastep(size, x);
+}
+
+float stroke(in float d, in float t) { return (1.0 - aastep(t, abs(d))); }
+float stroke(float x, float size, float w) {
+    float d = aastep(size, x + w * 0.5) - aastep(size, x - w * 0.5);
+    return clamp(d, 0.0, 1.0);
+}
+float stroke(float x, float size, float w, float edge) {
+    float d = smoothstep(size - edge, size + edge, x + w * 0.5) - smoothstep(size - edge, size + edge, x - w * 0.5);
+    return clamp(d, 0.0, 1.0);
+}
+
+vec3 draw(in sampler2D t, in vec2 pos, in vec2 w) { vec2 s = w / 1.0; s.x *= -1.0; return texture2D(t, pos / s + 0.5).rgb; }
+
+vec3 field(float d) {
+	vec3 c1 = mix(WHITE, YELLOW, 0.4);
+	vec3 c2 = mix(WHITE, AZUR, 0.7);
+	vec3 c3 = mix(WHITE, ORANGE, 0.9);
+	vec3 c4 = BLACK;
+	
+	float d0 = abs(stroke(mod(d + 0.1, 0.2) - 0.1, 0.004));
+	float d1 = abs(stroke(mod(d + 0.025, 0.05) - 0.025, 0.004));
+	float d2 = abs(stroke(d, 0.004));
+	float f = clamp(d * 0.85, 0.0, 1.0);
+	
+	vec3 grd = mix(c1, c2, f);
+	grd = mix(grd, c4, 1.0 - clamp(1.25 - d * 0.25, 0.0, 1.0));
+	grd = mix(grd, c3, fill(d));
+	grd = mix(grd, c4, max(d2 * 0.85, max(d0 * 0.25, d1 * 0.06125)) * clamp(1.25 - d, 0.0, 1.0));
+	
+	return grd;
+}`,le=`#ifndef FNC_SCALE
+#define FNC_SCALE
+float scale(in float st, in float s, in float center) {
+  return (st - center) * s + center;
+}
+
+float scale(in float st, in float s) {
+  #ifdef CENTER_2D
+  return scale(st, s, CENTER);
+  #else
+  return scale(st, s, 0.5);
+  #endif
+}
+
+vec2 scale(in vec2 st, in vec2 s, in vec2 center) {
+  return (st - center) * s + center;
+}
+
+vec2 scale(in vec2 st, in float value, in vec2 center) {
+  return scale(st, vec2(value), center);
+}
+
+vec2 scale(in vec2 st, in vec2 s) {
+  #ifdef CENTER_2D
+  return scale(st, s, CENTER_2D);
+  #else
+  return scale(st, s, vec2(0.5));
+  #endif
+}
+
+vec2 scale(in vec2 st, in float value) {
+  return scale(st, vec2(value));
+}
+
+vec3 scale(in vec3 st, in vec3 s, in vec3 center) {
+  return (st - center) * s + center;
+}
+
+vec3 scale(in vec3 st, in float value, in vec3 center) {
+  return scale(st, vec3(value), center);
+}
+
+vec3 scale(in vec3 st, in vec3 s) {
+  #ifdef CENTER_3D
+  return scale(st, s, CENTER_3D);
+  #else
+  return scale(st, s, vec3(0.5));
+  #endif
+}
+
+vec3 scale(in vec3 st, in float value) {
+  return scale(st, vec3(value));
+}
+#endif`;class se extends _n{constructor(n,e){n=Object.assign({vertexShader:Pe,fragmentShader:ce,type:"LensMaterial",extensions:{derivatives:!0},defines:{HAS_REVERSE:!1,HAS_MASKING:!1,HAS_BLENDING:!1,CENTER_ALIGN:!0,LOW_RES:!1,USE_DEBUG:!1},transparent:!0,depthTest:!1,depthWrite:!1},n),super(n);const A={u_time:{value:0},u_alpha:{value:0},u_progressBlur:{value:0},u_progressMask:{value:0},u_pointerSpeed:{value:new S},u_blurShapePower:{value:.5},u_blurShapeSize:{value:.1},u_color:{value:new p("#000000")},u_colorBlending:{value:new p("#ffffff")}};this.uniforms={...A,...this.uniforms},pn(this)}}const Pe=`
+    varying vec2 vUv;
+    varying vec3 vLocalPos;
+    void main() {
+        vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+        gl_Position = projectionMatrix * mvPosition;
+        vUv = uv;
+        vLocalPos = position.xyz;
+    }
+`,ce=`
+uniform vec3 u_color;
+uniform vec3 uBounds;
+uniform vec2 uResolution;
+uniform vec2 uPointer;
+uniform vec2 u_pointerSpeed;
+uniform float u_time;
+uniform float u_alpha;
+
+uniform sampler2D tMap;
+#ifdef HAS_BLENDING
+uniform vec3 u_colorBlending;
+#endif
+
+#define TEX_SIZE vec2(512.0)
+
+uniform float u_blurShapePower;
+uniform float u_blurShapeSize;
+
+uniform float u_progressBlur;
+#ifdef HAS_MASKING
+uniform float u_progressMask;
+#endif
+
+varying vec2 vUv;
+varying vec3 vLocalPos;
+
+${Se}
+${re}
+${Ie}
+${oe}
+${Ce}
+${le}
+${Oe}
+
+void main() {
+    vec2 uv = vUv;
+    vec2 uvRemapped;
+    #ifdef CENTER_ALIGN
+        uvRemapped = map(vLocalPos.xy, 
+            - uBounds.xy / 2.0, uBounds.xy / 2.0, 
+            vec2(0.0), vec2(1.0)
+        );
+    #else
+        uvRemapped = map(vLocalPos.xy, vec2(0.0), uBounds.xy, vec2(0.0), vec2(1.0));
+    #endif
+    
+    #ifdef HAS_REVERSE
+        uvRemapped = scale(uvRemapped, - 1.0);
+    #endif
+    
+    float cursorSpeed = pow(max(0.001, length(u_pointerSpeed) * 0.01), 4.0);
+    
+    vec2 st = st0 + 0.5;
+    
+    float speedMul = max(0.0, 1.0 - cursorSpeed * 100.0);
+    // ― shape blur & blend
+    float size = max(0.0, u_blurShapeSize * speedMul);
+
+    float feather = 0.3;
+    float sdfSample = median(texture2D(tMap, vUv).rgb);
+    float sdBlur = smoothstep(
+        1.0 - feather, 1.0,
+        uvRemapped.x + mix(-feather, 1.0, u_progressBlur)
+    );
+    sdBlur = saturate(sdBlur);
+    
+    // ― SDF Text
+    float sdfBlur = 1.0 - fill(
+        sdfSample,
+        mix(0.5, 0.0, sdBlur),
+        mix(0.0, 1.0, sdBlur)
+    );
+    sdfBlur = smoothstep(0.5, 1.0, sdfBlur);
+    
+    float sdfDefault;
+    #ifdef LOW_RES
+        vec2 dxy = dFdx(vUv) * TEX_SIZE;
+        float threshold = 0.45;
+        float sigDist = sdfSample;
+        float afwidth = fwidth(sigDist);
+        sdfDefault = smoothstep(threshold - afwidth, threshold + afwidth, sigDist);
+    #else
+        sdfDefault = aastep(0.5, sdfSample);
+    #endif
+    float sdf = sdBlur > 0.0 ? sdfBlur : sdfDefault;
+    
+    float a = sdf * u_alpha;
+    a *= 1.0 - max(0.0, ((smoothstep(0.4, 1.0, sdBlur)) * 0.8));
+    // a *= 1.0 - (sdBlurShape * 0.2);
+    a = saturate(a);
+    
+    #ifdef HAS_MASKING
+    float sdMask = smoothstep(
+        1.0 - feather, 1.0,
+        uvRemapped.x + mix(-feather, 1.0, u_progressMask)
+    );
+    #endif
+    
+    vec3 c = u_color;
+    #ifdef HAS_BLENDING
+        float blendReveal = saturate(sdMask + sdBlendShape);
+        c = mix(u_colorBlending, c, a);
+        gl_FragColor = vec4(c, 1.0);
+    #else
+        gl_FragColor = vec4(c, a);
+    #endif
+    
+    #ifdef USE_DEBUG
+    // gl_FragColor = vec4(vec3(sdBlurShape), 1.);
+    // gl_FragColor = vec4(vec3(sdfDefault), 1.);
+    #endif
+}`,Ne={name:"TextLens",props:{text:{type:String,default:"LE TEXT"},width:{type:Number,default:4},align:{type:String,default:"center"},letterSpacing:{type:Number,default:-.04},blending:{type:Number,default:Yn},lineHeight:{type:Number,default:1.4},shader:{type:Object,default:null},color:{type:String,default:"#ffffff"},lowQuality:{type:Boolean,default:!1}},setup(E){const n=An({aBlur:1,aAlpha:1,aBlending:1,sBase:1,sZoom:1,posInner:new I,posOffset:new I}),e={fontMap:null,fontData:null},{object:A,props:i}=Gn(null,{props:{s:Pn(()=>n.sZoom*n.sBase)}}),f=new wn,M=new zn;let d=null,T=null;const r=new I,s=new S,P=new I().copy(n.posOffset),c=new S,W=new S,a=new p(E.color);ae({fontMap:"textures/TitleLens/fellix-bold.png#texture",fontData:"textures/TitleLens/fellix-bold.json"}).once(l.LOAD_COMPLETE,({data:O})=>{const{fontMap:g,fontData:X}=O;e.fontMap=g,e.fontData=X,rn()});let C;const Sn=async()=>{const O={tMap:{value:e.fontMap},uBounds:{value:r},uResolution:{value:c},uPointer:{value:W},u_pointerSpeed:{value:new S},u_blurShapeSize:{value:.1},u_color:{value:a}};C=E.shader||new se({uniforms:O,defines:{HAS_MASKING:!0,CENTER_ALIGN:E.align==="center",LOW_RES:E.lowQuality},blending:E.blending}),T=new Ln(M,C),T.position.set(0,s.y*.5,0),f.add(T)},q=O=>{d&&(d.update({text:O}),M.setAttribute("position",new y(d.buffers.position,3)),M.setAttribute("uv",new y(d.buffers.uv,2)),M.setAttribute("id",new y(d.buffers.id,1)),M.setIndex(new Wn(d.buffers.index,1)),M.computeBoundingBox(),M.boundingBox.getSize(r),s.set(d.width,d.height))};b(n.posInner,O=>f.position.copy(O).add(P));const j=()=>{const{aBlur:O,aAlpha:g,aBlending:X}=n;C&&(C.u_progressBlur=O,C.u_progressMask=X,C.u_alpha=g)},rn=async()=>{d=new hn({font:e.fontData,text:E.text,width:E.width,align:E.align,letterSpacing:E.letterSpacing,lineHeight:E.lineHeight,maxTimes:120}),A.add(f),q(E.text),await Sn(),j()},In=()=>{mn.timeline().fromTo(n.posInner,{z:1},{z:0,duration:2,ease:"power3.out"},0).fromTo(n,{aAlpha:0},{aAlpha:1,duration:1.4},.2).fromTo(n,{aBlur:1},{aBlur:0,duration:2.5,ease:"sine.out"},0)};return kn(j),b(()=>E.text,O=>q(O)),dn([{value:n}],{title:"Text",expanded:!0}).addButton({label:"play",title:"Reveal"}).on("click",()=>In()),{object:A}}};function ue(E,n,e,A,i,f){return En(E.$slots,"default")}const ve=sn(Ne,[["render",ue]]),Fe={__name:"index",setup(E){const{renderer:n,scene:e,registerRenderFn:A,camera:i}=H("renderer"),f=te({concurrency:10,loaders:[tn,h]});return h.setGlobals({renderer:n}),fn(()=>{f.start(),f.lock()}),A(()=>{n.clear(),n.render(e,i)}),(M,d)=>(Y(),Mn(ve))}},me={class:"component"},He={__name:"ComponentGl",setup(E){const n=vn(),e=cn(),A=Nn(),f=[{id:"sphere-space-neon",component:_e},{id:"title-lens",component:Fe}].find(M=>new RegExp(`\\b${M.id}\\b`,"i").test(n.path));return A.value=f.component,fn(()=>document.body.style.overflow="hidden"),(M,d)=>(Y(),un("div",me,[K(Q(Un),{hiddenOnStart:!1},{default:Z(()=>[K(Q(Vn),{ref:"refRenderer",antialias:!1,autoResize:!0,autoRender:!0},{default:Z(()=>[(Y(),Mn(Fn(A.value),{ref_key:"refComponent",ref:e},null,512))]),_:1},512)]),_:1})]))}};export{He as default};
