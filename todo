@@ -1,6 +1,5 @@
-Global:
-    ■ fix cross dependencies components @started(24-10-17 16:28)
 Title Blur:
+    ■ text update pane
     ■ find good font
     ■ add interaction
     ■ add type animation
@@ -13,6 +12,7 @@ Others:
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ fix cross dependencies components @started(24-10-17 16:28) @done(24-10-17 17:04) @lasted(36m58s) @project(Global)
     ✓ implement first pass reveal effect with z offset @started(24-10-17 16:27) @done(24-10-17 16:43) @lasted(16m9s) @project(Title Blur)
     ✓ clean dependencies @done(24-10-17 14:36) @project(Title Blur)
     ✓ rename to textLens @done(24-10-17 14:36) @project(Title Blur)

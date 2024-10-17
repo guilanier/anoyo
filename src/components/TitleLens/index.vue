@@ -3,13 +3,11 @@
 </template>
 
 <script setup>
-    import { Mesh, MeshBasicMaterial, PlaneGeometry } from 'three';
     import { inject, onMounted } from 'vue';
 
-    import { LoaderEvent } from '@resn/gozer-loading';
     import { TextureLoader } from '@resn/gozer-loading';
     import { JSONLoader } from '@resn/gozer-loading';
-    import { useJSON, useLoader, useLoaderContext } from '@resn/gozer-vue/loading';
+    import { useLoaderContext } from '@resn/gozer-vue/loading';
 
     import Text from './Text.vue';
 

@@ -1,5 +1,5 @@
 <template>
-    <div ref="container"></div>
+    <slot />
 </template>
 
 <script>
@@ -76,8 +76,8 @@
             const cColor = new Color(props.color);
 
             useLoader({
-                fontMap: '/textures/font/fellix-bold.png#texture',
-                fontData: '/textures/font/fellix-bold.json',
+                fontMap: 'textures/TitleLens/fellix-bold.png#texture',
+                fontData: 'textures/TitleLens/fellix-bold.json',
             }).once(LoaderEvent.LOAD_COMPLETE, ({ data }) => {
                 const { fontMap, fontData } = data;
                 assets.fontMap = fontMap;
