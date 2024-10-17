@@ -32,7 +32,7 @@
             align: { type: String, default: 'center' },
             letterSpacing: { type: Number, default: -0.04 },
             blending: { type: Number, default: NormalBlending },
-            lineHeight: { type: Number, default: 1.4 },
+            lineHeight: { type: Number, default: 0.8 },
 
             shader: { type: Object, default: null },
 
@@ -41,15 +41,15 @@
         },
         setup(props) {
             const props0 = reactive({
+                posInner: new Vector3(0, 0, 0),
+                posOffset: new Vector3(0, 0, 0),
+
                 aBlur: 1,
                 aAlpha: 1,
                 aBlending: 1,
 
                 sBase: 1,
                 sZoom: 1,
-
-                posInner: new Vector3(),
-                posOffset: new Vector3(),
             });
 
             const assets = {
@@ -91,7 +91,7 @@
                     tMap: { value: assets.fontMap },
                     uBounds: { value: vBounds },
                     uResolution: { value: vResolution },
-                    uPointer: { value: vPointer },
+                    u_pointer: { value: vPointer },
                     u_pointerSpeed: { value: new Vector2() },
                     u_blurShapeSize: { value: 0.1 },
                     u_color: { value: cColor },
@@ -102,7 +102,6 @@
                         uniforms,
                         defines: {
                             HAS_MASKING: true,
-                            // HAS_REVERSE: true,
                             CENTER_ALIGN: props.align === 'center',
                             LOW_RES: props.lowQuality,
                         },
@@ -110,7 +109,7 @@
                     });
 
                 mesh = new Mesh(geo, shader);
-                mesh.position.set(0, vTextSize.y * 0.5, 0);
+
                 inner.add(mesh);
             };
 
@@ -125,11 +124,12 @@
                 geo.setAttribute('uv', new Float32BufferAttribute(textBuffers.buffers.uv, 2));
                 geo.setAttribute('id', new Float32BufferAttribute(textBuffers.buffers.id, 1));
                 geo.setIndex(new Uint16BufferAttribute(textBuffers.buffers.index, 1));
-
                 geo.computeBoundingBox();
                 geo.boundingBox.getSize(vBounds);
 
                 vTextSize.set(textBuffers.width, textBuffers.height);
+
+                mesh.position.set(0, vBounds.y * 0.75, 0);
             };
 
             watch(props0.posInner, (v) => inner.position.copy(v).add(vTextOffset));
@@ -155,8 +155,8 @@
                     maxTimes: 120,
                 });
                 object.add(inner);
-                updateText(props.text);
                 await createMesh();
+                updateText(props.text);
                 update();
             };
 

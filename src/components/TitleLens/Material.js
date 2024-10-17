@@ -28,9 +28,8 @@ class TextLensMaterial extends ShaderMaterial {
                     USE_DEBUG: false,
                 },
                 transparent: true,
-
                 depthTest: false,
-                depthWrite: false,
+                depthTest: false,
             },
             props
         );
@@ -111,7 +110,7 @@ void main() {
             vec2(0.0), vec2(1.0)
         );
     #else
-        uvRemapped = map(vLocalPos.xy, vec2(0.0), uBounds.xy, vec2(0.0), vec2(1.0));
+        uvRemapped = map(vLocalPos.xy, vec2(0.0), uBounds.xy,, vec2(0.0), vec2(1.0));
     #endif
     
     #ifdef HAS_REVERSE
