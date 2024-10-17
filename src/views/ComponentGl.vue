@@ -1,6 +1,6 @@
 <template>
     <div class="component">
-        <TweakPane :hiddenOnStart="true">
+        <TweakPane :hiddenOnStart="false">
             <Renderer ref="refRenderer" :antialias="false" :autoResize="true" :autoRender="true">
                 <Component ref="refComponent" :is="component" />
             </Renderer>
@@ -15,7 +15,7 @@
     import { Renderer, TweakPane } from '@resn/gozer-vue';
 
     import SpaceTest from '@/components/SpaceTest/index.vue';
-    import TitleBlur from '@/components/TitleBlur/index.vue';
+    import TitleLens from '@/components/TitleLens/index.vue';
 
     const route = useRoute();
 
@@ -24,7 +24,7 @@
 
     const componentTypes = [
         { id: 'sphere-space-neon', component: SpaceTest },
-        { id: 'title-blur', component: TitleBlur },
+        { id: 'title-lens', component: TitleLens },
     ];
     const componentData = componentTypes.find((c) => {
         const test = new RegExp(`\\b${c.id}\\b`, 'i').test(route.path);

@@ -3,11 +3,11 @@
 </template>
 
 <script>
+    import gsap from 'gsap';
     import {
         BufferGeometry,
         Color,
         Float32BufferAttribute,
-        Group,
         Mesh,
         NormalBlending,
         Object3D,
@@ -15,11 +15,11 @@
         Vector2,
         Vector3,
     } from 'three';
-    import { onMounted, reactive, ref, watch } from 'vue';
+    import { computed, reactive, watch } from 'vue';
 
     import { LoaderEvent } from '@resn/gozer-loading';
     import { Text } from '@resn/gozer-three';
-    import { useThreeObject } from '@resn/gozer-vue';
+    import { usePane, useRaf, useThreeObject } from '@resn/gozer-vue';
     import { useLoader } from '@resn/gozer-vue/loading';
 
     import TextLensMaterial from './Material';
@@ -27,81 +27,89 @@
     export default {
         name: 'TextLens',
         props: {
-            text: { type: String, default: 'le text' },
+            text: { type: String, default: 'LE TEXT' },
             width: { type: Number, default: 4 },
             align: { type: String, default: 'center' },
-            letterSpacing: { type: Number, default: 0 },
+            letterSpacing: { type: Number, default: -0.04 },
             blending: { type: Number, default: NormalBlending },
             lineHeight: { type: Number, default: 1.4 },
+
             shader: { type: Object, default: null },
-            posInner: { type: Object, default: new Vector3() },
-            posOffset: { type: Object, default: new Vector3() },
-            c: { type: String, default: '#141414' },
+
+            color: { type: String, default: '#ffffff' },
             lowQuality: { type: Boolean, default: false },
         },
-        propsAnimation: reactive({
-            aBlur: 0,
-            aZoom: 1,
-            aAlpha: 0,
-            aBlending: 0,
-        }),
         setup(props) {
-            const { object: container } = useThreeObject();
-            const inner = new Object3D();
-            const geo = new BufferGeometry();
-            let textBuffers = null;
-            let shader = null;
-            let mesh = null;
-            const vBounds = new Vector3();
-            const vTextSize = new Vector2();
-            const vTextOffset = new Vector3().copy(props.posOffset);
-            const vResolution = new Vector2();
-            const vPointer = new Vector2();
-            const cColor = new Color(props.c);
+            const props0 = reactive({
+                aBlur: 1,
+                aAlpha: 1,
+                aBlending: 1,
 
-            const options = {
+                sBase: 1,
+                sZoom: 1,
+
+                posInner: new Vector3(),
+                posOffset: new Vector3(),
+            });
+
+            const assets = {
                 fontMap: null,
                 fontData: null,
             };
+
+            const { object, props: propsTfObject } = useThreeObject(null, {
+                props: { s: computed(() => props0.sZoom * props0.sBase) },
+            });
+            const inner = new Object3D();
+
+            const geo = new BufferGeometry();
+
+            let textBuffers = null;
+            let mesh = null;
+
+            const vBounds = new Vector3();
+            const vTextSize = new Vector2();
+            const vTextOffset = new Vector3().copy(props0.posOffset);
+            const vResolution = new Vector2();
+            const vPointer = new Vector2();
+
+            const cColor = new Color(props.color);
 
             useLoader({
                 fontMap: '/textures/font/fellix-bold.png#texture',
                 fontData: '/textures/font/fellix-bold.json',
             }).once(LoaderEvent.LOAD_COMPLETE, ({ data }) => {
                 const { fontMap, fontData } = data;
-                options.fontMap = fontMap;
-                options.fontData = fontData;
+                assets.fontMap = fontMap;
+                assets.fontData = fontData;
                 init();
             });
 
+            let shader;
             const createMesh = async () => {
                 const uniforms = {
-                    tMap: { value: options.fontMap },
-                    // tMapBlend: { value: options.mapBlend },
+                    tMap: { value: assets.fontMap },
                     uBounds: { value: vBounds },
                     uResolution: { value: vResolution },
                     uPointer: { value: vPointer },
-                    uPointerSpeed: { value: new Vector2() },
-                    uBlurShapeSize: { value: 0.1 },
-                    uColor: { value: cColor },
+                    u_pointerSpeed: { value: new Vector2() },
+                    u_blurShapeSize: { value: 0.1 },
+                    u_color: { value: cColor },
                 };
-                const shaderMaterial =
+                shader =
                     props.shader ||
                     new TextLensMaterial({
                         uniforms,
                         defines: {
-                            HAS_REVERSE: false,
-                            HAS_BLENDING: options.mapBlend !== null,
-                            HAS_BLENDING_MAP: options.mapBlend !== null,
                             HAS_MASKING: true,
+                            // HAS_REVERSE: true,
                             CENTER_ALIGN: props.align === 'center',
                             LOW_RES: props.lowQuality,
                         },
                         blending: props.blending,
                     });
 
-                shader = shaderMaterial;
-                mesh = new Mesh(geo, shaderMaterial);
+                mesh = new Mesh(geo, shader);
                 mesh.position.set(0, vTextSize.y * 0.5, 0);
                 inner.add(mesh);
             };
@@ -120,21 +128,25 @@
 
                 geo.computeBoundingBox();
                 geo.boundingBox.getSize(vBounds);
+
                 vTextSize.set(textBuffers.width, textBuffers.height);
             };
 
+            watch(props0.posInner, (v) => inner.position.copy(v).add(vTextOffset));
+
             const update = () => {
-                /* const { aBlur, aZoom, aAlpha, aBlending } = propsAnimation;
+                const { aBlur, aAlpha, aBlending } = props0;
+
                 if (shader) {
-                    shader.uProgressBlur = aBlur; // Adjust based on props/animation state
-                    shader.uProgressMask = aBlending; // Adjust based on props/animation state
-                    shader.uAlpha = aAlpha; // Adjust based on props/animation state
-                } */
+                    shader.u_progressBlur = aBlur;
+                    shader.u_progressMask = aBlending;
+                    shader.u_alpha = aAlpha;
+                }
             };
 
             const init = async () => {
                 textBuffers = new Text({
-                    font: options.fontData,
+                    font: assets.fontData,
                     text: props.text,
                     width: props.width,
                     align: props.align,
@@ -142,21 +154,36 @@
                     lineHeight: props.lineHeight,
                     maxTimes: 120,
                 });
-                container.add(inner);
+                object.add(inner);
                 updateText(props.text);
                 await createMesh();
                 update();
             };
 
+            const playRevealAnimation = () => {
+                gsap.timeline()
+                    .fromTo(props0.posInner, { z: 1 }, { z: 0, duration: 2, ease: 'power3.out' }, 0)
+                    .fromTo(props0, { aAlpha: 0 }, { aAlpha: 1, duration: 1.4 }, 0.2)
+                    .fromTo(props0, { aBlur: 1 }, { aBlur: 0, duration: 2.5, ease: 'sine.out' }, 0);
+            };
+
+            useRaf(update);
+
             watch(
                 () => props.text,
-                (newText) => {
-                    updateText(newText);
-                }
+                (t) => updateText(t)
+            );
+
+            const pane = usePane([{ value: props0 }], {
+                title: 'Text',
+                expanded: true,
+            });
+            pane.addButton({ label: 'play', title: 'Reveal' }).on('click', () =>
+                playRevealAnimation()
             );
 
             return {
-                container,
+                object,
             };
         },
     };

@@ -1,8 +1,6 @@
 Global:
-    ■ —
+    ■ fix cross dependencies components @started(24-10-17 16:28)
 Title Blur:
-    ■ rename to textLens
-    ■ implement first pass reveal effect with z
     ■ find good font
     ■ add interaction
     ■ add type animation
@@ -10,12 +8,15 @@ SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
     ■ colors updates
-
 Others:
     ■ add oil / tulip from anoyo v0.1
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ implement first pass reveal effect with z offset @started(24-10-17 16:27) @done(24-10-17 16:43) @lasted(16m9s) @project(Title Blur)
+    ✓ clean dependencies @done(24-10-17 14:36) @project(Title Blur)
+    ✓ rename to textLens @done(24-10-17 14:36) @project(Title Blur)
+    ✓ format selection glsl @done(24-10-17 14:29) @project(Global)
     ✓ find good copy @done(24-10-16 17:43) @project(LineType)
     ✓ record video @done(24-10-09 12:08) @project(LineType)
     ✓ tweet @done(24-10-09 12:08) @project(LineType)
