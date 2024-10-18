@@ -58,7 +58,6 @@
                 props: { s: computed(() => props0.sZoom * props0.sBase) },
             });
             const inner = new Object3D();
-
             const geo = new BufferGeometry();
 
             let textBuffers = null;
@@ -74,7 +73,7 @@
 
             const cColor = new Color(props.color);
 
-            const { set: setDampBounds } = useDamp(vBounds, { lambda: 3 });
+            const { set: setDampBounds } = useDamp(vBounds, { lambda: 2 });
 
             useLoader({
                 fontMap: 'textures/TitleLens/fellix-bold.png#texture',
@@ -90,7 +89,8 @@
             const createMesh = async () => {
                 const uniforms = {
                     tMap: { value: assets.fontMap },
-                    uBounds: { value: vBounds },
+                    uBounds: { value: vBoundsTarget },
+                    // uBounds: { value: vBounds },
                     uResolution: { value: vResolution },
                     u_pointer: { value: vPointer },
                     u_pointerSpeed: { value: new Vector2() },
@@ -140,7 +140,8 @@
                 const { aBlur, aAlpha } = props0;
 
                 if (shader) {
-                    shader.u_progressBlur = aBlur;
+                    shader.u_progressBlur = 1 - (vBounds.x / vBoundsTarget.x) * 0.8;
+                    console.log('🚀 ~ update ~ shader.u_progressBlur:', shader.u_progressBlur);
                     // shader.u_progressMask = aBlending;
                     shader.u_alpha = aAlpha;
                 }
