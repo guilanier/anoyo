@@ -6,8 +6,7 @@
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
     import { inject, onMounted, reactive } from 'vue';
 
-    import { TextureLoader } from '@resn/gozer-loading';
-    import { JSONLoader } from '@resn/gozer-loading';
+    import { JSONLoader, TextureLoader } from '@resn/gozer-loading';
     import { usePane } from '@resn/gozer-vue';
     import { useLoaderContext } from '@resn/gozer-vue/loading';
 
@@ -21,10 +20,10 @@
     });
     TextureLoader.setGlobals({ renderer });
 
-    // const orbit = new OrbitControls(camera, renderer.domElement);
+    new OrbitControls(camera, renderer.domElement);
 
     const propsReactive = reactive({
-        text: 'LE TEXT',
+        text: 'TYPE...',
     });
 
     usePane([{ value: propsReactive }], {

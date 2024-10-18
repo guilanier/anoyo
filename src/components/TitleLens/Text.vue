@@ -19,7 +19,7 @@
 
     import { LoaderEvent } from '@resn/gozer-loading';
     import { Text } from '@resn/gozer-three';
-    import { usePane, useRaf, useThreeObject } from '@resn/gozer-vue';
+    import { useDamp, usePane, useRaf, useThreeObject } from '@resn/gozer-vue';
     import { useLoader } from '@resn/gozer-vue/loading';
 
     import TextLensMaterial from './Material';
@@ -28,27 +28,24 @@
         name: 'TextLens',
         props: {
             text: { type: String, default: 'LE TEXT' },
-            width: { type: Number, default: 4 },
-            align: { type: String, default: 'center' },
-            letterSpacing: { type: Number, default: -0.04 },
+            width: { type: Number, default: Infinity },
+            align: { type: String, default: 'left' },
+            letterSpacing: { type: Number, default: -0.02 },
             blending: { type: Number, default: NormalBlending },
             lineHeight: { type: Number, default: 0.8 },
-
-            shader: { type: Object, default: null },
-
             color: { type: String, default: '#ffffff' },
             lowQuality: { type: Boolean, default: false },
         },
         setup(props) {
             const props0 = reactive({
                 posInner: new Vector3(0, 0, 0),
-                posOffset: new Vector3(0, 0, 0),
+                posOffset: new Vector3(-2, 0, 0),
 
-                aBlur: 1,
+                aBlur: 0,
                 aAlpha: 1,
-                aBlending: 1,
+                // aBlending: 1,
 
-                sBase: 1,
+                sBase: 1.2,
                 sZoom: 1,
             });
 
@@ -68,12 +65,16 @@
             let mesh = null;
 
             const vBounds = new Vector3();
+            const vBoundsTarget = new Vector3();
+
             const vTextSize = new Vector2();
             const vTextOffset = new Vector3().copy(props0.posOffset);
             const vResolution = new Vector2();
             const vPointer = new Vector2();
 
             const cColor = new Color(props.color);
+
+            const { set: setDampBounds } = useDamp(vBounds, { lambda: 3 });
 
             useLoader({
                 fontMap: 'textures/TitleLens/fellix-bold.png#texture',
@@ -96,17 +97,15 @@
                     u_blurShapeSize: { value: 0.1 },
                     u_color: { value: cColor },
                 };
-                shader =
-                    props.shader ||
-                    new TextLensMaterial({
-                        uniforms,
-                        defines: {
-                            HAS_MASKING: true,
-                            CENTER_ALIGN: props.align === 'center',
-                            LOW_RES: props.lowQuality,
-                        },
-                        blending: props.blending,
-                    });
+                shader = new TextLensMaterial({
+                    uniforms,
+                    defines: {
+                        HAS_MASKING: true,
+                        CENTER_ALIGN: props.align === 'center',
+                        LOW_RES: props.lowQuality,
+                    },
+                    blending: props.blending,
+                });
 
                 mesh = new Mesh(geo, shader);
 
@@ -117,29 +116,32 @@
                 if (!textBuffers) return;
 
                 textBuffers.update({ text });
-                geo.setAttribute(
-                    'position',
-                    new Float32BufferAttribute(textBuffers.buffers.position, 3)
-                );
-                geo.setAttribute('uv', new Float32BufferAttribute(textBuffers.buffers.uv, 2));
-                geo.setAttribute('id', new Float32BufferAttribute(textBuffers.buffers.id, 1));
-                geo.setIndex(new Uint16BufferAttribute(textBuffers.buffers.index, 1));
+
+                const { position, uv, id, index } = textBuffers.buffers;
+                geo.setAttribute('position', new Float32BufferAttribute(position, 3));
+                geo.setAttribute('uv', new Float32BufferAttribute(uv, 2));
+                geo.setAttribute('id', new Float32BufferAttribute(id, 1));
+                geo.setIndex(new Uint16BufferAttribute(index, 1));
+
                 geo.computeBoundingBox();
-                geo.boundingBox.getSize(vBounds);
+                geo.boundingBox.getSize(vBoundsTarget);
 
                 vTextSize.set(textBuffers.width, textBuffers.height);
 
-                mesh.position.set(0, vBounds.y * 0.75, 0);
+                mesh.position.set(0, vBoundsTarget.y * 0.75, 0);
+                setDampBounds(vBoundsTarget);
             };
 
-            watch(props0.posInner, (v) => inner.position.copy(v).add(vTextOffset));
+            watch(props0.posInner, (v) => inner.position.copy(v).add(vTextOffset), {
+                immediate: true,
+            });
 
             const update = () => {
-                const { aBlur, aAlpha, aBlending } = props0;
+                const { aBlur, aAlpha } = props0;
 
                 if (shader) {
                     shader.u_progressBlur = aBlur;
-                    shader.u_progressMask = aBlending;
+                    // shader.u_progressMask = aBlending;
                     shader.u_alpha = aAlpha;
                 }
             };
@@ -162,7 +164,7 @@
 
             const playRevealAnimation = () => {
                 gsap.timeline()
-                    .fromTo(props0.posInner, { z: 1 }, { z: 0, duration: 2, ease: 'power3.out' }, 0)
+                    // .fromTo(props0.posInner, { z: 1 }, { z: 0, duration: 2, ease: 'power3.out' }, 0)
                     .fromTo(props0, { aAlpha: 0 }, { aAlpha: 1, duration: 1.4 }, 0.2)
                     .fromTo(props0, { aBlur: 1 }, { aBlur: 0, duration: 2.5, ease: 'sine.out' }, 0);
             };
