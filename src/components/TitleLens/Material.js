@@ -33,7 +33,7 @@ class TextLensMaterial extends ShaderMaterial {
             CENTER_ALIGN: true,
             LOW_RES: false,
 
-            USE_DEBUG: false,
+            USE_DEBUG: true,
             ...props.defines
         };
 
@@ -125,16 +125,19 @@ const fragmentShader = /* glsl */ `
         // ― shape blur & blend
         float speedCursor = pow(max(0.001, length(u_pointerSpeed) * 0.01), 4.0);
         float speedMul = max(0.0, 1.0 - speedCursor * 100.0);
-        float size = max(0.0, u_blurShapeSize * speedMul);
-
-        float sampled = median(texture2D(tMap, vUv).rgb);
-        float aBlurFeather = 0.36;
-        float aBlur = smoothstep(
-            1.0 - aBlurFeather, 1.0,
-            uvRemapped.x + mix(-aBlurFeather, 1.0, u_progressBlur)
-        );
-        aBlur = saturate(aBlur);
         
+        float size = max(0.0, u_blurShapeSize * speedMul);
+        float sampled = median(texture2D(tMap, vUv).rgb);
+        
+        float aBlurFeather = 0.02;
+        float aBlurFeatherHalf = aBlurFeather * 0.5;
+        float aBlurDistFromEdge = mix(aBlurFeatherHalf, 1.0 - aBlurFeatherHalf, uvRemapped.x);
+        float aBlur = smoothstep(
+            u_progressBlur - aBlurFeather, 
+            u_progressBlur + aBlurFeather, 
+            aBlurDistFromEdge
+        );
+    
         // ― SDF Text
         float sdfBlur;
         sdfBlur = 1.0 - fill(
@@ -177,7 +180,7 @@ const fragmentShader = /* glsl */ `
         #endif
         
         #ifdef USE_DEBUG
-        gl_FragColor = vec4(vec3(aBlur), 1.);
+        gl_FragColor = vec4(vec3(aBlur, 0., 1.), 1.);
         // gl_FragColor = vec4(c, sdf);
         // gl_FragColor = vec4(vec3(uvRemapped.x), 1.);
         #endif

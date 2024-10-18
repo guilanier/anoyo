@@ -30,7 +30,8 @@
             text: { type: String, default: 'LE TEXT' },
             width: { type: Number, default: Infinity },
             align: { type: String, default: 'left' },
-            letterSpacing: { type: Number, default: -0.02 },
+            letterSpacing: { type: Number, default: 0 },
+            // letterSpacing: { type: Number, default: -0.02 },
             blending: { type: Number, default: NormalBlending },
             lineHeight: { type: Number, default: 0.8 },
             color: { type: String, default: '#ffffff' },
@@ -89,8 +90,8 @@
             const createMesh = async () => {
                 const uniforms = {
                     tMap: { value: assets.fontMap },
-                    uBounds: { value: vBoundsTarget },
-                    // uBounds: { value: vBounds },
+                    // uBounds: { value: vBoundsTarget },
+                    uBounds: { value: vBounds },
                     uResolution: { value: vResolution },
                     u_pointer: { value: vPointer },
                     u_pointerSpeed: { value: new Vector2() },
@@ -129,7 +130,9 @@
                 vTextSize.set(textBuffers.width, textBuffers.height);
 
                 mesh.position.set(0, vBoundsTarget.y * 0.75, 0);
+
                 setDampBounds(vBoundsTarget);
+                console.log('🚀 ~ updateText ~ vBoundsTarget:', vBoundsTarget);
             };
 
             watch(props0.posInner, (v) => inner.position.copy(v).add(vTextOffset), {
@@ -137,12 +140,10 @@
             });
 
             const update = () => {
-                const { aBlur, aAlpha } = props0;
-
+                const { aAlpha } = props0;
                 if (shader) {
-                    shader.u_progressBlur = 1 - (vBounds.x / vBoundsTarget.x) * 0.8;
-                    console.log('🚀 ~ update ~ shader.u_progressBlur:', shader.u_progressBlur);
-                    // shader.u_progressMask = aBlending;
+                    shader.u_progressBlur = 0.5;
+                    // shader.u_progressBlur = 1 - (vBounds.x / vBoundsTarget.x) * 0.82;
                     shader.u_alpha = aAlpha;
                 }
             };

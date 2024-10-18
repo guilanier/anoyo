@@ -23,7 +23,7 @@
     new OrbitControls(camera, renderer.domElement);
 
     const propsReactive = reactive({
-        text: 'TYPE...',
+        text: 'O.',
     });
 
     usePane([{ value: propsReactive }], {
