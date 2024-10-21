@@ -1,8 +1,12 @@
 Title Blur:
-    ■ add progressive type animation (letter by letter)
-    ■ add interaction
-    ■ add push on click
-    ■ find good font @low
+    ■ right font size and position
+    ■ add pointer interaction
+    ■ add push and different reveal on click or max word length
+    ■ add appear and disappear animation (from center)
+    
+    ■ find  font @low
+    ■ check mobile
+    ■ video and publish
 SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
@@ -12,6 +16,8 @@ Others:
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ add type keyboard interaction with input field @done(24-10-21 18:55) @project(Title Blur)
+    ✓ add progressive type animation (letter by letter) @done(24-10-21 18:08) @project(Title Blur)
     ✓ re-export some font by imcreasing blur sdf @done(24-10-18 14:23) @project(Title Blur)
     ✓ text update pane @done(24-10-17 18:32) @project(Title Blur)
     ✓ fix cross dependencies components @started(24-10-17 16:28) @done(24-10-17 17:04) @lasted(36m58s) @project(Global)

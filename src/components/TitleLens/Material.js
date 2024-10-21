@@ -105,6 +105,7 @@ const fragmentShader = /* glsl */ `
     ${glslScale}
     ${glslDraw}
 
+
     void main() {
         vec2 uv = vUv;
         
@@ -116,7 +117,10 @@ const fragmentShader = /* glsl */ `
                 vec2(0.0), vec2(1.0)
             );
         #else
-            uvRemapped = map(vLocalPos.xy, vec2(0.0), uBounds.xy, vec2(0.0), vec2(1.0));
+            uvRemapped = map(vLocalPos.xy, 
+                vec2(0.0), 
+                uBounds.xy, vec2(0.0), vec2(1.0)
+            );
         #endif
         #ifdef HAS_REVERSE
             uvRemapped = scale(uvRemapped, - 1.0);
@@ -129,13 +133,13 @@ const fragmentShader = /* glsl */ `
         float size = max(0.0, u_blurShapeSize * speedMul);
         float sampled = median(texture2D(tMap, vUv).rgb);
         
-        float aBlurFeather = 0.02;
+        float aBlurFeather = (1.0 / uBounds.x) * 0.25;
         float aBlurFeatherHalf = aBlurFeather * 0.5;
         float aBlurDistFromEdge = mix(aBlurFeatherHalf, 1.0 - aBlurFeatherHalf, uvRemapped.x);
         float aBlur = smoothstep(
             u_progressBlur - aBlurFeather, 
             u_progressBlur + aBlurFeather, 
-            aBlurDistFromEdge
+            uvRemapped.x
         );
     
         // ― SDF Text
@@ -180,9 +184,11 @@ const fragmentShader = /* glsl */ `
         #endif
         
         #ifdef USE_DEBUG
-        gl_FragColor = vec4(vec3(aBlur, 0., 1.), 1.);
+        gl_FragColor = vec4(vec3(aBlur, sdfDefault * (1. - aBlur), 1.), 0.5);
+        // gl_FragColor = vec4(vec3(aBlur), 0.5);
         // gl_FragColor = vec4(c, sdf);
-        // gl_FragColor = vec4(vec3(uvRemapped.x), 1.);
+        // gl_FragColor = vec4(vec3(vLocalPos.x, 0., 1.), 1.);
+        // gl_FragColor = vec4(vec3(uvRemapped.x, 0., 1.), 1.);
         #endif
     }
 `;

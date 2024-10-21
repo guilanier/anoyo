@@ -27,26 +27,25 @@
     export default {
         name: 'TextLens',
         props: {
-            text: { type: String, default: 'LE TEXT' },
+            text: { type: String, default: '' },
             width: { type: Number, default: Infinity },
-            align: { type: String, default: 'left' },
-            letterSpacing: { type: Number, default: 0 },
-            // letterSpacing: { type: Number, default: -0.02 },
+            align: { type: String, default: 'center' },
             blending: { type: Number, default: NormalBlending },
-            lineHeight: { type: Number, default: 0.8 },
+            // lineHeight: { type: Number, default: 0 },
             color: { type: String, default: '#ffffff' },
             lowQuality: { type: Boolean, default: false },
         },
         setup(props) {
             const props0 = reactive({
                 posInner: new Vector3(0, 0, 0),
-                posOffset: new Vector3(-2, 0, 0),
+                posOffset: new Vector3(0, 0, 0),
 
                 aBlur: 0,
                 aAlpha: 1,
                 // aBlending: 1,
 
-                sBase: 1.2,
+                sBase: 136,
+                // sBase: 0.8,
                 sZoom: 1,
             });
 
@@ -66,6 +65,7 @@
 
             const vBounds = new Vector3();
             const vBoundsTarget = new Vector3();
+            const vBoundsTarget0 = new Vector3();
 
             const vTextSize = new Vector2();
             const vTextOffset = new Vector3().copy(props0.posOffset);
@@ -74,7 +74,7 @@
 
             const cColor = new Color(props.color);
 
-            const { set: setDampBounds } = useDamp(vBounds, { lambda: 2 });
+            const { set: setDampBounds } = useDamp(vBounds, { lambda: 1.4 });
 
             useLoader({
                 fontMap: 'textures/TitleLens/fellix-bold.png#texture',
@@ -90,8 +90,8 @@
             const createMesh = async () => {
                 const uniforms = {
                     tMap: { value: assets.fontMap },
-                    // uBounds: { value: vBoundsTarget },
-                    uBounds: { value: vBounds },
+                    uBounds: { value: vBoundsTarget },
+                    // uBounds: { value: vBounds },
                     uResolution: { value: vResolution },
                     u_pointer: { value: vPointer },
                     u_pointerSpeed: { value: new Vector2() },
@@ -109,6 +109,7 @@
                 });
 
                 mesh = new Mesh(geo, shader);
+                mesh.layers.set(1);
 
                 inner.add(mesh);
             };
@@ -127,12 +128,12 @@
                 geo.computeBoundingBox();
                 geo.boundingBox.getSize(vBoundsTarget);
 
+                setDampBounds({ x: vBoundsTarget0.x - (vBoundsTarget.x - vBoundsTarget0.x) }, true);
+                vBoundsTarget0.copy(vBoundsTarget);
+
                 vTextSize.set(textBuffers.width, textBuffers.height);
-
-                mesh.position.set(0, vBoundsTarget.y * 0.75, 0);
-
+                mesh.position.set(0, vBoundsTarget.y * (vBoundsTarget.y / textBuffers.height), 0);
                 setDampBounds(vBoundsTarget);
-                console.log('🚀 ~ updateText ~ vBoundsTarget:', vBoundsTarget);
             };
 
             watch(props0.posInner, (v) => inner.position.copy(v).add(vTextOffset), {
@@ -142,8 +143,8 @@
             const update = () => {
                 const { aAlpha } = props0;
                 if (shader) {
-                    shader.u_progressBlur = 0.5;
-                    // shader.u_progressBlur = 1 - (vBounds.x / vBoundsTarget.x) * 0.82;
+                    // shader.u_progressBlur = 1;
+                    shader.u_progressBlur = vBounds.x / vBoundsTarget.x;
                     shader.u_alpha = aAlpha;
                 }
             };
