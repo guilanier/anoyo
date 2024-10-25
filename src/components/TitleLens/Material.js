@@ -33,7 +33,7 @@ class TextLensMaterial extends ShaderMaterial {
             CENTER_ALIGN: true,
             LOW_RES: false,
 
-            USE_DEBUG: true,
+            USE_DEBUG: false,
             ...props.defines
         };
 
@@ -44,10 +44,9 @@ class TextLensMaterial extends ShaderMaterial {
 
             u_progressBlur: { value: 0 },
             u_progressMask: { value: 0 },
-            u_pointerSpeed: { value: new Vector2() },
 
-            u_blurShapePower: { value: 0.5 },
-            u_blurShapeSize: { value: 0.1 },
+            u_pointer: { value: new Vector2() },
+            u_pointerBlur: { value: 0.25 },
 
             u_color: { value: new Color('#000000') },
             u_colorBlending: { value: new Color('#ffffff') },
@@ -72,12 +71,15 @@ const vertexShader = /* glsl */ `
 const fragmentShader = /* glsl */ `
     uniform vec3 uBounds;
     uniform vec2 uResolution;
-    uniform vec2 uPointer;
-
+    
     uniform vec3 u_color;
-    uniform vec2 u_pointerSpeed;
     uniform float u_time;
     uniform float u_alpha;
+    
+    uniform vec2 u_pointer;
+    uniform float u_pointerBlur;
+
+    #define uPointer u_pointer
 
     uniform sampler2D tMap;
     #ifdef HAS_BLENDING
@@ -85,9 +87,6 @@ const fragmentShader = /* glsl */ `
     #endif
 
     #define TEX_SIZE vec2(512.0)
-
-    uniform float u_blurShapePower;
-    uniform float u_blurShapeSize;
 
     uniform float u_progressBlur;
     #ifdef HAS_MASKING
@@ -105,9 +104,11 @@ const fragmentShader = /* glsl */ `
     ${glslScale}
     ${glslDraw}
 
-
     void main() {
         vec2 uv = vUv;
+
+        vec2 st = st0 + 0.5;
+        vec2 stPointer = st - mx;
         
         vec2 uvRemapped;
         #ifdef CENTER_ALIGN
@@ -125,15 +126,19 @@ const fragmentShader = /* glsl */ `
         #ifdef HAS_REVERSE
             uvRemapped = scale(uvRemapped, - 1.0);
         #endif
+
+        // ― pointer shape
+        float sdPointerSize = u_pointerBlur != 0.0 ? u_pointerBlur : 0.25;;
+        float sdPointer = fill(
+            sdCircle(stPointer), 
+            sdPointerSize * 0.7, 
+            sdPointerSize * 1.5
+        ); 
                 
         // ― shape blur & blend
-        float speedCursor = pow(max(0.001, length(u_pointerSpeed) * 0.01), 4.0);
-        float speedMul = max(0.0, 1.0 - speedCursor * 100.0);
-        
-        float size = max(0.0, u_blurShapeSize * speedMul);
         float sampled = median(texture2D(tMap, vUv).rgb);
-        
-        float aBlurFeather = (1.0 / uBounds.x) * 0.25;
+
+        float aBlurFeather = (1.0 / uBounds.x) * 0.3;
         float aBlurFeatherHalf = aBlurFeather * 0.5;
         float aBlurDistFromEdge = mix(aBlurFeatherHalf, 1.0 - aBlurFeatherHalf, uvRemapped.x);
         float aBlur = smoothstep(
@@ -141,15 +146,17 @@ const fragmentShader = /* glsl */ `
             u_progressBlur + aBlurFeather, 
             uvRemapped.x
         );
+        aBlur += sdPointer * 0.5;
+        aBlur = saturate(aBlur);
     
         // ― SDF Text
         float sdfBlur;
         sdfBlur = 1.0 - fill(
             sampled, 
-            mix(0.3, 0.5, 1. - aBlur), 
-            mix(0.8, 0., 1. - aBlur)
+            mix(0.2, 0.5, 1. - aBlur), 
+            mix(0.5, 0., 1. - aBlur)
         );
-        sdfBlur = smoothstep(0., 1.0, sdfBlur);
+        // sdfBlur = smoothstep(0., 1.0, sdfBlur);
         
         float sdfDefault;
         #ifdef LOW_RES
@@ -164,7 +171,7 @@ const fragmentShader = /* glsl */ `
         float sdf = aBlur > 0.0 ? sdfBlur : sdfDefault;
         
         float a = sdf * u_alpha;
-        a *= 1.0 - smoothstep(0.2, 0.8, aBlur);
+        a *= 1.0 - smoothstep(0.1, .9, aBlur);
         a = saturate(a);
         
         #ifdef HAS_MASKING
@@ -184,8 +191,8 @@ const fragmentShader = /* glsl */ `
         #endif
         
         #ifdef USE_DEBUG
-        gl_FragColor = vec4(vec3(aBlur, sdfDefault * (1. - aBlur), 1.), 0.5);
-        // gl_FragColor = vec4(vec3(aBlur), 0.5);
+        // gl_FragColor = vec4(vec3(aBlur * 0.4, sdfDefault * (1. - aBlur), 1.), 0.5);
+        // gl_FragColor = vec4(vec3(sdPointer), 1.);
         // gl_FragColor = vec4(c, sdf);
         // gl_FragColor = vec4(vec3(vLocalPos.x, 0., 1.), 1.);
         // gl_FragColor = vec4(vec3(uvRemapped.x, 0., 1.), 1.);

@@ -1,10 +1,8 @@
 Title Blur:
-    ■ right font size and position
-    ■ add pointer interaction
-    ■ add push and different reveal on click or max word length
-    ■ add appear and disappear animation (from center)
+    ■ add push and different texts reveal on click OR max word length OR press enter
     
-    ■ find  font @low
+    ■ add appear and disappear animation (from center)
+    ■ find font @low
     ■ check mobile
     ■ video and publish
 SpaceTest:
@@ -16,6 +14,8 @@ Others:
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ add pointer interaction @done(24-10-25 16:23) @project(Title Blur)
+    ✓ right font size and position @done(24-10-25 15:14) @project(Title Blur)
     ✓ add type keyboard interaction with input field @done(24-10-21 18:55) @project(Title Blur)
     ✓ add progressive type animation (letter by letter) @done(24-10-21 18:08) @project(Title Blur)
     ✓ re-export some font by imcreasing blur sdf @done(24-10-18 14:23) @project(Title Blur)

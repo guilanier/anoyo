@@ -1,11 +1,15 @@
 <template>
-    <input ref="refInput" v-model="propsReactive.text" placeholder="TYPE." />
-    <Text :text="propsReactive.text.toUpperCase()" />
+    <div class="textLens" @click="onClick">
+        <input ref="refInput" v-model="refText" placeholder="TYPE." />
+        <!-- <Text :text="refText.toUpperCase()" v-for="refWords" /> -->
+        <Text :text="refText.toUpperCase()" v-for="item in refWords" :key="item.id" v-bind="item">
+        </Text>
+    </div>
 </template>
 
 <script setup>
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-    import { inject, onMounted, reactive, ref } from 'vue';
+    import { inject, onMounted, ref, shallowRef } from 'vue';
 
     import { JSONLoader, TextureLoader } from '@resn/gozer-loading';
     import { usePane } from '@resn/gozer-vue';
@@ -23,12 +27,16 @@
 
     // new OrbitControls(camera, renderer.domElement);
     const refInput = ref(null);
+    const refWords = ref([{}]);
+    const refText = shallowRef('');
 
-    const propsReactive = reactive({
-        text: '',
-    });
+    const onClick = () => {
+        refWords.value.push({
+            text: refText.value,
+        });
+    };
 
-    usePane([{ value: propsReactive }], {
+    usePane([], {
         title: 'Title Lens',
         expanded: true,
     });
@@ -47,7 +55,17 @@
         renderer.render(scene, orthoCamera);
     });
 </script>
-<style scoped>
+<style lang="scss">
+    @import '@resn/gozer-styles';
+
+    html {
+        @include baseFontSizeVW($baseWidth: 1920);
+    }
+
+    .textLens {
+        @include fill(fixed);
+    }
+
     input {
         position: absolute;
         width: 100%;
@@ -66,10 +84,10 @@
         font-family: 'Fellix', sans-serif;
         font-style: bold;
         font-weight: 400;
-        font-size: 10rem;
+        font-size: 16rem;
 
         caret-color: #fff;
-        /* color: transparent; */
-        color: rgba(255, 255, 255, 0.5);
+        color: transparent;
+        // color: rgba(255, 255, 255, 0.5);
     }
 </style>

@@ -15,11 +15,18 @@
         Vector2,
         Vector3,
     } from 'three';
-    import { computed, reactive, watch } from 'vue';
+    import { computed, inject, reactive, watch } from 'vue';
 
     import { LoaderEvent } from '@resn/gozer-loading';
     import { Text } from '@resn/gozer-three';
-    import { useDamp, usePane, useRaf, useThreeObject } from '@resn/gozer-vue';
+    import {
+        useDamp,
+        usePane,
+        useRaf,
+        useThreeObject,
+        useViewportResize,
+        useWindowPointer,
+    } from '@resn/gozer-vue';
     import { useLoader } from '@resn/gozer-vue/loading';
 
     import TextLensMaterial from './Material';
@@ -31,7 +38,6 @@
             width: { type: Number, default: Infinity },
             align: { type: String, default: 'center' },
             blending: { type: Number, default: NormalBlending },
-            // lineHeight: { type: Number, default: 0 },
             color: { type: String, default: '#ffffff' },
             lowQuality: { type: Boolean, default: false },
         },
@@ -42,11 +48,11 @@
 
                 aBlur: 0,
                 aAlpha: 1,
-                // aBlending: 1,
 
-                sBase: 136,
-                // sBase: 0.8,
+                sBase: 13.4,
                 sZoom: 1,
+
+                pSizeBlur: 0.25,
             });
 
             const assets = {
@@ -54,8 +60,19 @@
                 fontData: null,
             };
 
+            const { renderer } = inject('renderer');
+
+            const viewport = useViewportResize(
+                ({ width, height }) => {
+                    const dpr = renderer.getPixelRatio();
+                    vResolution.set(width * dpr, height * dpr);
+                },
+                { immediate: true }
+            );
+            const sObject = computed(() => props0.sBase * ((16 / 1920) * viewport.width));
+
             const { object, props: propsTfObject } = useThreeObject(null, {
-                props: { s: computed(() => props0.sZoom * props0.sBase) },
+                props: { s: sObject },
             });
             const inner = new Object3D();
             const geo = new BufferGeometry();
@@ -70,11 +87,13 @@
             const vTextSize = new Vector2();
             const vTextOffset = new Vector3().copy(props0.posOffset);
             const vResolution = new Vector2();
-            const vPointer = new Vector2();
+            const vPointerDamped = new Vector2();
 
             const cColor = new Color(props.color);
 
             const { set: setDampBounds } = useDamp(vBounds, { lambda: 1.4 });
+            const { set: setProps0Damped } = useDamp(props0, { lambda: 6 }, ['pSizeBlur']);
+            const { set: setPointerDamped } = useDamp(vPointerDamped, { lambda: 8 }, ['x', 'y']);
 
             useLoader({
                 fontMap: 'textures/TitleLens/fellix-bold.png#texture',
@@ -91,11 +110,8 @@
                 const uniforms = {
                     tMap: { value: assets.fontMap },
                     uBounds: { value: vBoundsTarget },
-                    // uBounds: { value: vBounds },
                     uResolution: { value: vResolution },
-                    u_pointer: { value: vPointer },
-                    u_pointerSpeed: { value: new Vector2() },
-                    u_blurShapeSize: { value: 0.1 },
+                    u_pointer: { value: vPointerDamped },
                     u_color: { value: cColor },
                 };
                 shader = new TextLensMaterial({
@@ -104,6 +120,7 @@
                         HAS_MASKING: true,
                         CENTER_ALIGN: props.align === 'center',
                         LOW_RES: props.lowQuality,
+                        USE_DEBUG: true,
                     },
                     blending: props.blending,
                 });
@@ -140,12 +157,22 @@
                 immediate: true,
             });
 
+            const { isDown: pointerDown } = useWindowPointer(({ x, y }) => {
+                const dpr = renderer.getPixelRatio();
+                setPointerDamped({ x: x * dpr, y: vResolution.y - y * dpr });
+            });
+
+            watch(pointerDown, (bool) => {
+                setProps0Damped({ pSizeBlur: bool ? 0.5 : 0.25 });
+            });
+
             const update = () => {
                 const { aAlpha } = props0;
+                // const uniforms = shader?.uniforms;
                 if (shader) {
-                    // shader.u_progressBlur = 1;
                     shader.u_progressBlur = vBounds.x / vBoundsTarget.x;
                     shader.u_alpha = aAlpha;
+                    shader.u_pointerBlur = props0.pSizeBlur;
                 }
             };
 
