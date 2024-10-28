@@ -194,7 +194,7 @@ const fragmentShader = /* glsl */ `
         // gl_FragColor = vec4(vec3(aBlur * 0.4, sdfDefault * (1. - aBlur), 1.), 0.5);
         // gl_FragColor = vec4(vec3(sdPointer), 1.);
         // gl_FragColor = vec4(c, sdf);
-        gl_FragColor = vec4(c, sdfDefault);
+        gl_FragColor = vec4(c, sdfDefault * u_alpha);
         // gl_FragColor = vec4(vec3(vLocalPos.x, 0., 1.), 1.);
         // gl_FragColor = vec4(vec3(uvRemapped.x, 0., 1.), 1.);
         #endif

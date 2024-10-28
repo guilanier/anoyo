@@ -15,7 +15,7 @@
         Vector2,
         Vector3,
     } from 'three';
-    import { computed, inject, reactive, watch } from 'vue';
+    import { computed, defineEmits, inject, reactive, watch } from 'vue';
 
     import { Text } from '@resn/gozer-three';
     import {
@@ -26,7 +26,6 @@
         useViewportResize,
         useWindowPointer,
     } from '@resn/gozer-vue';
-    import { useLoader } from '@resn/gozer-vue/loading';
 
     import { useAssets } from './AssetsProvider';
     import TextLensMaterial from './Material';
@@ -34,7 +33,7 @@
     export default {
         name: 'TextLens',
         props: {
-            index: { type: Number, default: 0 },
+            id: { type: Number, default: 0 },
 
             text: { type: String, default: '' },
             width: { type: Number, default: Infinity },
@@ -44,8 +43,10 @@
             lowQuality: { type: Boolean, default: false },
 
             focused: { type: Boolean, default: true },
+            placeholder: { type: Boolean, default: false },
         },
-        setup(props) {
+        emits: ['text:focus', 'text:unfocus'],
+        setup(props, { emit }) {
             const props0 = reactive({
                 posInner: new Vector3(0, 0, 0),
                 posOffset: new Vector3(0, 0, 0),
@@ -56,7 +57,7 @@
                 sBase: 13.4,
                 sZoom: 1,
 
-                pSizeBlur: 0.25,
+                pSizePointerBlur: 0.25,
             });
 
             const { renderer } = inject('renderer');
@@ -76,10 +77,12 @@
                 init();
             });
 
-            const sObject = computed(() => props0.sBase * ((16 / 1920) * viewport.width));
+            const scObject = computed(
+                () => props0.sBase * props0.sZoom * ((16 / 1920) * viewport.width)
+            );
 
             const { object } = useThreeObject(null, {
-                props: { s: sObject },
+                props: { s: scObject },
             });
             const inner = new Object3D();
             const geo = new BufferGeometry();
@@ -168,8 +171,8 @@
                 // const uniforms = shader?.uniforms;
                 if (shader) {
                     shader.u_progressBlur = vBounds.x / vBoundsTarget.x;
+                    shader.u_pointerBlur = props0.pSizePointerBlur;
                     shader.u_alpha = aAlpha;
-                    shader.u_pointerBlur = props0.pSizeBlur;
                 }
             };
 
@@ -188,13 +191,31 @@
                 createMesh();
                 refreshText(props.text);
                 update();
+                console.log('🚀 ~ init ~ props.text:', props.text);
             };
 
-            const playRevealAnimation = () => {
-                gsap.timeline()
-                    // .fromTo(props0.posInner, { z: 1 }, { z: 0, duration: 2, ease: 'power3.out' }, 0)
-                    .fromTo(props0, { aAlpha: 0 }, { aAlpha: 1, duration: 1.4 }, 0.2)
-                    .fromTo(props0, { aBlur: 1 }, { aBlur: 0, duration: 2.5, ease: 'sine.out' }, 0);
+            let tlFocus;
+            const focus = () => {
+                tlFocus?.kill();
+                tlFocus = gsap
+                    .timeline()
+                    .fromTo(props0, { aAlpha: 0 }, { aAlpha: 1, duration: 1.4 }, 0.1)
+                    .fromTo(
+                        props0,
+                        { sZoom: 1.2 },
+                        { sZoom: 1, duration: 2, ease: 'power1.out' },
+                        0
+                    );
+                // .fromTo(props0, { aBlur: 1 }, { aBlur: 0, duration: 2.5, ease: 'sine.out' }, 0);
+            };
+            const unfocus = () => {
+                tlFocus?.kill();
+
+                tlFocus = gsap
+                    .timeline({ onComplete: () => emit('text:unfocus', { id: props.id }) })
+                    .to(props0, { aAlpha: 0, duration: 1.4 }, 0.1)
+                    .to(props0, { sZoom: 0.8, duration: 1.6, ease: 'power3.out' }, 0);
+                // .to(props0, { aBlur: 1, duration: 2.5, ease: 'sine.out' }, 0.2);
             };
 
             useRaf(update);
@@ -206,19 +227,16 @@
 
             watch(
                 () => props.focused,
-                (v) => {
-                    cColor.set(v ? '#ffffff' : '#ff0000');
-                },
+                (v) => (v ? focus() : unfocus()),
                 { immediate: true }
             );
 
-            const pane = usePane([{ value: props0 }], {
+            const pane = usePane([], {
                 title: 'Text',
-                expanded: false,
+                expanded: true,
             });
-            pane.addButton({ label: 'play', title: 'Reveal' }).on('click', () =>
-                playRevealAnimation()
-            );
+            pane.addButton({ title: 'focus' }).on('click', () => focus());
+            pane.addButton({ title: 'unfocus' }).on('click', () => unfocus());
 
             return {
                 object,

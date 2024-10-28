@@ -5,15 +5,20 @@
             class="textLens__input"
             @keyup="onInputKeyUp"
             v-model="refText"
-            placeholder="TYPE."
+            placeholder=""
         />
 
         <AssetsProvider>
             <Text
                 v-for="(item, i) in refTexts"
                 :key="item.id"
-                :focused="item.focused"
-                :text="item.focused ? refText.toUpperCase() : item.text.toUpperCase()"
+                v-bind="item"
+                :text="
+                    item.focused && !item.placeholder
+                        ? refText.toUpperCase()
+                        : item.text.toUpperCase()
+                "
+                @text:unfocus="onTextUnfocus"
             />
         </AssetsProvider>
     </div>
@@ -21,7 +26,7 @@
 
 <script setup>
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-    import { inject, onMounted, reactive, ref, shallowRef } from 'vue';
+    import { inject, onMounted, reactive, ref, shallowRef, watch } from 'vue';
 
     import { JSONLoader, TextureLoader } from '@resn/gozer-loading';
     import { usePane } from '@resn/gozer-vue';
@@ -29,7 +34,6 @@
 
     import { AssetsProvider } from './AssetsProvider';
     import Text from './Text.vue';
-    import TextTest from './TextTest.vue';
 
     const { renderer, scene, registerRenderFn, orthoCamera } = inject('renderer');
 
@@ -39,30 +43,38 @@
     });
     TextureLoader.setGlobals({ renderer });
 
-    // new OrbitControls(camera, renderer.domElement);
     const refInput = ref(null);
-    const refTexts = ref([{ focused: true }]);
+    const refTexts = ref([{ text: 'TYPE.', focused: false }]);
     const refText = shallowRef('');
-    const assets = reactive({
-        fontMap: null,
-        fontData: null,
-    });
 
-    const nextWord = () => {
+    const next = () => {
         refTexts.value.push({
-            index: refTexts.value.length,
+            id: Date.now(),
             text: refText.value,
             focused: false,
+            placeholder: false,
         });
-        console.log('🚀 ~ nextWord ~ refTexts:', refTexts);
+        refText.value = '';
     };
 
+    const characterLimit = 16;
+
     const onInputKeyUp = (e) => {
-        if (e.key === 'Enter') {
-            nextWord();
-            refText.value = '';
+        if (e.key === 'Enter') next();
+    };
+
+    const onTextUnfocus = ({ id }) => {
+        const index = refTexts.value.findIndex((item) => item.id === id);
+        if (index !== -1) {
+            refTexts.value.splice(index, 1);
         }
     };
+    watch(refText, (newValue) => {
+        if (newValue.length >= characterLimit) next();
+        if (newValue.length > 0 && refTexts.value[0].placeholder == true) {
+            refTexts.value[0].placeholder = false;
+        }
+    });
 
     usePane([], {
         title: 'Title Lens',
@@ -73,9 +85,10 @@
         context.start();
         context.lock();
 
-        window.addEventListener('keydown', (e) => {
-            refInput.value.focus();
-        });
+        refTexts.value[0].focused = true;
+        refTexts.value[0].placeholder = true;
+
+        refInput.value.focus();
     });
 
     registerRenderFn(() => {
