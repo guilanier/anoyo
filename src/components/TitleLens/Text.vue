@@ -17,7 +17,6 @@
     } from 'three';
     import { computed, inject, reactive, watch } from 'vue';
 
-    import { LoaderEvent } from '@resn/gozer-loading';
     import { Text } from '@resn/gozer-three';
     import {
         useDamp,
@@ -29,17 +28,22 @@
     } from '@resn/gozer-vue';
     import { useLoader } from '@resn/gozer-vue/loading';
 
+    import { useAssets } from './AssetsProvider';
     import TextLensMaterial from './Material';
 
     export default {
         name: 'TextLens',
         props: {
+            index: { type: Number, default: 0 },
+
             text: { type: String, default: '' },
             width: { type: Number, default: Infinity },
             align: { type: String, default: 'center' },
             blending: { type: Number, default: NormalBlending },
             color: { type: String, default: '#ffffff' },
             lowQuality: { type: Boolean, default: false },
+
+            focused: { type: Boolean, default: true },
         },
         setup(props) {
             const props0 = reactive({
@@ -55,11 +59,6 @@
                 pSizeBlur: 0.25,
             });
 
-            const assets = {
-                fontMap: null,
-                fontData: null,
-            };
-
             const { renderer } = inject('renderer');
 
             const viewport = useViewportResize(
@@ -69,9 +68,17 @@
                 },
                 { immediate: true }
             );
+
+            const assets = reactive({});
+            useAssets(({ data }) => {
+                assets.fontMap = data.fontMap;
+                assets.fontData = data.fontData;
+                init();
+            });
+
             const sObject = computed(() => props0.sBase * ((16 / 1920) * viewport.width));
 
-            const { object, props: propsTfObject } = useThreeObject(null, {
+            const { object } = useThreeObject(null, {
                 props: { s: sObject },
             });
             const inner = new Object3D();
@@ -94,16 +101,6 @@
             const { set: setDampBounds } = useDamp(vBounds, { lambda: 1.4 });
             const { set: setProps0Damped } = useDamp(props0, { lambda: 6 }, ['pSizeBlur']);
             const { set: setPointerDamped } = useDamp(vPointerDamped, { lambda: 8 }, ['x', 'y']);
-
-            useLoader({
-                fontMap: 'textures/TitleLens/fellix-bold.png#texture',
-                fontData: 'textures/TitleLens/fellix-bold.json',
-            }).once(LoaderEvent.LOAD_COMPLETE, ({ data }) => {
-                const { fontMap, fontData } = data;
-                assets.fontMap = fontMap;
-                assets.fontData = fontData;
-                init();
-            });
 
             let shader;
             const createMesh = async () => {
@@ -131,7 +128,7 @@
                 inner.add(mesh);
             };
 
-            const updateText = (text) => {
+            const refreshText = (text) => {
                 if (!textBuffers) return;
 
                 textBuffers.update({ text });
@@ -153,10 +150,6 @@
                 setDampBounds(vBoundsTarget);
             };
 
-            watch(props0.posInner, (v) => inner.position.copy(v).add(vTextOffset), {
-                immediate: true,
-            });
-
             const { isDown: pointerDown } = useWindowPointer(({ x, y }) => {
                 const dpr = renderer.getPixelRatio();
                 setPointerDamped({ x: x * dpr, y: vResolution.y - y * dpr });
@@ -164,6 +157,10 @@
 
             watch(pointerDown, (bool) => {
                 setProps0Damped({ pSizeBlur: bool ? 0.5 : 0.25 });
+            });
+
+            watch(props0.posInner, (v) => inner.position.copy(v).add(vTextOffset), {
+                immediate: true,
             });
 
             const update = () => {
@@ -176,7 +173,7 @@
                 }
             };
 
-            const init = async () => {
+            const init = () => {
                 textBuffers = new Text({
                     font: assets.fontData,
                     text: props.text,
@@ -187,8 +184,9 @@
                     maxTimes: 120,
                 });
                 object.add(inner);
-                await createMesh();
-                updateText(props.text);
+
+                createMesh();
+                refreshText(props.text);
                 update();
             };
 
@@ -203,12 +201,20 @@
 
             watch(
                 () => props.text,
-                (t) => updateText(t)
+                (t) => refreshText(t)
+            );
+
+            watch(
+                () => props.focused,
+                (v) => {
+                    cColor.set(v ? '#ffffff' : '#ff0000');
+                },
+                { immediate: true }
             );
 
             const pane = usePane([{ value: props0 }], {
                 title: 'Text',
-                expanded: true,
+                expanded: false,
             });
             pane.addButton({ label: 'play', title: 'Reveal' }).on('click', () =>
                 playRevealAnimation()
