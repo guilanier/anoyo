@@ -15,7 +15,7 @@
     import { Renderer, TweakPane } from '@resn/gozer-vue';
 
     import SpaceTest from '@/components/SpaceTest/index.vue';
-    import TitleLens from '@/components/TitleLens/index.vue';
+    import TextLens from '@/components/TextLens/index.vue';
 
     const route = useRoute();
 
@@ -24,7 +24,7 @@
 
     const componentTypes = [
         { id: 'sphere-space-neon', component: SpaceTest },
-        { id: 'title-lens', component: TitleLens },
+        { id: 'text-lens', component: TextLens },
     ];
     const componentData = componentTypes.find((c) => {
         const test = new RegExp(`\\b${c.id}\\b`, 'i').test(route.path);

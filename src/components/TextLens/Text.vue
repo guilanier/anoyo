@@ -33,7 +33,7 @@
     export default {
         name: 'TextLens',
         props: {
-            id: { type: Number, default: 0 },
+            id: { type: Number, default: Date.now() },
 
             text: { type: String, default: '' },
             width: { type: Number, default: Infinity },
@@ -102,7 +102,7 @@
             const cColor = new Color(props.color);
 
             const { set: setDampBounds } = useDamp(vBounds, { lambda: 1.4 });
-            const { set: setProps0Damped } = useDamp(props0, { lambda: 6 }, ['pSizeBlur']);
+            const { set: setProps0Damped } = useDamp(props0, { lambda: 6 }, ['pSizePointerBlur']);
             const { set: setPointerDamped } = useDamp(vPointerDamped, { lambda: 8 }, ['x', 'y']);
 
             let shader;
@@ -144,13 +144,13 @@
 
                 geo.computeBoundingBox();
                 geo.boundingBox.getSize(vBoundsTarget);
-
                 setDampBounds({ x: vBoundsTarget0.x - (vBoundsTarget.x - vBoundsTarget0.x) }, true);
                 vBoundsTarget0.copy(vBoundsTarget);
 
                 vTextSize.set(textBuffers.width, textBuffers.height);
                 mesh.position.set(0, vBoundsTarget.y * (vBoundsTarget.y / textBuffers.height), 0);
                 setDampBounds(vBoundsTarget);
+                console.log('🚀 ~ refreshText ~ vBoundsTarget:', vBoundsTarget, text, props.id);
             };
 
             const { isDown: pointerDown } = useWindowPointer(({ x, y }) => {
@@ -159,7 +159,7 @@
             });
 
             watch(pointerDown, (bool) => {
-                setProps0Damped({ pSizeBlur: bool ? 0.5 : 0.25 });
+                setProps0Damped({ pSizePointerBlur: bool ? 0.5 : 0.25 });
             });
 
             watch(props0.posInner, (v) => inner.position.copy(v).add(vTextOffset), {
@@ -167,10 +167,11 @@
             });
 
             const update = () => {
-                const { aAlpha } = props0;
-                // const uniforms = shader?.uniforms;
+                const { aAlpha, aBlur } = props0;
                 if (shader) {
-                    shader.u_progressBlur = vBounds.x / vBoundsTarget.x;
+                    shader.u_progressBlur0 = aBlur;
+                    shader.u_progressBlur1 = aBlur < 0.8 ? 1 : vBounds.x / vBoundsTarget.x;
+
                     shader.u_pointerBlur = props0.pSizePointerBlur;
                     shader.u_alpha = aAlpha;
                 }
@@ -191,7 +192,6 @@
                 createMesh();
                 refreshText(props.text);
                 update();
-                console.log('🚀 ~ init ~ props.text:', props.text);
             };
 
             let tlFocus;
@@ -202,11 +202,16 @@
                     .fromTo(props0, { aAlpha: 0 }, { aAlpha: 1, duration: 1.4 }, 0.1)
                     .fromTo(
                         props0,
-                        { sZoom: 1.2 },
+                        { sZoom: 1.6 },
                         { sZoom: 1, duration: 2, ease: 'power1.out' },
                         0
+                    )
+                    .fromTo(
+                        props0,
+                        { aBlur: 0 },
+                        { aBlur: 1, duration: 3, ease: 'power2.out' },
+                        0.1
                     );
-                // .fromTo(props0, { aBlur: 1 }, { aBlur: 0, duration: 2.5, ease: 'sine.out' }, 0);
             };
             const unfocus = () => {
                 tlFocus?.kill();
@@ -214,15 +219,15 @@
                 tlFocus = gsap
                     .timeline({ onComplete: () => emit('text:unfocus', { id: props.id }) })
                     .to(props0, { aAlpha: 0, duration: 1.4 }, 0.1)
-                    .to(props0, { sZoom: 0.8, duration: 1.6, ease: 'power3.out' }, 0);
-                // .to(props0, { aBlur: 1, duration: 2.5, ease: 'sine.out' }, 0.2);
+                    .to(props0, { sZoom: 0.7, duration: 1.6, ease: 'power3.out' }, 0)
+                    .to(props0, { aBlur: 0, duration: 2.5, ease: 'power2.out' }, 0);
             };
 
             useRaf(update);
 
             watch(
                 () => props.text,
-                (t) => refreshText(t)
+                (t) => (props.text !== '' ? refreshText(t) : null)
             );
 
             watch(

@@ -19,9 +19,9 @@ export const routeInfo = {
         path: '/sphere-space-neon',
         componentName: 'ComponentGl',
     },
-    TitleLens: {
-        name: 'Title Lens',
-        path: '/title-lens',
+    TextLens: {
+        name: 'Text Lens',
+        path: '/text-lens',
         componentName: 'ComponentGl',
     },
 };

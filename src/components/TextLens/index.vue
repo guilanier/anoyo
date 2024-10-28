@@ -14,9 +14,11 @@
                 :key="item.id"
                 v-bind="item"
                 :text="
-                    item.focused && !item.placeholder
-                        ? refText.toUpperCase()
-                        : item.text.toUpperCase()
+                    item.placeholder
+                        ? 'TYPE.'
+                        : item.focused
+                          ? refText.toUpperCase()
+                          : refText.value?.toUpperCase()
                 "
                 @text:unfocus="onTextUnfocus"
             />
@@ -26,7 +28,7 @@
 
 <script setup>
     import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-    import { inject, onMounted, reactive, ref, shallowRef, watch } from 'vue';
+    import { inject, onMounted, reactive, ref, shallowRef, unref, watch } from 'vue';
 
     import { JSONLoader, TextureLoader } from '@resn/gozer-loading';
     import { usePane } from '@resn/gozer-vue';
@@ -48,13 +50,14 @@
     const refText = shallowRef('');
 
     const next = () => {
+        if (refTexts.value[refTexts.value.length - 1])
+            refTexts.value[refTexts.value.length - 1].focused = false;
         refTexts.value.push({
             id: Date.now(),
-            text: refText.value,
-            focused: false,
+            focused: true,
             placeholder: false,
         });
-        refText.value = '';
+        refText.value = '.';
     };
 
     const characterLimit = 16;
