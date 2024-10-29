@@ -143,8 +143,8 @@ const fragmentShader = /* glsl */ `
         float sdPointerSize = u_pointerBlur != 0.0 ? u_pointerBlur : 0.25;
         float sdPointer = fill(
             sdCircle(stPointer), 
-            sdPointerSize * 0.7, 
-            sdPointerSize * 1.5
+            sdPointerSize * 0.4, 
+            sdPointerSize * 1.2
         ); 
                 
         // ― shape blur & blend
@@ -153,19 +153,8 @@ const fragmentShader = /* glsl */ `
         float aBlur;
         aBlur = getBlur(uvRemapped0 / 0.7, 0.6, u_progressBlur0);
         aBlur += getBlur(uvRemapped, 0.3, u_progressBlur1);
-        aBlur += sdPointer * 0.5;
+        aBlur += sdPointer * 0.6;
         aBlur = saturate(aBlur);
-
-/*         float aBlurFeather = (1.0 / uBounds.x) * 0.3;
-        float aBlurFeatherHalf = aBlurFeather * 0.5;
-        float aBlurDistFromEdge = mix(aBlurFeatherHalf, 1.0 - aBlurFeatherHalf, uvRemapped.x);
-        float aBlur = smoothstep(
-            u_progressBlur - aBlurFeather, 
-            u_progressBlur + aBlurFeather, 
-            uvRemapped.x
-        );
-        aBlur += sdPointer * 0.5;
-        aBlur = saturate(aBlur); */
     
         // ― SDF Text
         float sdfBlur;
@@ -202,6 +191,7 @@ const fragmentShader = /* glsl */ `
         #endif
         
         #ifdef USE_DEBUG
+        gl_FragColor = vec4(vec3(aBlur), 0.5);
         // gl_FragColor = vec4(vec3(aBlur * 0.4, sdfDefault * (1. - aBlur), 1.), 0.5);
         // gl_FragColor = vec4(vec3(sdPointer), 1.);
         // gl_FragColor = vec4(c, sdf);

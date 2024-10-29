@@ -1,9 +1,9 @@
 Title Blur:
-    ■ add appear and disappear animation (from center)
-    ■ check mobile
-
-    ■ find font @low
-    ■ video and publish
+    ■ video and publish 
+    
+    ■ have an env environment @low
+Molten:
+    ■ 
 SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
@@ -13,6 +13,13 @@ Others:
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ find font @done(24-10-29 12:00) @project(Title Blur)
+    ✓ adapt text size @done(24-10-29 11:39) @project(Title Blur)
+    ✓ check mobile @done(24-10-29 11:39) @project(Title Blur)
+    ✓ fix reveal glitch @done(24-10-29 11:14) @project(Title Blur)
+    ✓ fix writting glitch (first letter and empty text) @done(24-10-29 09:52) @project(Title Blur)
+    ✓ fix reveal conflict with writting @done(24-10-29 09:48) @project(Title Blur)
+    ✓ add appear and disappear animation (from center) @done(24-10-28 20:01) @project(Title Blur)
     ✓ add push and different texts max word length @done(24-10-28 18:41) @project(Title Blur)
     ✓ add pointer interaction @done(24-10-25 16:23) @project(Title Blur)
     ✓ right font size and position @done(24-10-25 15:14) @project(Title Blur)

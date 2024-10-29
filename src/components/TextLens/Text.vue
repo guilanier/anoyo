@@ -17,6 +17,7 @@
     } from 'three';
     import { computed, defineEmits, inject, reactive, watch } from 'vue';
 
+    import { isMobile } from '@resn/gozer-env';
     import { Text } from '@resn/gozer-three';
     import {
         useDamp,
@@ -54,7 +55,7 @@
                 aBlur: 0,
                 aAlpha: 1,
 
-                sBase: 13.4,
+                sBase: isMobile ? 22.2 : 13.4,
                 sZoom: 1,
 
                 pSizePointerBlur: 0.25,
@@ -92,7 +93,7 @@
 
             const vBounds = new Vector3();
             const vBoundsTarget = new Vector3();
-            const vBoundsTarget0 = new Vector3();
+            const vBoundsTarget0 = new Vector3(0.5, 0, 0);
 
             const vTextSize = new Vector2();
             const vTextOffset = new Vector3().copy(props0.posOffset);
@@ -120,7 +121,7 @@
                         HAS_MASKING: true,
                         CENTER_ALIGN: props.align === 'center',
                         LOW_RES: props.lowQuality,
-                        USE_DEBUG: true,
+                        // USE_DEBUG: true,
                     },
                     blending: props.blending,
                 });
@@ -144,13 +145,18 @@
 
                 geo.computeBoundingBox();
                 geo.boundingBox.getSize(vBoundsTarget);
-                setDampBounds({ x: vBoundsTarget0.x - (vBoundsTarget.x - vBoundsTarget0.x) }, true);
+
+                setDampBounds(
+                    { x: Math.max(vBoundsTarget0.x - (vBoundsTarget.x - vBoundsTarget0.x), 0) },
+                    true
+                );
+
                 vBoundsTarget0.copy(vBoundsTarget);
 
                 vTextSize.set(textBuffers.width, textBuffers.height);
                 mesh.position.set(0, vBoundsTarget.y * (vBoundsTarget.y / textBuffers.height), 0);
+
                 setDampBounds(vBoundsTarget);
-                console.log('🚀 ~ refreshText ~ vBoundsTarget:', vBoundsTarget, text, props.id);
             };
 
             const { isDown: pointerDown } = useWindowPointer(({ x, y }) => {
@@ -170,8 +176,11 @@
                 const { aAlpha, aBlur } = props0;
                 if (shader) {
                     shader.u_progressBlur0 = aBlur;
-                    shader.u_progressBlur1 = aBlur < 0.8 ? 1 : vBounds.x / vBoundsTarget.x;
-
+                    shader.u_progressBlur1 = props.placeholder
+                        ? 1
+                        : vBoundsTarget.x == 0
+                          ? 0
+                          : Math.max(0, vBounds.x / vBoundsTarget.x);
                     shader.u_pointerBlur = props0.pSizePointerBlur;
                     shader.u_alpha = aAlpha;
                 }
@@ -197,25 +206,26 @@
             let tlFocus;
             const focus = () => {
                 tlFocus?.kill();
-                tlFocus = gsap
-                    .timeline()
-                    .fromTo(props0, { aAlpha: 0 }, { aAlpha: 1, duration: 1.4 }, 0.1)
-                    .fromTo(
-                        props0,
-                        { sZoom: 1.6 },
-                        { sZoom: 1, duration: 2, ease: 'power1.out' },
-                        0
-                    )
-                    .fromTo(
-                        props0,
-                        { aBlur: 0 },
-                        { aBlur: 1, duration: 3, ease: 'power2.out' },
-                        0.1
-                    );
+                if (props.placeholder) {
+                    tlFocus = gsap
+                        .timeline()
+                        .fromTo(props0, { aAlpha: 0 }, { aAlpha: 1, duration: 3 }, 0.1)
+                        .fromTo(
+                            props0,
+                            { sZoom: 1.6 },
+                            { sZoom: 1, duration: 2.4, ease: 'sine.out' },
+                            0
+                        )
+                        .fromTo(
+                            props0,
+                            { aBlur: 0 },
+                            { aBlur: 1, duration: 4, ease: 'power2.out' },
+                            0.2
+                        );
+                } else resetProps();
             };
             const unfocus = () => {
                 tlFocus?.kill();
-
                 tlFocus = gsap
                     .timeline({ onComplete: () => emit('text:unfocus', { id: props.id }) })
                     .to(props0, { aAlpha: 0, duration: 1.4 }, 0.1)
@@ -223,17 +233,42 @@
                     .to(props0, { aBlur: 0, duration: 2.5, ease: 'power2.out' }, 0);
             };
 
+            const resetProps = () => {
+                props0.aBlur = 1;
+                props0.aAlpha = 1;
+                props0.sZoom = 1;
+            };
+
             useRaf(update);
 
             watch(
                 () => props.text,
-                (t) => (props.text !== '' ? refreshText(t) : null)
+                (t) => {
+                    tlFocus?.kill();
+                    if (props.focused) {
+                        if (t == '') {
+                            vBoundsTarget0.set(0.5, 0, 0);
+                            vBoundsTarget.set(0, 0, 0);
+                        }
+                        resetProps();
+                        refreshText(t);
+                    }
+                }
             );
-
             watch(
                 () => props.focused,
                 (v) => (v ? focus() : unfocus()),
                 { immediate: true }
+            );
+            watch(
+                () => props.placeholder,
+                (v) => {
+                    if (!v) {
+                        vBoundsTarget0.set(0.5, 0, 0);
+                        vBoundsTarget.set(0, 0, 0);
+                        refreshText(props.text);
+                    }
+                }
             );
 
             const pane = usePane([], {

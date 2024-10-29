@@ -1,6 +1,6 @@
 <template>
     <div class="component">
-        <TweakPane :hiddenOnStart="false">
+        <TweakPane :hiddenOnStart="true">
             <Renderer ref="refRenderer" :antialias="false" :autoResize="true" :autoRender="true">
                 <Component ref="refComponent" :is="component" />
             </Renderer>

@@ -1,5 +1,5 @@
 <template>
-    <div class="textLens">
+    <div class="textLens" @click="onClick">
         <input
             ref="refInput"
             class="textLens__input"
@@ -27,12 +27,11 @@
 </template>
 
 <script setup>
-    import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
     import { inject, onMounted, reactive, ref, shallowRef, unref, watch } from 'vue';
 
     import { JSONLoader, TextureLoader } from '@resn/gozer-loading';
     import { usePane } from '@resn/gozer-vue';
-    import { useLoader, useLoaderContext } from '@resn/gozer-vue/loading';
+    import { useLoaderContext } from '@resn/gozer-vue/loading';
 
     import { AssetsProvider } from './AssetsProvider';
     import Text from './Text.vue';
@@ -46,7 +45,7 @@
     TextureLoader.setGlobals({ renderer });
 
     const refInput = ref(null);
-    const refTexts = ref([{ text: 'TYPE.', focused: false }]);
+    const refTexts = ref([{ id: Date.now(), text: 'TYPE.', focused: false }]);
     const refText = shallowRef('');
 
     const next = () => {
@@ -57,10 +56,14 @@
             focused: true,
             placeholder: false,
         });
-        refText.value = '.';
+        refText.value = '';
     };
 
     const characterLimit = 16;
+
+    const onClick = () => {
+        refInput.value.focus();
+    };
 
     const onInputKeyUp = (e) => {
         if (e.key === 'Enter') next();
@@ -91,7 +94,9 @@
         refTexts.value[0].focused = true;
         refTexts.value[0].placeholder = true;
 
-        refInput.value.focus();
+        setTimeout(() => {
+            refInput.value.focus();
+        }, 1500);
     });
 
     registerRenderFn(() => {
@@ -100,14 +105,23 @@
     });
 </script>
 <style lang="scss">
+    @import '@resn/gozer-styles/base/document';
     @import '@resn/gozer-styles';
 
     html {
-        @include baseFontSizeVW($baseWidth: 1920);
+        @include desktop {
+            @include baseFontSizeVW(1920);
+        }
+        @include mobile {
+            @include baseFontSizeVW(375);
+        }
     }
 
     .textLens {
         @include fill(fixed);
+        @include mobile {
+            height: 100vh;
+        }
         &__input {
             @include centerAlignTransform();
             width: 100%;
@@ -123,11 +137,17 @@
             font-family: 'Fellix', sans-serif;
             font-style: bold;
             font-weight: 400;
-            font-size: 16rem;
 
             caret-color: #fff;
             color: transparent;
             // color: rgba(255, 255, 255, 0.5);
+
+            @include desktop {
+                font-size: 16rem;
+            }
+            @include mobile {
+                font-size: 6rem;
+            }
         }
     }
 </style>
