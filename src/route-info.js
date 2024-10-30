@@ -24,4 +24,9 @@ export const routeInfo = {
         path: '/text-lens',
         componentName: 'ComponentGl',
     },
+    Molten: {
+        name: 'Molten',
+        path: '/molten',
+        componentName: 'Molten',
+    }
 };

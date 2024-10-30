@@ -1,0 +1,68 @@
+import { inject, onBeforeUnmount, onMounted, ref } from 'vue';
+
+import { BlobKey } from './BlobProvider';
+import { useIntersectionObserver } from '@resn/gozer-vue';
+// import { useElementBounds } from '~/composables/useElementBounds';
+// import { useIntersectionObserver } from '~/composables/useIntersectionObserver';
+
+// const getDefaultBounds = () => {
+//     return reactive({ x: 0, y: 0, width: 0, height: 0, top: 0, left: 0 });
+// };
+
+const uniqueId = (id = 'BlobId') => {
+    return `${id}-${Math.random().toString(36).substr(2, 9)}`;
+};
+
+export const useBlob = (
+    el = null,
+    { id = 'BlobId', useAutoBounds = true, borderRadius = 18 } = {}
+) => {
+    const blob = inject(BlobKey);
+
+    if (!blob) {
+        throw new Error('useBlob must be used within a BlobProvider');
+    }
+
+    const sticky = inject('stickyBlob', { offset: 0, emit: null });
+
+    const { visible } = useIntersectionObserver(el);
+    // const visible = ref(true);
+
+    const update = () => {
+        if (visible.value) {
+            const rect = el.value.getBoundingClientRect();
+            bounds.x = rect.x;
+            bounds.y = rect.y;
+            bounds.width = rect.width;
+            bounds.height = rect.height;
+            bounds.top = rect.top;
+            bounds.left = rect.left;
+        }
+    };
+
+    const bounds = {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+        top: 0,
+        left: 0,
+        offset: sticky.offset,
+    };
+    // const bounds = useAutoBounds ? useElementBounds(el, onUpdate) : getDefaultBounds();
+
+    const object = { id: uniqueId(id), bounds, visible, borderRadius };
+
+
+    onMounted(() => {
+        blob.registerBlob(object);
+        blob.events.on('update', update);
+    });
+
+    onBeforeUnmount(() => {
+        blob.unregisterBlob(object);
+        blob.events.off('update', update);
+    });
+
+    return object;
+};
