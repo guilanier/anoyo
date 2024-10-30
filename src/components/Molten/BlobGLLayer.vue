@@ -1,11 +1,11 @@
 <template>
     <BlobLayerItem ref="refItems" v-for="_ in blobs" :key="_.id" v-bind="_" />
-    <BlobCursor v-if="showCursor" :open="true" />
+    <BlobCursor :open="true" />
 </template>
 
 <script setup>
     import { Group, ShaderMaterial, WebGLRenderTarget } from 'three';
-    import { inject, onMounted, provide, ref, watch } from 'vue';
+    import { inject, onMounted, provide, ref } from 'vue';
 
     import { isHandheld } from '@resn/gozer-env';
     import glslDraw from '@resn/gozer-glsl/shapes/draw.glsl';

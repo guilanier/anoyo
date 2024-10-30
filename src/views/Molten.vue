@@ -1,21 +1,18 @@
 <template>
     <div class="molten">
         <TweakPane :hiddenOnStart="nodeEnv == 'production'">
-            <SmoothScrollLenis>
-                <Renderer
-                    ref="refRenderer"
-                    :antialias="false"
-                    :autoResize="true"
-                    :autoRender="true"
-                >
-                    <BlobProvider>
-                        <BlobGLLayer v-if="enableBlobs" />
-                    </BlobProvider>
-                </Renderer>
-                <div class="molten__items">
-                    <Blob />
-                </div>
-            </SmoothScrollLenis>
+            <!-- <SmoothScrollLenis> -->
+            <Renderer ref="refRenderer" :antialias="false" :autoResize="true" :autoRender="true">
+                <BlobProvider>
+                    <BlobGLLayer />
+                    <div class="molten__items">
+                        <div id="blob1">
+                            <Blob />
+                        </div>
+                    </div>
+                </BlobProvider>
+            </Renderer>
+            <!-- </SmoothScrollLenis> -->
         </TweakPane>
     </div>
 </template>
@@ -49,6 +46,11 @@
             position: inherit;
             width: 100%;
             height: 500vh;
+        }
+
+        #blob1 {
+            position: absolute;
+            @include square(20rem);
         }
     }
 </style>

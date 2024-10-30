@@ -1,11 +1,11 @@
 import { EventEmitter } from 'eventemitter3';
-import { defineComponent, inject, onMounted, onUnmounted, provide, ref, watch } from 'vue';
+import { defineComponent, ref, provide } from 'vue';
 
-import { useIntersectionObserver, useOnScroll, useRaf } from '@resn/gozer-vue';
+import { useRaf } from '@resn/gozer-vue';
 
-// import { useElementBounds } from '~/composables/useElementBounds';
 
-export const BlobKey = 'blob';
+
+export const BlobKey = 'BLOB_KEY';
 
 export const BlobProvider = defineComponent({
     setup() {
@@ -32,9 +32,7 @@ export const BlobProvider = defineComponent({
             events.emit('update');
 
             active.value = blobs.value.some((blob) => blob.visible);
-            // const totalActive = blobs.value.filter((blob) => blob.visible).length;
 
-            // if (active.value) {
 
             events.emit('render');
         };
@@ -46,8 +44,6 @@ export const BlobProvider = defineComponent({
     },
 
     render() {
-        if (this.$slots.default) {
-            return this.$slots.default();
-        }
-    },
-});
+        return this.$slots.default();
+    }
+});     

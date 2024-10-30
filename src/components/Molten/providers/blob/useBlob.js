@@ -25,11 +25,10 @@ export const useBlob = (
 
     const sticky = inject('stickyBlob', { offset: 0, emit: null });
 
-    const { visible } = useIntersectionObserver(el);
-    // const visible = ref(true);
+    const intersecting = useIntersectionObserver(el);
 
     const update = () => {
-        if (visible.value) {
+        if (intersecting.value) {
             const rect = el.value.getBoundingClientRect();
             bounds.x = rect.x;
             bounds.y = rect.y;
@@ -49,10 +48,7 @@ export const useBlob = (
         left: 0,
         offset: sticky.offset,
     };
-    // const bounds = useAutoBounds ? useElementBounds(el, onUpdate) : getDefaultBounds();
-
-    const object = { id: uniqueId(id), bounds, visible, borderRadius };
-
+    const object = { id: uniqueId(id), bounds, visible: intersecting, borderRadius };
 
     onMounted(() => {
         blob.registerBlob(object);
