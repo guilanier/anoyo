@@ -1,6 +1,6 @@
 <template>
     <div class="component">
-        <TweakPane :hiddenOnStart="true">
+        <TweakPane :hiddenOnStart="nodeEnv == 'production'">
             <Renderer ref="refRenderer" :antialias="false" :autoResize="true" :autoRender="true">
                 <Component ref="refComponent" :is="component" />
             </Renderer>
@@ -22,6 +22,7 @@
     const refComponent = ref();
     const component = shallowRef();
 
+    const nodeEnv = import.meta.env.MODE;
     const componentTypes = [
         { id: 'sphere-space-neon', component: SpaceTest },
         { id: 'text-lens', component: TextLens },

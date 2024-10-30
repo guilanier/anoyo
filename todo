@@ -1,9 +1,6 @@
-Title Blur:
-    ■ video and publish 
-    
-    ■ have an env environment @low
+■ vite-vue push to repo
 Molten:
-    ■ 
+    ■ start porting things
 SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
@@ -13,6 +10,8 @@ Others:
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ have an env environment @low @done(24-10-30 12:17)
+    ✓ video and publish @done(24-10-29 14:39) @project(Title Blur)
     ✓ find font @done(24-10-29 12:00) @project(Title Blur)
     ✓ adapt text size @done(24-10-29 11:39) @project(Title Blur)
     ✓ check mobile @done(24-10-29 11:39) @project(Title Blur)
