@@ -7,7 +7,7 @@
                     <BlobGLLayer />
                     <div class="molten__items">
                         <div id="blob1">
-                            <Blob />
+                            <BlobItem />
                         </div>
                     </div>
                 </BlobProvider>
@@ -20,8 +20,8 @@
 <script setup>
     import { Renderer, SmoothScrollLenis, TweakPane } from '@resn/gozer-vue';
 
-    import Blob from '@/components/Molten/Blob.vue';
     import BlobGLLayer from '@/components/Molten/BlobGLLayer.vue';
+    import BlobItem from '@/components/Molten/BlobItem.vue';
     import { BlobProvider } from '@/components/Molten/providers/blob';
 </script>
 

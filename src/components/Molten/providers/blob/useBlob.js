@@ -2,12 +2,6 @@ import { inject, onBeforeUnmount, onMounted, ref } from 'vue';
 
 import { BlobKey } from './BlobProvider';
 import { useIntersectionObserver } from '@resn/gozer-vue';
-// import { useElementBounds } from '~/composables/useElementBounds';
-// import { useIntersectionObserver } from '~/composables/useIntersectionObserver';
-
-// const getDefaultBounds = () => {
-//     return reactive({ x: 0, y: 0, width: 0, height: 0, top: 0, left: 0 });
-// };
 
 const uniqueId = (id = 'BlobId') => {
     return `${id}-${Math.random().toString(36).substr(2, 9)}`;

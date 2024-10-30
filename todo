@@ -1,5 +1,9 @@
 Molten:
-    ■ start porting things
+    ■ get the scroll working
+    ■ rename blobs into something else
+    ■ merge the providers if possible
+    ■ infinite scroll with different speed
+    ■ multiple blobs
 SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
@@ -9,6 +13,7 @@ Others:
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ start porting things @done(24-10-30 18:46) @project(Molten)
     ✓ vite-vue push to repo @done(24-10-30 14:39)
     ✓ have an env environment @low @done(24-10-30 12:17)
     ✓ video and publish @done(24-10-29 14:39) @project(Title Blur)

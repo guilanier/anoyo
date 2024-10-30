@@ -1,5 +1,5 @@
 <template>
-    <BlobLayerItem ref="refItems" v-for="_ in blobs" :key="_.id" v-bind="_" />
+    <BlobGLItem ref="refItems" v-for="_ in blobs" :key="_.id" v-bind="_" />
     <BlobCursor :open="true" />
 </template>
 
@@ -14,7 +14,7 @@
     import { useViewportResize } from '@resn/gozer-vue';
 
     import BlobCursor from './BlobCursor.vue';
-    import BlobLayerItem from './BlobLayerItem.vue';
+    import BlobGLItem from './BlobGLItem.vue';
     import { useBlobs } from './providers/blob';
 
     const { blobs, events } = useBlobs();

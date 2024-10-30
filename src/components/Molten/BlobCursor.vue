@@ -159,7 +159,7 @@
     useRafBool(open, () => update());
 
     useViewportResize(({ width }) => {
-        const size = hasTouch ? 120 : clamp(width * 0.08, 120, 160);
+        const size = hasTouch ? 120 : clamp(width * 0.1, 120, 160);
         vResolution.set(size, size);
     }, true);
 </script>

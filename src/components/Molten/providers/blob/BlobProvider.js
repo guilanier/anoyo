@@ -1,11 +1,17 @@
 import { EventEmitter } from 'eventemitter3';
-import { defineComponent, ref, provide } from 'vue';
+import { defineComponent, ref, provide, inject } from 'vue';
 
 import { useRaf } from '@resn/gozer-vue';
 
-
-
 export const BlobKey = 'BLOB_KEY';
+
+export const useBlobs = () => {
+    const blob = inject(BlobKey, { events: null, blobs: null });
+    if (!blob) {
+        throw new Error('useBlob must be used within a BlobProvider');
+    }
+    return blob;
+};
 
 export const BlobProvider = defineComponent({
     setup() {
