@@ -1,28 +1,51 @@
 <template>
     <div class="molten">
         <TweakPane :hiddenOnStart="nodeEnv == 'production'">
-            <!-- <SmoothScrollLenis> -->
-            <Renderer ref="refRenderer" :antialias="false" :autoResize="true" :autoRender="true">
-                <BlobProvider>
-                    <BlobGLLayer />
-                    <div class="molten__items">
-                        <div id="blob1">
-                            <BlobItem />
+            <SmoothScrollLenis :options="{ infinite: true }">
+                <Renderer
+                    ref="refRenderer"
+                    :antialias="false"
+                    :autoResize="true"
+                    :autoRender="true"
+                >
+                    <BlobProvider>
+                        <BlobGLLayer />
+                        <div class="molten__items">
+                            <div id="blob1">
+                                <BlobItem />
+                            </div>
                         </div>
-                    </div>
-                </BlobProvider>
-            </Renderer>
-            <!-- </SmoothScrollLenis> -->
+                    </BlobProvider>
+                </Renderer>
+            </SmoothScrollLenis>
         </TweakPane>
     </div>
 </template>
 
 <script setup>
-    import { Renderer, SmoothScrollLenis, TweakPane } from '@resn/gozer-vue';
+    import { inject } from 'vue';
+
+    import { Renderer, ScrollerKey, SmoothScrollLenis, TweakPane } from '@resn/gozer-vue';
+    import { gsap } from '@resn/gsap';
+    import { ScrollTrigger } from '@resn/gsap/all';
 
     import BlobGLLayer from '@/components/Molten/BlobGLLayer.vue';
     import BlobItem from '@/components/Molten/BlobItem.vue';
     import { BlobProvider } from '@/components/Molten/providers/blob';
+
+    /*     const scroller = inject(ScrollerKey, {
+        onScroll: (data) => {
+            console.log('🚀 ~ scroller ~ data:', data);
+        },
+    });
+    console.log('🚀 ~ scroller:', scroller); */
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    ScrollTrigger.config({
+        ignoreMobileResize: true,
+        limitCallbacks: false,
+    });
 </script>
 
 <style lang="scss">
@@ -38,18 +61,19 @@
         }
     }
     .molten {
-        position: fixed;
-        inset: 0;
         cursor: pointer;
+        background-color: #444444;
+        height: 500vh;
 
         &__items {
-            position: inherit;
-            width: 100%;
-            height: 500vh;
+            position: fixed;
+            inset: 0;
         }
 
         #blob1 {
             position: absolute;
+            top: 50vh;
+            left: 50vw;
             @include square(20rem);
         }
     }

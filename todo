@@ -1,9 +1,10 @@
 Molten:
-    ■ get the scroll working
     ■ rename blobs into something else
-    ■ merge the providers if possible
     ■ infinite scroll with different speed
-    ■ multiple blobs
+    ■ blobs page
+    ■ breathing blobs 
+    ■ spring impact cursor `?`
+    ■ face blobs `?` @low
 SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
@@ -13,6 +14,8 @@ Others:
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ get the infinite scroll working (check gozer-examples) @done(24-11-04 17:30) @project(Molten)
+    ✓ merge the providers if possible @done(24-10-30 19:01) @project(Molten)
     ✓ start porting things @done(24-10-30 18:46) @project(Molten)
     ✓ vite-vue push to repo @done(24-10-30 14:39)
     ✓ have an env environment @low @done(24-10-30 12:17)
