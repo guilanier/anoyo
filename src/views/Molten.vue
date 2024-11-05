@@ -11,8 +11,8 @@
                     <BlobProvider>
                         <BlobGLLayer />
                         <div class="molten__items">
-                            <div id="blob1">
-                                <BlobItem />
+                            <div v-for="item in items" :key="item.id">
+                                <BlobItem v-bind="item" />
                             </div>
                         </div>
                     </BlobProvider>
@@ -23,7 +23,10 @@
 </template>
 
 <script setup>
-    import { inject } from 'vue';
+    import { Vector2 } from 'three';
+    import { randFloatSpread } from 'three/src/math/MathUtils';
+    import { randFloat } from 'three/src/math/MathUtils';
+    import { shallowRef } from 'vue';
 
     import { Renderer, ScrollerKey, SmoothScrollLenis, TweakPane } from '@resn/gozer-vue';
     import { gsap } from '@resn/gsap';
@@ -33,12 +36,14 @@
     import BlobItem from '@/components/Molten/BlobItem.vue';
     import { BlobProvider } from '@/components/Molten/providers/blob';
 
-    /*     const scroller = inject(ScrollerKey, {
-        onScroll: (data) => {
-            console.log('🚀 ~ scroller ~ data:', data);
-        },
-    });
-    console.log('🚀 ~ scroller:', scroller); */
+    const nItems = 10;
+    const items = shallowRef(
+        new Array(nItems).fill(0).map((_, i) => ({
+            pos0: new Vector2(randFloatSpread(0.5), randFloatSpread(1)),
+            scl0: randFloat(0.5, 1),
+            speed: randFloat(0.5, 1),
+        }))
+    );
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -62,7 +67,7 @@
     }
     .molten {
         cursor: pointer;
-        background-color: #444444;
+        background-color: #000000;
         height: 500vh;
 
         &__items {

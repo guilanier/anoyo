@@ -3,43 +3,74 @@
 </template>
 
 <script setup>
-    import { inject, onMounted, reactive, ref } from 'vue';
+    import { Vector2 } from 'three';
+    import { computed, inject, onMounted, ref, watch } from 'vue';
 
     import { modulo } from '@resn/gozer-math';
-    import { ScrollerKey, useDomElement } from '@resn/gozer-vue';
+    import { ScrollerKey, useDomElement, useRafBool, useViewportResize } from '@resn/gozer-vue';
 
     import { useBlob } from './providers/blob';
 
     const props = defineProps({
         id: { type: String, default: 'Blob' },
         borderRadius: { type: Number, default: null },
+        speed: { type: Number, default: 1 },
+        size: { type: Number, default: 1 },
+
+        pos0: { type: Object, default: new Vector2() },
+        scl0: { type: Number, default: 0 },
     });
 
-    const propsTfInit = reactive({
-        py: 0,
-    });
+    const viewport = useViewportResize(
+        ({ width, height }) => {
+            vViewport.set(width, height);
+            vPosStart.copy(vViewport).multiply(props.pos0);
+        },
+        {
+            immediate: true,
+        }
+    );
+    const vViewport = new Vector2();
+
+    const size = computed(() => (0.2 + props.size) * (viewport.width * 0.2));
+
+    const vPosStart = new Vector2();
+    const vPosOffset = new Vector2();
+
+    const scroller = inject(ScrollerKey, {});
+
+    const active = ref(true);
+    const needsUpdateBounds = ref(true);
 
     const refRoot = ref(null);
     const { bounds } = useBlob(refRoot, { id: props.id, borderRadius: props.borderRadius });
-    onMounted(() => {
-        setTimeout(() => {
-            propsTfInit.py = bounds.top;
-        }, 100);
-    });
+    onMounted(() => {});
 
-    const propsTf = useDomElement(refRoot, {
+    const propsEl = useDomElement(refRoot, {
         align: 'left',
-        w: null,
-        h: null,
+        s: props.scl0,
         py: 0,
     });
 
-    const scroller = inject(ScrollerKey, {});
-    scroller.events.on('scroll', (data) => {
-        const py = propsTfInit.py + propsTf.py;
-        console.log('🚀 ~ scroller.events.on ~ py:', py);
-        propsTf.py -= data.velocity;
-        propsTf.py %= 720;
+    watch(
+        size,
+        (val) => {
+            propsEl.w = val;
+            propsEl.h = val;
+        },
+        { immediate: true }
+    );
+
+    scroller.events.on('scroll', ({ velocity }) => {
+        vPosOffset.y -= velocity * props.speed;
+        propsEl.py = -vPosStart.y + modulo(vPosStart.y + vPosOffset.y, vViewport.height * 1.5);
+    });
+
+    useRafBool(active, () => {
+        if (needsUpdateBounds.value && bounds.top) {
+            vPosStart.y = bounds.top;
+            needsUpdateBounds.value = false;
+        }
     });
 
     defineExpose({ el: refRoot });
