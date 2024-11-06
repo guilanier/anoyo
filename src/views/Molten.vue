@@ -39,9 +39,9 @@
     const nItems = 10;
     const items = shallowRef(
         new Array(nItems).fill(0).map((_, i) => ({
-            pos0: new Vector2(randFloatSpread(0.5), randFloatSpread(1)),
+            pos0: new Vector2(randFloat(0, 1), randFloat(0, 1)),
             scl0: randFloat(0.5, 1),
-            speed: randFloat(0.5, 1),
+            speed: randFloat(0.5, 1.5),
         }))
     );
 
