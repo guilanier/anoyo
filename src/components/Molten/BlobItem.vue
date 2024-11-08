@@ -4,7 +4,7 @@
 
 <script setup>
     import { Vector2 } from 'three';
-    import { computed, inject, onMounted, ref, watch } from 'vue';
+    import { computed, inject, onMounted, reactive, ref, watch } from 'vue';
 
     import { modulo } from '@resn/gozer-math';
     import { ScrollerKey, useDomElement, useRafBool, useViewportResize } from '@resn/gozer-vue';
@@ -38,19 +38,20 @@
 
     const vPosStart = new Vector2();
     const vPosOffset = new Vector2();
+    const vPosAmbient = new Vector2();
 
     const scroller = inject(ScrollerKey, {});
+    const propsScroll = reactive({ direction: 0 });
 
     const active = ref(true);
-    const needsUpdateBounds = ref(true);
 
     const refRoot = ref(null);
-    const { bounds } = useBlob(refRoot, { id: props.id, borderRadius: props.borderRadius });
 
     const propsEl = useDomElement(refRoot, {
         align: 'left',
         s: props.scl0,
     });
+    useBlob(refRoot, { id: props.id, borderRadius: props.borderRadius });
 
     watch(
         size,
@@ -64,26 +65,23 @@
     onMounted(() => {
         updateScroll();
     });
-    const updateScroll = ({ velocity = 0 } = {}) => {
+    const updateScroll = ({ velocity = 0, direction = 0 } = {}) => {
+        propsScroll.direction = direction;
         vPosOffset.y -= velocity * props.speed;
-        propsEl.py = -viewport.height + modulo(vPosStart.y + vPosOffset.y, vBoundsParent.y);
     };
 
-    scroller.events.on('scroll', ({ velocity }) => {
-        updateScroll({ velocity });
+    scroller.events.on('scroll', (e) => {
+        const { velocity, direction } = e;
+        updateScroll({ velocity, direction });
     });
 
     useRafBool(active, () => {
-        if (needsUpdateBounds.value && bounds.top) {
-            vPosStart.y += bounds.top;
-            needsUpdateBounds.value = false;
-        }
+        vPosAmbient.y -= 0.4 * (propsScroll.direction || 1) * props.speed;
+        const x = vPosStart.x + vPosOffset.x + vPosAmbient.x;
+        const y = vPosStart.y + vPosOffset.y + vPosAmbient.y;
 
-        const { x: vw, y: vh } = vViewport;
-
-        propsEl.px = vPosStart.x;
-        // propsEl.py = -vPosStart.y + vPosOffset.y;
-        // propsEl.py = -vPosStart.y + modulo(vPosStart.y + vPosOffset.y, vBounds.y);
+        propsEl.px = x;
+        propsEl.py = -viewport.height + modulo(y, vBoundsParent.y);
     });
 
     defineExpose({ el: refRoot });

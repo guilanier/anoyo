@@ -1,7 +1,7 @@
 <template>
     <div class="molten">
         <TweakPane :hiddenOnStart="nodeEnv == 'production'">
-            <SmoothScrollLenis :options="{ infinite: true }">
+            <SmoothScrollLenis :options="{ infinite: true, lerp: 0.1, duration: 0 }">
                 <Renderer
                     ref="refRenderer"
                     :antialias="false"
@@ -24,10 +24,9 @@
 
 <script setup>
     import { Vector2 } from 'three';
-    import { randFloatSpread } from 'three/src/math/MathUtils';
-    import { randFloat } from 'three/src/math/MathUtils';
     import { shallowRef } from 'vue';
 
+    import { Alea } from '@resn/gozer-math';
     import { Renderer, ScrollerKey, SmoothScrollLenis, TweakPane } from '@resn/gozer-vue';
     import { gsap } from '@resn/gsap';
     import { ScrollTrigger } from '@resn/gsap/all';
@@ -36,12 +35,14 @@
     import BlobItem from '@/components/Molten/BlobItem.vue';
     import { BlobProvider } from '@/components/Molten/providers/blob';
 
+    const rng = new Alea(1192);
+
     const nItems = 10;
     const items = shallowRef(
         new Array(nItems).fill(0).map((_, i) => ({
-            pos0: new Vector2(randFloat(0, 1), randFloat(0, 1)),
-            scl0: randFloat(0.5, 1),
-            speed: randFloat(0.5, 1.5),
+            pos0: new Vector2(rng(), rng()),
+            scl0: rng() * 0.5 + 0.5,
+            speed: rng() * 1 + 0.5,
         }))
     );
 
@@ -73,13 +74,6 @@
         &__items {
             position: fixed;
             inset: 0;
-        }
-
-        #blob1 {
-            position: absolute;
-            top: 50vh;
-            left: 50vw;
-            @include square(20rem);
         }
     }
 </style>

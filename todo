@@ -1,9 +1,10 @@
 Molten:
-    ■ infinite scroll with different speed `fix glitch start` @high
-    ■ blobs items with correct resize and consistent seed randomness 
-    ■ refine cursor motion
+    
+    ■ refine cursor motion (try motion blur sdf and refine scale)
     ■ breathing blobs 
-    ■ spring impact cursor `?`
+
+    ■ prepare tweet with video terrapower
+    ■ spring impact cursor @low
 SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
@@ -13,6 +14,9 @@ Others:
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ dampened motion (less smooth on the scroll and dampened to the blobs) @done(24-11-08 16:33) @project(Molten)
+    ✓ consistent seed randomness @done(24-11-08 16:23) @project(Molten)
+    ✓ infinite scroll with different speed `fix glitch start` @high @done(24-11-08 15:36) @project(Molten)
     ✓ face blobs `?` @low @done(24-11-06 19:11) @project(Molten)
     ✓ rename blobs into something else @done(24-11-05 16:37) @project(Molten)
     ✓ get the infinite scroll working (check gozer-examples) @done(24-11-04 17:30) @project(Molten)
