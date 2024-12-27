@@ -1,10 +1,7 @@
 Molten:
-    
-    ■ refine cursor motion (try motion blur sdf and refine scale)
-    ■ breathing blobs 
-
-    ■ prepare tweet with video terrapower
-    ■ spring impact cursor @low
+    ■ fix offset center x scale / vel (ask Marcos for deployment gozer-vue)
+    ■ spring impact cursor || offset on impact @low
+    ■ video & tweet
 SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
@@ -14,6 +11,10 @@ Others:
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ port breath over seed @done(24-12-27 20:21) @project(Molten.breathing blobs)
+    ✓ stretch or scale with velocity (fix offset vel) @done(24-12-24 17:23) @project(Molten)
+    ✓ refine cursor motion @done(24-12-24 17:23) @project(Molten)
+    ✓ try different seeds with tweakpane @done(24-12-24 15:53) @project(Molten)
     ✓ dampened motion (less smooth on the scroll and dampened to the blobs) @done(24-11-08 16:33) @project(Molten)
     ✓ consistent seed randomness @done(24-11-08 16:23) @project(Molten)
     ✓ infinite scroll with different speed `fix glitch start` @high @done(24-11-08 15:36) @project(Molten)

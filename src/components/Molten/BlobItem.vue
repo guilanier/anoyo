@@ -4,14 +4,17 @@
 
 <script setup>
     import { Vector2 } from 'three';
-    import { computed, inject, onMounted, reactive, ref, watch } from 'vue';
+    import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 
     import { modulo } from '@resn/gozer-math';
-    import { ScrollerKey, useDomElement, useRafBool, useViewportResize } from '@resn/gozer-vue';
+    import { clamp } from '@resn/gozer-math';
+    import { ScrollerKey, useRafBool, useSpring, useViewportResize } from '@resn/gozer-vue';
 
     import { useBlob } from './providers/blob';
+    import { useDomElement } from './useDomElement';
 
     const props = defineProps({
+        idx: { type: Number, default: 0 },
         id: { type: String, default: 'Blob' },
         borderRadius: { type: Number, default: null },
         speed: { type: Number, default: 1 },
@@ -19,18 +22,17 @@
 
         pos0: { type: Object, default: new Vector2() },
         scl0: { type: Number, default: 0 },
+        scl1: { type: Number, default: 0 },
+
+        rng: {
+            type: Function,
+            default: () => {
+                return 1;
+            },
+        },
     });
 
-    const viewport = useViewportResize(
-        ({ width, height }) => {
-            vViewport.set(width, height);
-            vBoundsParent.set(width - size.value, height * 2.5);
-            vPosStart.copy(vBoundsParent).multiply(props.pos0);
-        },
-        {
-            immediate: true,
-        }
-    );
+    const viewport = useViewportResize(() => resize(), { immediate: true });
     const size = computed(() => (0.1 + props.size) * (viewport.width * 0.25));
 
     const vViewport = new Vector2();
@@ -47,11 +49,17 @@
 
     const refRoot = ref(null);
 
-    const propsEl = useDomElement(refRoot, {
-        align: 'left',
-        s: props.scl0,
-    });
+    // const propsEl = useDomElement(refRoot, { align: 'center' });
+    const propsEl = useDomElement(refRoot, { align: 'left' });
     useBlob(refRoot, { id: props.id, borderRadius: props.borderRadius });
+
+    const vScale0Spring = new Vector2();
+
+    const { set: setScaleSpring } = useSpring(
+        vScale0Spring,
+        { stiffness: 100, damping: 10, mass: 1 },
+        ['x', 'y']
+    );
 
     watch(
         size,
@@ -62,12 +70,24 @@
         { immediate: true }
     );
 
+    const resize = () => {
+        const { width, height } = viewport;
+        vViewport.set(width, height);
+        vBoundsParent.set(width - size.value, height * 2.5);
+        vPosStart.copy(vBoundsParent).multiply(props.pos0);
+    };
+
     onMounted(() => {
         updateScroll();
     });
+
+    const vel = { set: 0, curr: 0, last: 0, needsUpdate: false };
     const updateScroll = ({ velocity = 0, direction = 0 } = {}) => {
         propsScroll.direction = direction;
-        vPosOffset.y -= velocity * props.speed;
+        vPosOffset.y -= velocity * 0.8 * props.speed;
+
+        vel.set = velocity / 25;
+        vel.needsUpdate = true;
     };
 
     scroller.events.on('scroll', (e) => {
@@ -75,16 +95,61 @@
         updateScroll({ velocity, direction });
     });
 
+    let breathOff;
+    let breathSpeed;
+    let tBreath = 0;
+
+    watch(
+        () => props.rng,
+        () => {
+            breathOff = props.rng() * Math.PI * 2;
+            breathSpeed = props.rng() * 0.02;
+            console.log('🚀 ~ breathOff:', breathOff);
+        }
+    );
+
     useRafBool(active, () => {
-        vPosAmbient.y -= 0.4 * (propsScroll.direction || 1) * props.speed;
-        const x = vPosStart.x + vPosOffset.x + vPosAmbient.x;
-        const y = vPosStart.y + vPosOffset.y + vPosAmbient.y;
+        const dt = vel.set - vel.last;
+        vel.last = vel.set;
+        vel.curr += dt;
+        vel.curr = clamp(vel.curr, -6, 6);
+
+        const velAbs = Math.abs(vel.curr);
+
+        setScaleSpring({ x: velAbs * -0.2, y: Math.abs(vel.curr) * 0.12 });
+
+        if (!vel.needsUpdate) vel.curr = 0;
+        vel.needsUpdate = false;
+
+        vPosAmbient.y -= 0.3 * (propsScroll.direction || 1) * props.speed;
+        const { x, y } = vPosStart.clone().add(vPosOffset).add(vPosAmbient);
+
+        const getScale = () => {
+            tBreath += breathSpeed;
+
+            const { scl0, scl1 } = props;
+
+            const sclBreath = 1 + 0.06 * Math.sin(tBreath + breathOff);
+
+            const x = sclBreath * (scl0 + scl1 + vScale0Spring.x);
+            const y = sclBreath * (scl0 + scl1 + vScale0Spring.y);
+
+            return [x, y];
+        };
+
+        const sc = getScale();
 
         propsEl.px = x;
         propsEl.py = -viewport.height + modulo(y, vBoundsParent.y);
+
+        propsEl.s = sc;
     });
 
-    defineExpose({ el: refRoot });
+    onBeforeUnmount(() => {
+        active.value = false;
+    });
+
+    defineExpose({ el: refRoot, resize, vectors: { vPosStart } });
 </script>
 
 <style lang="scss" scoped>

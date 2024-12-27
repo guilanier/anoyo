@@ -151,9 +151,9 @@
         // update rotation
         const xR = vPosLt.x - object.position.x;
         const yR = vPosLt.y - object.position.y;
-        // if (vPosLt.x !== object.position.x || vPosLt.y !== object.position.y)
+
         vPosLt.set(object.position.x, object.position.y);
-        object.rotation.z = Math.atan2(yR, xR);
+        object.rotation.z = Math.atan2(Math.PI + yR, xR);
     };
 
     useRafBool(open, () => update());
