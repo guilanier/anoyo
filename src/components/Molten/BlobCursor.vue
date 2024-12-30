@@ -30,6 +30,7 @@
     const vPointerLt = new Vector2();
     const vPointerVl = new Vector2();
 
+    const vPos = new Vector2();
     const vPosLt = new Vector2();
 
     const vWobble = new Vector2();
@@ -42,10 +43,7 @@
     });
     const propsTf = { sc0: 0, sc1: 1 };
 
-    const { set: setPositionDamp } = useDamp(propsObject, { lambda: hasTouch ? 20 : 10 }, [
-        'px',
-        'py',
-    ]);
+    const { set: setVPositionDamp } = useDamp(vPos, { lambda: hasTouch ? 20 : 10 }, ['x', 'y']);
     const { set: setPropsScaleSpring } = useSpring(
         propsTf,
         { stiffness: 60, damping: 6, mass: 1 },
@@ -112,11 +110,11 @@
         vWobble.x += vPointerVl.x * 0.4;
         vWobble.y += vPointerVl.y * 0.4;
 
-        setPositionDamp({ px: x, py: -y });
+        setVPositionDamp({ x: x, y: -y });
     };
 
     watch(isPointerDown, (bool) => {
-        if (bool) setPositionDamp({ px: pointer.x, py: -pointer.y });
+        if (bool) setVPositionDamp({ px: pointer.x, py: -pointer.y });
         setPropsScaleSpring({ sc0: bool ? 1 : 0 });
     });
 
@@ -145,8 +143,8 @@
         // update scale
         const { sc0, sc1 } = propsTf;
 
-        mesh.scale.x = vResolution.x * (sc0 + sc1) + vWobbleSin.x * 8;
-        mesh.scale.y = vResolution.y * (sc0 + sc1) + vWobbleSin.y * -8;
+        mesh.scale.x = vResolution.x * (sc0 + sc1) + vWobbleSin.x * -6;
+        mesh.scale.y = vResolution.y * (sc0 + sc1) + vWobbleSin.y * 6;
 
         // update rotation
         const xR = vPosLt.x - object.position.x;
@@ -154,6 +152,9 @@
 
         vPosLt.set(object.position.x, object.position.y);
         object.rotation.z = Math.atan2(Math.PI + yR, xR);
+
+        propsObject.px = vPos.x;
+        propsObject.py = vPos.y;
     };
 
     useRafBool(open, () => update());
@@ -162,4 +163,6 @@
         const size = hasTouch ? 120 : clamp(width * 0.1, 120, 160);
         vResolution.set(size, size);
     }, true);
+
+    defineExpose({ vectors: { vPos, vPointer, vPointerVl } });
 </script>

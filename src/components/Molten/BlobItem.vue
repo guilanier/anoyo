@@ -6,7 +6,7 @@
     import { Vector2 } from 'three';
     import { computed, inject, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 
-    import { modulo } from '@resn/gozer-math';
+    import { inRange, modulo } from '@resn/gozer-math';
     import { clamp } from '@resn/gozer-math';
     import {
         ScrollerKey,
@@ -15,6 +15,7 @@
         useSpring,
         useViewportResize,
     } from '@resn/gozer-vue';
+    import { useDamp } from '@resn/gozer-vue';
 
     import { useBlob } from './providers/blob';
 
@@ -27,7 +28,9 @@
 
         pos0: { type: Object, default: new Vector2() },
         scl0: { type: Number, default: 0 },
-        scl1: { type: Number, default: 0 },
+        // scl1: { type: Number, default: 0 },
+
+        cursorVectors: { type: Object, default: null },
 
         rng: {
             type: Function,
@@ -46,15 +49,17 @@
     const vPosStart = new Vector2();
     const vPosOffset = new Vector2();
     const vPosAmbient = new Vector2();
+    const vPosImpact = new Vector2();
 
     const scroller = inject(ScrollerKey, {});
+
     const propsScroll = reactive({ direction: 0 });
+    const propsMotion = reactive({ impact: false, invalidate: false });
 
     const active = ref(true);
 
     const refRoot = ref(null);
 
-    // const propsEl = useDomElement(refRoot, { align: 'center' });
     const propsEl = useDomElement(refRoot, { align: 'left' });
     useBlob(refRoot, { id: props.id, borderRadius: props.borderRadius });
 
@@ -65,6 +70,7 @@
         { stiffness: 100, damping: 10, mass: 1 },
         ['x', 'y']
     );
+    const { set: setVPosImpactDamp } = useDamp(vPosImpact, { lambda: 4 }, ['x', 'y']);
 
     watch(
         size,
@@ -89,7 +95,7 @@
     const vel = { set: 0, curr: 0, last: 0, needsUpdate: false };
     const updateScroll = ({ velocity = 0, direction = 0 } = {}) => {
         propsScroll.direction = direction;
-        vPosOffset.y -= velocity * props.speed;
+        vPosOffset.y -= velocity * 1.2 * props.speed;
 
         vel.set = velocity / 30;
         vel.needsUpdate = true;
@@ -126,17 +132,17 @@
         vel.needsUpdate = false;
 
         vPosAmbient.y -= 0.3 * (propsScroll.direction || 1) * props.speed;
-        const { x, y } = vPosStart.clone().add(vPosOffset).add(vPosAmbient);
+        const { x, y } = vPosStart.clone().add(vPosOffset).add(vPosAmbient).add(vPosImpact);
 
         const getScale = () => {
             tBreath += breathSpeed;
 
-            const { scl0, scl1 } = props;
+            const { scl0 } = props;
 
             const sclBreath = 1 + 0.06 * Math.sin(tBreath + breathOff);
 
-            const x = sclBreath * (scl0 + scl1 + vScale0Spring.x);
-            const y = sclBreath * (scl0 + scl1 + vScale0Spring.y);
+            const x = sclBreath * (scl0 + vScale0Spring.x);
+            const y = sclBreath * (scl0 + vScale0Spring.y);
 
             return [x, y];
         };
@@ -147,7 +153,38 @@
         propsEl.py = -viewport.height + modulo(y, vBoundsParent.y);
 
         propsEl.s = sc;
+        /* 
+        if (props.cursorVectors) {
+            const { vPos: vPosCursor, vPointer: vPointerCursor } = props.cursorVectors;
+            checkBounds(vPosCursor);
+        } */
     });
+
+    /*const checkBounds = ({ x, y }) => {
+        const xEl = propsEl.px;
+        const yEl = propsEl.py;
+
+        const wEl = propsEl.w * (propsEl.s[0] || 1);
+        const hEl = propsEl.h * (propsEl.s[1] || 1);
+
+        propsMotion.impact = inRange(x, xEl, xEl + wEl) && inRange(-y, yEl, yEl + hEl);
+    };
+
+         watch(
+        () => propsMotion.impact,
+        (bool) => {
+            if (!props.cursorVectors || propsMotion.invalidate) return;
+            const { vPos, vPointer, vPointerVl } = props.cursorVectors;
+            setVPosImpactDamp({
+                x: vPosImpact.x + vPointerVl.x * 10,
+                y: vPosImpact.y + vPointerVl.y * 10,
+            });
+            if (!bool) {
+                propsMotion.invalidate = true;
+                setTimeout(() => (propsMotion.invalidate = false), 400);
+            }
+        }
+    ); */
 
     onBeforeUnmount(() => {
         active.value = false;

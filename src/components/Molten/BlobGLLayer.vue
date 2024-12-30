@@ -1,6 +1,6 @@
 <template>
     <BlobGLItem ref="refItems" v-for="_ in blobs" :key="_.id" v-bind="_" />
-    <BlobCursor :open="true" />
+    <BlobCursor ref="refCursor" :open="true" />
 </template>
 
 <script setup>
@@ -28,6 +28,8 @@
     provide('addTo', object);
 
     const refItems = ref([]);
+    const refCursor = ref(null);
+
     const hasPostProcessing = true;
 
     const showCursor = ref(false);
@@ -92,4 +94,6 @@
     };
 
     events.on('render', render);
+
+    defineExpose({ refCursor });
 </script>

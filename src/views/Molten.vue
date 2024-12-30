@@ -1,6 +1,7 @@
 <template>
     <div class="molten">
-        <TweakPane :hiddenOnStart="nodeEnv == 'production'">
+        <TweakPane :hiddenOnStart="true">
+            <!-- <TweakPane :hiddenOnStart="nodeEnv == 'production'"> -->
             <SmoothScrollLenis :options="{ infinite: true, lerp: 0.1, duration: 1.2 }">
                 <Renderer
                     ref="refRenderer"
@@ -9,7 +10,7 @@
                     :autoRender="true"
                 >
                     <BlobProvider>
-                        <BlobGLLayer />
+                        <BlobGLLayer ref="refGLLayer" />
                         <div class="molten__items">
                             <div v-for="props in itemsProps" :key="props.id">
                                 <BlobItem ref="refItems" v-bind="props" />
@@ -36,6 +37,7 @@
     import { BlobProvider } from '@/components/Molten/providers/blob';
 
     const refItems = shallowRef([]);
+    const refGLLayer = ref();
 
     const propsReactive = reactive({
         sclTest: 0,
@@ -43,13 +45,14 @@
     });
 
     const nItems = 12;
-    // const nItems = 15;
+    // const nItems = 1;
     const itemsProps = ref(
         new Array(nItems).fill(0).map((_, i) => ({
             idx: i,
             pos0: new Vector2(),
             scl0: 1,
             speed: 1,
+            cursorVectors: {},
         }))
     );
 
@@ -62,22 +65,26 @@
 
     onMounted(() => {
         const { pane } = window;
+        const { vectors: cursorVectors } = refGLLayer.value.refCursor;
+
+        itemsProps.value.forEach((_, i) => {
+            _.cursorVectors = cursorVectors;
+        });
 
         pane.addBinding(propsReactive, 'step', { step: 1, min: 0, max: 100 }).on('change', (ev) =>
             updatePropsWidthSeed(~~(Math.random() * 1000))
         );
-        pane.addBinding(propsReactive, 'sclTest', {
+        /* pane.addBinding(propsReactive, 'sclTest', {
             step: 0.001,
             min: 0,
             max: 4,
         }).on('change', (ev) => {
             itemsProps.value.forEach((_, i) => {
                 _.scl1 = ev.value;
-                // _.speed = 2 - _.scl0;
             });
-        });
+        }); */
 
-        updatePropsWidthSeed(624);
+        updatePropsWidthSeed(639);
     });
 
     const updatePropsWidthSeed = (seed) => {
@@ -88,7 +95,6 @@
             _.pos0.set(rng(), rng());
             _.scl0 = rng() * 0.5 + 0.5;
             _.speed = rng() * 1 + 0.5;
-            // _.speed = 2 - _.scl0;
 
             refItems.value[i].resize();
         });
