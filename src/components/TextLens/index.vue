@@ -27,16 +27,30 @@
 </template>
 
 <script setup>
+    import { OrthographicCamera } from 'three';
     import { inject, onMounted, reactive, ref, shallowRef, unref, watch } from 'vue';
 
     import { JSONLoader, TextureLoader } from '@resn/gozer-loading';
     import { usePane } from '@resn/gozer-vue';
+    import { useViewportResize } from '@resn/gozer-vue';
     import { useLoaderContext } from '@resn/gozer-vue/loading';
 
     import { AssetsProvider } from './AssetsProvider';
     import Text from './Text.vue';
 
-    const { renderer, scene, registerRenderFn, orthoCamera } = inject('renderer');
+    const { renderer, scene, registerRenderFn } = inject('renderer');
+
+    const orthoCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 10);
+    orthoCamera.layers.set(1);
+
+    useViewportResize(({ width, height }) => {
+        orthoCamera.left = -width / 2;
+        orthoCamera.right = width / 2;
+        orthoCamera.top = height / 2;
+        orthoCamera.bottom = -height / 2;
+
+        orthoCamera.updateProjectionMatrix();
+    });
 
     const context = useLoaderContext({
         concurrency: 10,

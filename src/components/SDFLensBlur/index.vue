@@ -64,11 +64,6 @@
 
     const { isDown: pointerDown } = useWindowPointer(({ x, y }) => {
         const dpr = renderer.getPixelRatio();
-        // const vResolution0 = vResolution.clone().divideScalar(dpr);
-        /* 
-        vPointerNorm.set((p.x / vResolution0.x) * 2 - 1, -(p.y / vResolution0.y) * 2 + 1);
-        vPointerNormLast.copy(vPointerNorm); */
-
         setPointerDamped({ x: x * dpr, y: vResolution.y - y * dpr });
     });
 

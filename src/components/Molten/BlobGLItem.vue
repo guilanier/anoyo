@@ -1,7 +1,7 @@
 <template></template>
 
 <script setup>
-    import { Color, Mesh, PlaneGeometry, ShaderMaterial, Vector2 } from 'three';
+    import { Mesh, PlaneGeometry, ShaderMaterial, Vector2 } from 'three';
     import { onUnmounted } from 'vue';
 
     import glslUnits from '@resn/gozer-glsl/functions/units.glsl';
@@ -63,11 +63,6 @@
     mesh.name = 'MeshBlob';
     mesh.layers.set(1);
     object.add(mesh);
-
-    // useRaf(() => {
-    //     const { x, y } = vPosition;
-    //     object.position.set(x, y, 0);
-    // });
 
     const update = (data) => {
         object.visible = data.visible;

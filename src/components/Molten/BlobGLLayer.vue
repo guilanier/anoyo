@@ -4,7 +4,7 @@
 </template>
 
 <script setup>
-    import { Group, ShaderMaterial, WebGLRenderTarget } from 'three';
+    import { Group, OrthographicCamera, ShaderMaterial, WebGLRenderTarget } from 'three';
     import { inject, onMounted, provide, ref } from 'vue';
 
     import { isHandheld } from '@resn/gozer-env';
@@ -18,7 +18,10 @@
     import { useBlobs } from './providers/blob';
 
     const { blobs, events } = useBlobs();
-    const { scene, renderer, orthoCamera } = inject('renderer');
+    const { scene, renderer } = inject('renderer');
+
+    const orthoCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 10);
+    orthoCamera.layers.set(1);
 
     const object = new Group();
     scene.add(object);
@@ -55,6 +58,13 @@
     const passOut = new ShaderPass(renderer, { shader });
 
     useViewportResize(({ width, height }) => {
+        orthoCamera.left = -width / 2;
+        orthoCamera.right = width / 2;
+        orthoCamera.top = height / 2;
+        orthoCamera.bottom = -height / 2;
+
+        orthoCamera.updateProjectionMatrix();
+
         const dpr = Math.max(renderer.getPixelRatio(), 2);
         passOut.setSize(width * dpr, height * dpr);
         fbo.setSize(width * dpr, height * dpr);

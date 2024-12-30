@@ -42,7 +42,7 @@
         step: 0,
     });
 
-    const nItems = 10;
+    const nItems = 12;
     // const nItems = 15;
     const itemsProps = ref(
         new Array(nItems).fill(0).map((_, i) => ({
@@ -64,7 +64,7 @@
         const { pane } = window;
 
         pane.addBinding(propsReactive, 'step', { step: 1, min: 0, max: 100 }).on('change', (ev) =>
-            updateProps(~~(Math.random() * 1000))
+            updatePropsWidthSeed(~~(Math.random() * 1000))
         );
         pane.addBinding(propsReactive, 'sclTest', {
             step: 0.001,
@@ -77,10 +77,10 @@
             });
         });
 
-        updateProps(676);
+        updatePropsWidthSeed(624);
     });
 
-    const updateProps = (seed) => {
+    const updatePropsWidthSeed = (seed) => {
         const rng = new Alea(seed);
         itemsProps.value.forEach((_, i) => {
             _.rng = rng;

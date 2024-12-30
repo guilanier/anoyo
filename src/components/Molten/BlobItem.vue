@@ -8,10 +8,15 @@
 
     import { modulo } from '@resn/gozer-math';
     import { clamp } from '@resn/gozer-math';
-    import { ScrollerKey, useRafBool, useSpring, useViewportResize } from '@resn/gozer-vue';
+    import {
+        ScrollerKey,
+        useDomElement,
+        useRafBool,
+        useSpring,
+        useViewportResize,
+    } from '@resn/gozer-vue';
 
     import { useBlob } from './providers/blob';
-    import { useDomElement } from './useDomElement';
 
     const props = defineProps({
         idx: { type: Number, default: 0 },
@@ -84,9 +89,9 @@
     const vel = { set: 0, curr: 0, last: 0, needsUpdate: false };
     const updateScroll = ({ velocity = 0, direction = 0 } = {}) => {
         propsScroll.direction = direction;
-        vPosOffset.y -= velocity * 0.8 * props.speed;
+        vPosOffset.y -= velocity * props.speed;
 
-        vel.set = velocity / 25;
+        vel.set = velocity / 30;
         vel.needsUpdate = true;
     };
 

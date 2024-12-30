@@ -1,6 +1,4 @@
 Molten:
-    ■ fix offset center x scale / vel (ask Marcos for deployment gozer-vue)
-    ■ refine vel scroll
     ■ spring impact cursor || offset on impact @low
     ■ video & tweet
 SpaceTest:
@@ -12,6 +10,8 @@ Others:
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ fix offset center x scale / vel (ask Marcos for deployment gozer-vue) @done(24-12-30 15:23) @project(Molten)
+    ✓ refine vel scroll @done(24-12-30 15:23) @project(Molten)
     ✓ port breath over seed @done(24-12-27 20:21) @project(Molten.breathing blobs)
     ✓ stretch or scale with velocity (fix offset vel) @done(24-12-24 17:23) @project(Molten)
     ✓ refine cursor motion @done(24-12-24 17:23) @project(Molten)

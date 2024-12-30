@@ -3,7 +3,15 @@
 </template>
 
 <script setup>
-    import { Color, Mesh, PlaneGeometry, ShaderMaterial, Vector2, Vector3 } from 'three';
+    import {
+        Color,
+        Mesh,
+        OrthographicCamera,
+        PlaneGeometry,
+        ShaderMaterial,
+        Vector2,
+        Vector3,
+    } from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     import { inject, reactive, watch } from 'vue';
 
@@ -12,8 +20,11 @@
 
     import fragmentShader from './2024-10-03-15:35:46-raymarch:spheres-space.frag';
 
-    const { renderer, scene, registerRenderFn, camera, orthoCamera } = inject('renderer');
+    const { renderer, scene, registerRenderFn, camera } = inject('renderer');
     camera.position.set(-0.821371, 3.52016, 1.17339);
+
+    const orthoCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 100);
+    orthoCamera.layers.set(1);
 
     const vResolution = new Vector2();
     const vCamera = new Vector3();
@@ -47,9 +58,17 @@
     const mesh = new Mesh(new PlaneGeometry(1, 1), shader);
     mesh.name = 'Mesh';
     mesh.layers.set(1);
+
     scene.add(mesh);
 
     useViewportResize(({ width, height }) => {
+        orthoCamera.left = -width / 2;
+        orthoCamera.right = width / 2;
+        orthoCamera.top = height / 2;
+        orthoCamera.bottom = -height / 2;
+
+        orthoCamera.updateProjectionMatrix();
+
         mesh.scale.set(width, height, 1);
         vResolution.set(width, height);
     });
