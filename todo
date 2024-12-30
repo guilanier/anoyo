@@ -1,5 +1,6 @@
 Molten:
     ■ fix offset center x scale / vel (ask Marcos for deployment gozer-vue)
+    ■ refine vel scroll
     ■ spring impact cursor || offset on impact @low
     ■ video & tweet
 SpaceTest:

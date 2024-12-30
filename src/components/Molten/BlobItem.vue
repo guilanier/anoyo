@@ -104,7 +104,6 @@
         () => {
             breathOff = props.rng() * Math.PI * 2;
             breathSpeed = props.rng() * 0.02;
-            console.log('🚀 ~ breathOff:', breathOff);
         }
     );
 
