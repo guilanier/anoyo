@@ -3,28 +3,28 @@ import { defineComponent, ref, provide, inject } from 'vue';
 
 import { useRaf } from '@resn/gozer-vue';
 
-export const BlobKey = 'BLOB_KEY';
+export const MoltenKey = 'BLOB_KEY';
 
-export const useBlobs = () => {
-    const blob = inject(BlobKey, { events: null, blobs: null });
+export const useMoltens = () => {
+    const blob = inject(MoltenKey, { events: null, blobs: null });
     if (!blob) {
-        throw new Error('useBlob must be used within a BlobProvider');
+        throw new Error('useMolten must be used within a MoltenProvider');
     }
     return blob;
 };
 
-export const BlobProvider = defineComponent({
+export const MoltenProvider = defineComponent({
     setup() {
         const blobs = ref([]);
 
         const active = ref(false);
 
-        const registerBlob = (obj) => {
+        const registerMolten = (obj) => {
             // renderQueue.splice(index, 0, {fn, index});
             blobs.value.push(obj);
         };
 
-        const unregisterBlob = (obj) => {
+        const unregisterMolten = (obj) => {
             const index = blobs.value.findIndex((item) => item.id === obj.id);
             if (index > -1) {
                 blobs.value.splice(index, 1);
@@ -46,7 +46,7 @@ export const BlobProvider = defineComponent({
         // useOnScroll(update);
         useRaf(update);
 
-        provide(BlobKey, { blobs, registerBlob, unregisterBlob, events });
+        provide(MoltenKey, { blobs, registerMolten, unregisterMolten, events });
     },
 
     render() {

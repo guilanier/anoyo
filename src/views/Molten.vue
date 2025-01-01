@@ -2,21 +2,21 @@
     <div class="molten">
         <TweakPane :hiddenOnStart="true">
             <!-- <TweakPane :hiddenOnStart="nodeEnv == 'production'"> -->
-            <SmoothScrollLenis :options="{ infinite: true, lerp: 0.1, duration: 1.2 }">
+            <SmoothScrollLenis :options="{ infinite: true, lerp: 0.1, duration: 1 }">
                 <Renderer
                     ref="refRenderer"
                     :antialias="false"
                     :autoResize="true"
                     :autoRender="true"
                 >
-                    <BlobProvider>
-                        <BlobGLLayer ref="refGLLayer" />
+                    <MoltenProvider>
+                        <MoltenGLLayer ref="refGLLayer" />
                         <div class="molten__items">
                             <div v-for="props in itemsProps" :key="props.id">
-                                <BlobItem ref="refItems" v-bind="props" />
+                                <MoltenItem ref="refItems" v-bind="props" />
                             </div>
                         </div>
-                    </BlobProvider>
+                    </MoltenProvider>
                 </Renderer>
             </SmoothScrollLenis>
         </TweakPane>
@@ -32,9 +32,9 @@
     import { gsap } from '@resn/gsap';
     import { ScrollTrigger } from '@resn/gsap/all';
 
-    import BlobGLLayer from '@/components/Molten/BlobGLLayer.vue';
-    import BlobItem from '@/components/Molten/BlobItem.vue';
-    import { BlobProvider } from '@/components/Molten/providers/blob';
+    import MoltenGLLayer from '@/components/Molten/MoltenGLLayer.vue';
+    import MoltenItem from '@/components/Molten/MoltenItem.vue';
+    import { MoltenProvider } from '@/components/Molten/providers/molten';
 
     const refItems = shallowRef([]);
     const refGLLayer = ref();
@@ -45,7 +45,6 @@
     });
 
     const nItems = 12;
-    // const nItems = 1;
     const itemsProps = ref(
         new Array(nItems).fill(0).map((_, i) => ({
             idx: i,
@@ -74,15 +73,6 @@
         pane.addBinding(propsReactive, 'step', { step: 1, min: 0, max: 100 }).on('change', (ev) =>
             updatePropsWidthSeed(~~(Math.random() * 1000))
         );
-        /* pane.addBinding(propsReactive, 'sclTest', {
-            step: 0.001,
-            min: 0,
-            max: 4,
-        }).on('change', (ev) => {
-            itemsProps.value.forEach((_, i) => {
-                _.scl1 = ev.value;
-            });
-        }); */
 
         updatePropsWidthSeed(639);
     });

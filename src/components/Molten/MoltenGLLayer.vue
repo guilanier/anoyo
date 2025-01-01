@@ -1,6 +1,6 @@
 <template>
-    <BlobGLItem ref="refItems" v-for="_ in blobs" :key="_.id" v-bind="_" />
-    <BlobCursor ref="refCursor" :open="true" />
+    <MoltenGLItem ref="refItems" v-for="_ in blobs" :key="_.id" v-bind="_" />
+    <MoltenCursor ref="refCursor" :open="true" />
 </template>
 
 <script setup>
@@ -13,11 +13,11 @@
     import { ShaderPass } from '@resn/gozer-three/passes';
     import { useViewportResize } from '@resn/gozer-vue';
 
-    import BlobCursor from './BlobCursor.vue';
-    import BlobGLItem from './BlobGLItem.vue';
-    import { useBlobs } from './providers/blob';
+    import MoltenCursor from './MoltenCursor.vue';
+    import MoltenGLItem from './MoltenGLItem.vue';
+    import { useMoltens } from './providers/molten';
 
-    const { blobs, events } = useBlobs();
+    const { blobs, events } = useMoltens();
     const { scene, renderer } = inject('renderer');
 
     const orthoCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 10);

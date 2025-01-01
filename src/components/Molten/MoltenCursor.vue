@@ -38,7 +38,7 @@
 
     const { object, props: propsObject } = useThreeObject(null, {
         addToParent: true,
-        name: 'MeshBlobCursor',
+        name: 'MeshMoltenCursor',
         props: {},
     });
     const propsTf = { sc0: 0, sc1: 1 };

@@ -60,7 +60,7 @@
     });
 
     const mesh = new Mesh(new PlaneGeometry(1, 1), shader);
-    mesh.name = 'MeshBlob';
+    mesh.name = 'MeshMolten';
     mesh.layers.set(1);
     object.add(mesh);
 

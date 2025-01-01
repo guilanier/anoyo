@@ -1,5 +1,3 @@
-Molten:
-    ■ video & tweet
 SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
@@ -9,6 +7,8 @@ Others:
     ■ add space from glslPlayground
     ■ add sunrise from anoyo v0.1
 Archive:
+    ✓ adapt size and look for mobile @done(24-12-31 13:06) @project(Molten)
+    ✓ tweet @done(24-12-31 13:06) @project(Molten)
     X spring impact cursor || offset on impact @low @cancelled(24-12-30 17:06) @project(Molten)
     ✓ fix offset center x scale / vel (ask Marcos for deployment gozer-vue) @done(24-12-30 15:23) @project(Molten)
     ✓ refine vel scroll @done(24-12-30 15:23) @project(Molten)
