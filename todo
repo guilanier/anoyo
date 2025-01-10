@@ -1,13 +1,15 @@
+Gallery: 
+    ■ start codrops video compile
 SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
     ■ colors updates
-Others:
-    ■ add oil / tulip from anoyo v0.1
-    ■ add space from glslPlayground
-    ■ add sunrise from anoyo v0.1
-    ■ add trip the light 
+
 Archive:
+    ✓ refine css @done(25-01-10 17:22) @project(Gallery)
+    ✓ maybe more colums for big screens @done(25-01-10 17:22) @project(Gallery)
+    ✓ medias (better cut for sdf lens) @done(25-01-10 15:56) @project(Gallery)
+    ✓ rework @done(25-01-09 16:53) @project(Home)
     ✓ adapt size and look for mobile @done(24-12-31 13:06) @project(Molten)
     ✓ tweet @done(24-12-31 13:06) @project(Molten)
     X spring impact cursor || offset on impact @low @cancelled(24-12-30 17:06) @project(Molten)

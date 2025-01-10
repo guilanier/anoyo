@@ -1,0 +1,29 @@
+{
+  "hash": "f89db80f20c07981836c8c0503e67c45c1dac267",
+  "input_size": 525517,
+  "output_size": 53502,
+  "reduction": 0.10180831447888461,
+  "input": "thumbnails/space.jpg",
+  "output": "thumbnails/space@lg.webp",
+  "modified": 1736520484226.449,
+  "changed": 1736520484227.8499,
+  "opts": {
+    "targetFiles": "**/*.{jpg,png,jpeg}",
+    "sizes": {
+      "lg": 1
+    },
+    "quality": 80,
+    "format": [
+      "webp"
+    ]
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "width": 1596,
+    "height": 1596
+  }
+}

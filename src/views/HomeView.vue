@@ -1,40 +1,27 @@
 <template>
     <div class="root">
-        <SandboxHub title="ANOYO —" :components="components" />
+        <Gallery title="Anoyo" :components="getComponents()" />
     </div>
 </template>
 
 <script setup>
-    import { SandboxHub } from '@resn/gozer-vue/sandbox';
-
-    import { routeInfo } from '@/route-info';
-
-    const components = Object.values(routeInfo)
-        .map((route) => {
-            const info = routeInfo[route.name] || {};
-            return { ...route, ...info };
-        })
-        .map((route) => ({
-            title: route.title || route.name,
-            path: (import.meta.env.BASE_URL + route.path).replace('//', '/'),
-            description: route.description,
-            category: route.category || '',
-        }))
-        .sort((a, b) => {
-            return a.category < b.category ? -1 : a.category > b.category ? 1 : 0;
-        });
+    import Gallery from '@/components/gallery/Gallery.vue';
+    import { getComponents } from '@/route-info';
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     @import '@resn/gozer-styles';
-    @import '@resn/gozer-vue/sandbox/styles';
 
-    $prefix: 'root';
-
-    .#{$prefix} {
-        @extend %themeVariables;
-
-        position: fixed;
-        inset: 0;
+    body {
+        background-color: #000;
+        scroll-behavior: smooth;
+    }
+    html {
+        @include desktop {
+            @include baseFontSizeVW(1024);
+        }
+        @include mobile {
+            @include baseFontSizeVW(620);
+        }
     }
 </style>

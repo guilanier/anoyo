@@ -155,12 +155,30 @@
 </script>
 
 <style lang="scss">
+    /* body {
+    width: 100vw;
+    position: relative;
+    background: black;
+    height: 100vh;
+    font-family: sans-serif;
+    overflow-y: hidden;
+}
+ */
+    #app {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+
     .demo {
         --path-length: -1;
         --path-dur: 0;
 
         position: fixed;
         inset: 0;
+
         user-select: none;
 
         cursor: pointer;

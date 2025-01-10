@@ -1,0 +1,29 @@
+{
+  "hash": "9e9854bd2b378f0b427468af901e3e15310a0521",
+  "input_size": 64656,
+  "output_size": 25964,
+  "reduction": 0.40157139321950014,
+  "input": "thumbnails/frame-clip-path.jpg",
+  "output": "thumbnails/frame-clip-path@lg.webp",
+  "modified": 1736526942035.0793,
+  "changed": 1736526942039.496,
+  "opts": {
+    "targetFiles": "**/*.{jpg,png,jpeg}",
+    "sizes": {
+      "lg": 1
+    },
+    "quality": 80,
+    "format": [
+      "webp"
+    ]
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "width": 1580,
+    "height": 1580
+  }
+}

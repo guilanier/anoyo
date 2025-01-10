@@ -1,0 +1,29 @@
+{
+  "hash": "7813cbbc4e7b6bf87d139373f414123c3a741e70",
+  "input_size": 91699,
+  "output_size": 10874,
+  "reduction": 0.11858362686615993,
+  "input": "videos/sdf-lens-poster.png",
+  "output": "videos/sdf-lens-poster@lg.webp",
+  "modified": 1736500563155.5388,
+  "changed": 1736500563155.5388,
+  "opts": {
+    "targetFiles": "**/*.{jpg,png,jpeg}",
+    "sizes": {
+      "lg": 1
+    },
+    "quality": 80,
+    "format": [
+      "webp"
+    ]
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "width": 1920,
+    "height": 1080
+  }
+}

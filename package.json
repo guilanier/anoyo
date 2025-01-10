@@ -5,12 +5,17 @@
     "type": "module",
     "scripts": {
         "build": "NODE_ENV=production vite build && cp dist/index.html dist/404.html",
+        "compress:images": "resn compression:img",
+        "compress:video": "resn compression:video",
+        "compress:video-posters": "resn poster:extract",
         "deploy": "gh-pages -d dist",
         "dev": "vite",
         "lint": "eslint --ext .js,.vue --ignore-path .gitignore --fix src",
         "preview": "vite preview"
     },
     "dependencies": {
+        "@resn/cli": "^1.8.6",
+        "@resn/compression-tools": "^2.3.0",
         "@resn/gozer-canvas": "^3.0.11",
         "@resn/gozer-color": "^3.0.3",
         "@resn/gozer-env": "^3.2.1",

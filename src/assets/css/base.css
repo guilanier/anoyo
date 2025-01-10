@@ -9,12 +9,7 @@ html {
 }
 
 body {
-    width: 100vw;
-    position: relative;
-    background: black;
-    height: 100vh;
     font-family: sans-serif;
-    overflow-y: hidden;
 }
 
 .gradient-border {
@@ -22,7 +17,6 @@ body {
     border-radius: 0.5rem;
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
-    width: full;
 }
 @media (prefers-color-scheme: light) {
     .gradient-border {
@@ -103,4 +97,9 @@ body {
     font-display: swap;
     font-weight: 400;
     font-style: bold;
+}
+
+@font-face {
+    font-family: 'Space Grotesk';
+    src: url('/fonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
 }

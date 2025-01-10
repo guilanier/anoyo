@@ -1,0 +1,29 @@
+{
+  "hash": "81f5b1d3ae8656e40c21596ac55636e014016cf8",
+  "input_size": 72154,
+  "output_size": 15874,
+  "reduction": 0.22000166310946032,
+  "input": "thumbnails/molten.jpg",
+  "output": "thumbnails/molten@lg.webp",
+  "modified": 1736517886349.8003,
+  "changed": 1736517886349.8896,
+  "opts": {
+    "targetFiles": "**/*.{jpg,png,jpeg}",
+    "sizes": {
+      "lg": 1
+    },
+    "quality": 80,
+    "format": [
+      "webp"
+    ]
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "width": 1600,
+    "height": 1600
+  }
+}

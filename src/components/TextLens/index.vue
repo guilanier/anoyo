@@ -154,7 +154,6 @@
 
             caret-color: #fff;
             color: transparent;
-            // color: rgba(255, 255, 255, 0.5);
 
             @include desktop {
                 font-size: 16rem;
