@@ -117,6 +117,9 @@
         --elm-br: 2rem;
 
         --gap: 2rem;
+        @media only screen and (min-width: 1920px) {
+            --gap: 1rem;
+        }
         @include mobile {
             --gap: 1.4rem;
         }

@@ -1,11 +1,10 @@
-Gallery: 
-    ■ start codrops video compile
 SpaceTest:
     ■ rename
     ■ add interaction (rise up + camera motion + light motion)
     ■ colors updates
 
 Archive:
+    ✓ start codrops video compile @done(25-01-10 18:43) @project(Gallery)
     ✓ refine css @done(25-01-10 17:22) @project(Gallery)
     ✓ maybe more colums for big screens @done(25-01-10 17:22) @project(Gallery)
     ✓ medias (better cut for sdf lens) @done(25-01-10 15:56) @project(Gallery)
