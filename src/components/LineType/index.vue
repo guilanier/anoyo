@@ -261,7 +261,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '@resn/gozer-styles';
+    @use '@resn/gozer-styles' as *;
 
     .line-type {
         position: fixed;

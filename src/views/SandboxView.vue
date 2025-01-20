@@ -11,8 +11,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '@resn/gozer-styles';
-    @import '@resn/gozer-vue/sandbox/styles';
+    @use '@resn/gozer-vue/sandbox/styles' as *;
 
     $prefix: 'root';
 

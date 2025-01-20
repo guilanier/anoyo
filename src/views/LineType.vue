@@ -114,8 +114,7 @@
 </script>
 
 <style lang="scss">
-    @import '@resn/gozer-styles';
-    @import '@resn/gozer-styles/base/document';
+    @use '@resn/gozer-styles' as *;
 
     html {
         &.lenis-scrolling {

@@ -119,8 +119,7 @@
     });
 </script>
 <style lang="scss">
-    @import '@resn/gozer-styles/base/document';
-    @import '@resn/gozer-styles';
+    @use '@resn/gozer-styles' as *;
 
     html {
         @include desktop {

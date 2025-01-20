@@ -20,7 +20,6 @@ export const routeInfo = {
         image: './thumbnails/frame-clip-path@lg.webp',
         video: './videos/frame-clip-path@lg.webm',
     },
-
     TextLens: {
         name: 'Text Lens',
         path: '/text-lens',
@@ -35,11 +34,12 @@ export const routeInfo = {
         image: './thumbnails/molten@lg.webp',
         video: './videos/molten@lg.webm',
     },
-    SphereSpaceNeon: {
-        name: 'Sphere Space Neon',
-        path: '/sphere-space-neon',
+    RaymarchSphere: {
+        name: '·',
+        path: '/raymarch-sphere',
+        description: '3d raymarching sphere',
         componentName: 'ComponentGl',
-        image: './thumbnails/space@lg.webp',
+        image: './thumbnails/raymarch-sphere@lg.webp',
     },
 };
 

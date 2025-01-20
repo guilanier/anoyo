@@ -10,7 +10,7 @@
 </script>
 
 <style lang="scss">
-    @import '@resn/gozer-styles';
+    @use '@resn/gozer-styles' as *;
 
     body {
         background-color: #000;

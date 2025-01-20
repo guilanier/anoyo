@@ -1,9 +1,16 @@
-SpaceTest:
-    ■ rename
-    ■ add interaction (rise up + camera motion + light motion)
+General:
+    ■ add little 3d icon (modelize svg to 3d)
+Interpunct:
+    ■ check cosmos
+    ■ add interaction (rise up + camera motion + light motion + bluriness)
     ■ colors updates
 
 Archive:
+    ✓ rename @done(25-01-20 17:34) @project(SpaceTest)
+    ✓ fix rollover @done(25-01-20 12:46) @project(General)
+    ✓ roll-up gozer-styles @done(25-01-20 12:46) @project(General)
+    ✓ reveal items grid with fade @done(25-01-19 17:24) @project(General)
+    ✓ isolate card element into its own component @done(25-01-19 17:23) @project(General)
     ✓ start codrops video compile @done(25-01-10 18:43) @project(Gallery)
     ✓ refine css @done(25-01-10 17:22) @project(Gallery)
     ✓ maybe more colums for big screens @done(25-01-10 17:22) @project(Gallery)

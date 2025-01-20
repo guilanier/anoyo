@@ -3,39 +3,23 @@
         <div class="glry__wrapper">
             <h1 class="glry__title">{{ title }}</h1>
             <div class="glry__grid" data-lenis-prevent>
-                <a
-                    v-for="(item, i) in components"
-                    class="card"
-                    :href="item.path"
-                    :key="item.title"
+                <Card
+                    v-for="(item, i) in componentsReversed"
+                    v-bind="item"
+                    :key="item.id"
                     @mouseenter="iActive = i"
                     @mouseleave="iActive = null"
-                >
-                    <div class="card__content">
-                        <div class="card__video">
-                            <video
-                                v-if="item.video && iActive === i"
-                                autoplay
-                                muted
-                                loop
-                                playsinline
-                            >
-                                <source :src="item.video" type="video/webm" />
-                            </video>
-                        </div>
-                        <img class="card__image" :src="item.image" :alt="item.title" />
-                        <div class="card__hover">
-                            <span class="card__title">{{ item.title }}</span>
-                        </div>
-                    </div>
-                </a>
+                    :active="iActive === i"
+                />
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-    import { defineProps, ref } from 'vue';
+    import { computed, defineProps, ref } from 'vue';
+
+    import Card from './Card.vue';
 
     const props = defineProps({
         title: { default: 'Sandbox Hub' },
@@ -52,6 +36,8 @@
     });
 
     const iActive = ref();
+
+    const componentsReversed = computed(() => [...props.components].reverse());
 
     /* 
     const loadConfigs = () => {
@@ -98,7 +84,7 @@
 </script>
 
 <style lang="scss">
-    @import './styles/index.scss';
+    @use './styles/index.scss' as *;
 
     $prefix: 'glry';
 
@@ -181,6 +167,7 @@
         border: 1px var(--border-color) solid;
 
         grid-template-columns: repeat(3, 1fr);
+        grid-auto-flow: dense;
 
         @media only screen and (min-width: 1920px) {
             grid-template-columns: repeat(5, 1fr);
@@ -190,80 +177,6 @@
             grid-template-columns: repeat(2, 1fr);
             margin: var(--gap);
             padding: calc(var(--gap) * 1.5);
-        }
-    }
-
-    .card {
-        position: relative;
-        overflow: hidden;
-
-        &__content {
-            position: relative;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            aspect-ratio: 1 / 1;
-        }
-
-        &__image,
-        &__video {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            transition: transform 700ms;
-
-            // Nested hover state
-            .card:hover & {
-                transform: scale(1.05);
-            }
-        }
-
-        &__video {
-            position: absolute;
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 1000ms;
-
-            video {
-                height: 100%;
-                width: 100%;
-            }
-
-            .card:hover & {
-                opacity: 1;
-            }
-        }
-
-        &__hover {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, black, rgba(0, 0, 0, 0.4), transparent);
-            opacity: 0;
-            transition: opacity 300ms;
-            display: flex;
-            align-items: flex-end;
-            padding: 1em;
-            z-index: 2;
-
-            // Nested hover state
-            .card:hover & {
-                opacity: 1;
-            }
-        }
-
-        &:active {
-            .card__hover:after {
-                content: '';
-                position: absolute;
-                background-color: rgba(0, 0, 0, 0.6);
-                inset: 0;
-            }
-        }
-
-        &__title {
-            position: relative;
-            color: white;
-            font-size: 1.2em;
         }
     }
 </style>
