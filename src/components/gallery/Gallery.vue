@@ -103,14 +103,14 @@
         --elm-br: 2rem;
 
         --gap: 2rem;
+        --gap-divided: calc(var(--gap) / 2);
+
         @media only screen and (min-width: 1920px) {
             --gap: 1rem;
         }
         @include mobile {
             --gap: 1.4rem;
         }
-
-        --gap-divided: calc(var(--gap) / 2);
     }
 
     @media (prefers-color-scheme: light) {
@@ -129,12 +129,11 @@
         color: var(--white);
         line-height: 1.5;
         padding: calc(var(--gap) * 2);
+        font-size: min(15px, 1rem);
 
         @include mobile {
             padding: var(--gap);
         }
-
-        font-size: min(15px, 1rem);
     }
 
     .#{$prefix}__title {

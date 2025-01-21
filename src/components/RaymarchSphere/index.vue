@@ -187,7 +187,7 @@
         // ― uniforms
         shader.uniforms.u_time.value = t;
         shader.uniforms.u_scSphere.value = lerp(bulb, 1.2, 1.4);
-        shader.uniforms.u_unionSphere.value = lerp(bulb, 2.2, 1);
+        shader.uniforms.u_unionSphere.value = lerp(bulb, 2.2, 1.2);
 
         vCamera.copy(camera.position);
     });
