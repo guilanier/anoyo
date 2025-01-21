@@ -52,6 +52,7 @@
         mesh = new Mesh(new PlaneGeometry(1, 1), shader);
         mesh.scale.set(window.innerWidth, window.innerHeight, 1);
         mesh.layers.set(1);
+
         scene.add(mesh);
     };
 

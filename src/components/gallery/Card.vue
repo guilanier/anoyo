@@ -11,7 +11,7 @@
                 class="card__image"
                 :src="image"
                 :alt="title"
-                :class="{ loaded: thumbLoaded }"
+                :class="{ loaded: isLoadedThumb }"
                 @load="onImageLoad"
             />
         </div>
@@ -36,17 +36,13 @@
         active: { type: Boolean },
     });
 
-    const thumbLoaded = ref(false);
     const refThumb = ref(null);
 
-    const onImageLoad = () => {
-        thumbLoaded.value = true;
-    };
+    const isLoadedThumb = ref(false);
+    const onImageLoad = () => (isLoadedThumb.value = true);
 
     onMounted(() => {
-        if (refThumb.value.complete) {
-            onImageLoad();
-        }
+        if (refThumb.value.complete) onImageLoad();
     });
 </script>
 

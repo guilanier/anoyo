@@ -15,6 +15,11 @@ uniform vec3 u_light;
 uniform vec3 u_lightColor;
 uniform float u_time;
 
+uniform vec3 u_posSphere;
+uniform float u_scSphere;
+uniform float u_unionSphere;
+
+
 uniform vec2 u_resolution;
 
 #define uResolution u_resolution
@@ -45,13 +50,13 @@ uniform vec2 u_resolution;
 #define RAYMARCH_MIN_DIST 0.01
 #define RAYMARCH_MAX_DIST 10.0
 
-#define LIGHT_POSITION vec3(sin(u_time * 1.0) * 1.0, sin(u_time * 0.2) * 2.0, - cos(u_time * 0.2) * -2.0)
+#define LIGHT_POSITION u_light
 #define LIGHT_COLOR COLOR_LIGHT
 
-#include "lygia/space/ratio.glsl"
 #include "lygia/sdf.glsl"
 #include "lygia/color/space/linear2gamma.glsl"
 #include "lygia/space/scale.glsl"
+#include "lygia/space/ratio.glsl"
 
 // SHADING
 #define RAYMARCH_SHADING_FNC raymarchShading
@@ -109,26 +114,19 @@ Material raymarchMap(vec3 pos) {
     float t0 = u_time / 2.0;
     
     vec3 p0 = pos;
-    p0 += vec3(0.0, 0.3, 0.0);
-    p0.y += - 1.0 + sin(u_time * 1.0) * 1.0;
-    
-    vec3 p1 = pos;
-    p1 += vec3(
-        sin(t0 * -1.0) * 1.0,
-        cos(t0 * 0.6) * 0.4,
-        sin(t0 * -0.2) * 2.0
-    );
+    p0 += u_posSphere;
+    /* p0 += vec3(0.0, 0.3, 0.0);
+    p0.y += - 1.0 + sin(u_time * 1.0) * 1.0; */
     
     float sdPlane = planeSDF(pos);
     
     float sdSph0;
-    sdSph0 = sphereSDF(p0, 1.2);
-    
-    float sdSph1;
-    sdSph1 = sphereSDF(p1, 1.0);
+    sdSph0 = sphereSDF(p0, u_scSphere);
     
     Material res = materialNew(vec3(0.0), 0.0);
-    res.sdf = opUnion(sdSph0, sdPlane, 2.0);
+    
+    float s = abs(sin(t0 * 0.8) * 0.4);
+    res.sdf = opUnion(sdSph0, sdPlane, u_unionSphere);
     
     return res;
 }

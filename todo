@@ -1,15 +1,15 @@
 Raymarch Sphere:
-    add interaction:
-        ■ camera motion
-        ■ rise up
-        ■ light motion
-        ■ bluriness cursor
-    ■ colors updates / check cosmos
-    ■ tweet
+    ■ tweet and videos
 General:
     ■ add little 3d icon (modelize svg to 3d)
 
 Archive:
+    ✓ press to bulb and reinforce union and zoom (and slow-down sin) @done(25-01-21 17:53) @project(Raymarch Sphere.add interaction)
+    ✓ move around light motion @done(25-01-21 17:35) @project(Raymarch Sphere.add interaction)
+    ✓ intro @done(25-01-21 16:40) @project(Raymarch Sphere.add interaction)
+    ✓ colors updates / check cosmos? @done(25-01-21 16:14) @project(Raymarch Sphere)
+    ✓ rise up and loop @done(25-01-21 16:13) @project(Raymarch Sphere.add interaction)
+    ✓ camera motion @done(25-01-21 15:34) @project(Raymarch Sphere.add interaction)
     ✓ rename @done(25-01-20 17:34) @project(SpaceTest)
     ✓ fix rollover @done(25-01-20 12:46) @project(General)
     ✓ roll-up gozer-styles @done(25-01-20 12:46) @project(General)
