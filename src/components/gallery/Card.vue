@@ -14,11 +14,11 @@
                 :class="{ loaded: thumbLoaded }"
                 @load="onImageLoad"
             />
-            <div class="card__inner">
-                <div class="card__infos">
-                    <span class="card__title">{{ title }}</span>
-                    <span class="card__description" v-if="description">{{ description }}</span>
-                </div>
+        </div>
+        <div class="card__inner">
+            <div class="card__infos">
+                <span class="card__title">{{ title }}</span>
+                <span class="card__description" v-if="description">{{ description }}</span>
             </div>
         </div>
     </a>
@@ -53,29 +53,29 @@
 <style lang="scss" scoped>
     .card {
         position: relative;
-        overflow: hidden;
+        overflow: clip;
+
+        aspect-ratio: 1 / 1;
+        // aspect-ratio: 4 / 5;
 
         &__content {
-            position: relative;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            aspect-ratio: 1 / 1;
-        }
-
-        &__image,
-        &__video {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
-            transition:
-                transform 700ms,
-                opacity 1s ease-in-out;
-
-            // Nested hover state
+            position: absolute;
+            inset: 0;
+            transition: transform 700ms;
             .card:hover & {
                 transform: scale(1.05);
             }
+        }
+
+        &__image,
+        &__video,
+        video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+            transition: opacity 1s ease-in-out;
         }
 
         &__image {

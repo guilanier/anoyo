@@ -14,7 +14,7 @@
 
     import { Renderer, TweakPane } from '@resn/gozer-vue';
 
-    import SpaceTest from '@/components/SpaceTest/index.vue';
+    import RaymarchSphere from '@/components/RaymarchSphere/index.vue';
     import TextLens from '@/components/TextLens/index.vue';
 
     const route = useRoute();
@@ -24,7 +24,7 @@
 
     const nodeEnv = import.meta.env.MODE;
     const componentTypes = [
-        { id: 'sphere-space-neon', component: SpaceTest },
+        { id: 'raymarch-sphere', component: RaymarchSphere },
         { id: 'text-lens', component: TextLens },
     ];
     const componentData = componentTypes.find((c) => {

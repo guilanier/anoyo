@@ -96,7 +96,7 @@
     watch(defines, setDefines, { immediate: true });
 
     usePane([{ value: defines }], {
-        title: 'SpaceTest',
+        title: 'RaymarchSphere',
         expanded: true,
     });
 </script>

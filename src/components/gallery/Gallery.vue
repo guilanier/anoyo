@@ -109,6 +109,8 @@
         @include mobile {
             --gap: 1.4rem;
         }
+
+        --gap-divided: calc(var(--gap) / 2);
     }
 
     @media (prefers-color-scheme: light) {
@@ -127,6 +129,10 @@
         color: var(--white);
         line-height: 1.5;
         padding: calc(var(--gap) * 2);
+
+        @include mobile {
+            padding: var(--gap);
+        }
 
         font-size: min(15px, 1rem);
     }
@@ -155,7 +161,8 @@
         position: relative;
 
         display: grid;
-        gap: var(--gap);
+        gap: var(--gap-divided);
+        // gap: var(--gap);
 
         padding-top: var(--gap);
         width: 100%;
@@ -176,7 +183,7 @@
         @include mobile {
             grid-template-columns: repeat(2, 1fr);
             margin: var(--gap);
-            padding: calc(var(--gap) * 1.5);
+            padding: var(--gap);
         }
     }
 </style>

@@ -1,9 +1,13 @@
+Raymarch Sphere:
+    add interaction:
+        ■ camera motion
+        ■ rise up
+        ■ light motion
+        ■ bluriness cursor
+    ■ colors updates / check cosmos
+    ■ tweet
 General:
     ■ add little 3d icon (modelize svg to 3d)
-Interpunct:
-    ■ check cosmos
-    ■ add interaction (rise up + camera motion + light motion + bluriness)
-    ■ colors updates
 
 Archive:
     ✓ rename @done(25-01-20 17:34) @project(SpaceTest)
@@ -56,24 +60,7 @@ Archive:
     ✓ rename to textLens @done(24-10-17 14:36) @project(Title Blur)
     ✓ format selection glsl @done(24-10-17 14:29) @project(Global)
     ✓ find good copy @done(24-10-16 17:43) @project(LineType)
-    ✓ record video @done(24-10-09 12:08) @project(LineType)
-    ✓ tweet @done(24-10-09 12:08) @project(LineType)
-    ✓ set right colors at right time @done(24-10-09 11:22) @project(LineType)
-    ✓ bug on cursor (?) @done(24-10-09 10:59) @project(LineType.fix glitches)
-    ✓ long lines @done(24-10-09 10:39) @project(LineType.fix glitches)
-    ✓ bad killing words @done(24-10-09 10:38) @project(LineType.fix glitches)
-    ✓ do colors update on mouseout @done(24-10-08 23:31) @project(LineType)
-    ✓ small cursor for the video @done(24-10-08 16:50) @project(LineType)
-    ✓ draw at least one word on tap @done(24-10-08 16:40) @project(LineType)
-    ✓ fix font @done(24-10-08 16:20) @project(LineType)
-    ✓ offset in x `??` @done(24-10-07 15:15) @project(LineType)
-    ✓ glitches fix @done(24-10-07 15:14) @project(LineType)
-    ✓ set color scheme properly @done(24-10-07 11:28) @project(LineType)
-    X check eslint stuff @cancelled(24-10-04 12:37) @project(Global)
-    ✓ COLORS defines @done(24-10-04 12:26) @project(Global)
-    ✓ add defines for UV check and COLORS defines @done(24-10-04 11:43) @project(Global)
-    ✓ add fps meters @done(24-10-04 11:34)
-    ✓ have a generic component GL that can handle components @done(24-10-04 11:14)
+
     ✓ move some shader chonks into glsl playground @done(24-10-04 10:51)
     ✓ fix overlap @done(24-06-14 16:08) @project(LineType)
     ✓ mobile @done(24-06-14 14:53) @project(LineType)
