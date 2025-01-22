@@ -42,10 +42,11 @@
     .component {
         position: fixed;
         inset: 0;
-        cursor: pointer;
+        cursor: none;
+        // cursor: pointer;
 
         &[data-name='raymarch-sphere'] {
-            @include grabbingCursor;
+            // @include grabbingCursor;
         }
     }
 </style>

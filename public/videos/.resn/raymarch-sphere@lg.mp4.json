@@ -1,12 +1,12 @@
 {
-  "hash": "721592e101f0a4f40e75a49bff009c57144ff5df",
-  "input_size": 9624281,
-  "output_size": 2090550,
-  "reduction": 0.21721622633420615,
+  "hash": "6f259770af48a673425f1a0d8110f76e7afd4d3b",
+  "input_size": 9900891,
+  "output_size": 1758836,
+  "reduction": 0.17764421404093833,
   "input": "videos/raymarch-sphere.mp4",
   "output": "videos/raymarch-sphere@lg.mp4",
-  "modified": 1737557180326.4739,
-  "changed": 1737557180326.7175,
+  "modified": 1737558054285.5642,
+  "changed": 1737558054285.8047,
   "opts": {
     "metadata": true,
     "format": [
@@ -40,12 +40,12 @@
     "date": "",
     "synched": true,
     "duration": {
-      "raw": "00:00:05.27",
+      "raw": "00:00:05.08",
       "seconds": 5
     },
     "video": {
       "container": "mov",
-      "bitrate": 3175,
+      "bitrate": 2768,
       "stream": 0,
       "codec": "hevc",
       "resolution": {
