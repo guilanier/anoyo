@@ -1,5 +1,5 @@
 <template>
-    <div class="component">
+    <div class="component no-select">
         <TweakPane :hiddenOnStart="nodeEnv == 'production'">
             <Renderer ref="refRenderer" :antialias="false" :autoResize="true" :autoRender="true">
                 <Component ref="refComponent" :is="component" />

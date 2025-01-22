@@ -44,9 +44,8 @@
         // zoom: sphericalDelta.radius /= dollyScale
     };
     const config = {
-        debugOrbit: false,
-        debugLight: false,
-        // useOrbitDebug: false,
+        debugOrbit: true,
+        debugLight: true,
     };
 
     const vResolution = new Vector2();
@@ -86,23 +85,10 @@
     const maxPolarAngle = Math.PI * 0.32;
 
     onMounted(() => {
-        gsap.fromTo(vPosSphere0, { y: 3 }, { y: 0, duration: 3, ease: 'power1.out' });
-        gsap.fromTo(vLight0, { y: -4 }, { y: 0, duration: 4, delay: 2.5, ease: 'sine.out' });
+        gsap.timeline()
+            .fromTo(vPosSphere0, { y: 3 }, { y: 0, duration: 2, ease: 'power1.out' })
+            .fromTo(vLight0, { y: -4 }, { y: 0, duration: 4, delay: 2.5, ease: 'sine.out' });
     });
-
-    const setPointer = ({ x, y }) => {
-        vPointerVl.set(x, y).sub(vPointer);
-        vPointer.set(x, y);
-
-        const n = -0.0018;
-
-        sphTarget.theta += vPointerVl.x * n;
-        sphTarget.phi += vPointerVl.y * n;
-
-        sphTarget.phi = clamp(sphTarget.phi, minPolarAngle, maxPolarAngle);
-
-        setSpherical({ phi: sphTarget.phi, theta: sphTarget.theta });
-    };
 
     const { set: setSpherical } = useDamp(sphCurrent, { lambda: 3 }, ['phi', 'theta']);
     const { set: setSphereProps } = useSpring(propsSphere, {
@@ -110,7 +96,6 @@
         damping: 15,
         mass: 1.2,
     });
-    const { isDown: pointerDown } = useWindowPointer(setPointer);
 
     const colorDummy = new Color();
     const colorDefine = (hex) =>
@@ -147,21 +132,43 @@
 
     scene.add(mesh);
 
+    const setPointer = ({ x, y }) => {
+        vPointerVl.set(x, y).sub(vPointer);
+        vPointer.set(x, y);
+
+        const n = -0.0016;
+
+        sphTarget.theta += vPointerVl.x * n;
+        sphTarget.phi += vPointerVl.y * n;
+
+        sphTarget.phi = clamp(sphTarget.phi, minPolarAngle, maxPolarAngle);
+
+        setSpherical({ phi: sphTarget.phi, theta: sphTarget.theta });
+    };
+
+    const setPointerDown = (bool) => {
+        setSphereProps({ bulb: bool ? 1 : 0 });
+    };
+
+    const { isDown: pointerDown } = useWindowPointer(setPointer);
+
     useViewportResize(({ width, height }) => {
         mesh.scale.set(width, height, 1);
         vResolution.set(width, height);
     });
 
-    watch(pointerDown, (bool) => {
-        setSphereProps({ bulb: bool ? 1 : 0 });
-    });
+    watch(pointerDown, setPointerDown);
 
-    let t = 0;
+    let t = 0,
+        tLight = 0;
     useRaf(({ delta }) => {
         const { debugLight } = config;
         const { bulb } = propsSphere;
 
-        t += delta * 0.0012 * lerp(bulb, 1, 0.7);
+        t += delta * 0.0012 * lerp(bulb, 1, 0.5);
+        tLight += delta * 0.0012;
+
+        const t0 = t + 2;
 
         sphDelta.theta = sphCurrent.theta - sphLast.theta;
         sphDelta.phi = sphCurrent.phi - sphLast.phi;
@@ -173,16 +180,18 @@
         orbit?.update(); // on tick
 
         // light
-        vLight1.set(Math.sin(t), 1 + Math.sin(t * 0.5) * 3.0, -Math.cos(t * 0.2) * -2.0);
+        vLight1.set(
+            Math.sin(tLight),
+            1 + Math.sin(tLight * 0.5) * 3.0,
+            -Math.cos(tLight * 0.2) * -2.0
+        );
         vLight.copy(vLight0).add(vLight1);
-        // vLight.set(Math.sin(t * 1.0) * 1.0, Math.sin(t * 0.2) * 2.0, -Math.cos(t * 0.2) * -2.0);
         if (debugLight)
             mLightDebugger.position.copy(vLight.clone().multiply(new Vector3(-1, 1, 1)));
 
-        // sphere
+        // — sphere
         vPosSphere.copy(vPosSphere0);
-        // vPosSphere.y += -1;
-        vPosSphere.y += -0.5 + Math.sin(t * 0.8) * 1.0;
+        vPosSphere.y += -0.5 + Math.sin(t0 * 0.8) * 1.0;
 
         // ― uniforms
         shader.uniforms.u_time.value = t;
