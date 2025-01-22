@@ -15,6 +15,7 @@
     "dependencies": {
         "@resn/cli": "^1.8.6",
         "@resn/compression-tools": "^2.3.0",
+        "@resn/gozer-animation": "^1.8.19",
         "@resn/gozer-canvas": "^3.0.11",
         "@resn/gozer-color": "^3.0.3",
         "@resn/gozer-env": "^3.2.1",

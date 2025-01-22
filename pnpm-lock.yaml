@@ -14,6 +14,9 @@ importers:
       '@resn/compression-tools':
         specifier: ^2.3.0
         version: 2.3.0
+      '@resn/gozer-animation':
+        specifier: ^1.8.19
+        version: 1.8.19
       '@resn/gozer-canvas':
         specifier: ^3.0.11
         version: 3.0.11
@@ -908,6 +911,9 @@ packages:
 
   '@resn/compression-tools@2.3.0':
     resolution: {integrity: sha512-drwq6jja+j0AWYLlU5LIWvrWPwjwHctJwtrG0YHrRt14HJ3YSdXLWQ7yunm9q5pZotamFaXe06Y61Y/ZDk0qSA==, tarball: https://npm.pkg.github.com/download/@resn/compression-tools/2.3.0/2b6a4931457a9b43bac29d55026dc4a7da2887dd}
+
+  '@resn/gozer-animation@1.8.19':
+    resolution: {integrity: sha512-12gu4hPVdQZJiI5X3HiMRLtuT903yCTe9jyOvY86NxoWBy3l9/bX+jVuKT8WeNNxYeLiM5FT5wdcgz0nQJOlhw==, tarball: https://npm.pkg.github.com/download/@Resn/gozer-animation/1.8.19/34da0f4a24573485daca69fe40ffa87dda745c1f}
 
   '@resn/gozer-canvas@3.0.11':
     resolution: {integrity: sha512-qzeNchRZqt6RhEUiavhWRcBKsxMubA6/a+vlIYMg/Jw3g/ieF0XKwjaUuQ0ye3oSA8Bv+9IRranbulHSPOrvMw==, tarball: https://npm.pkg.github.com/download/@Resn/gozer-canvas/3.0.11/90fa9f894eab1a21e30415be0f743bc7ff55db34}
@@ -4865,6 +4871,10 @@ snapshots:
       sharp: 0.33.5
     transitivePeerDependencies:
       - enquirer
+
+  '@resn/gozer-animation@1.8.19':
+    dependencies:
+      '@resn/gozer-math': 3.3.8
 
   '@resn/gozer-canvas@3.0.11':
     dependencies:

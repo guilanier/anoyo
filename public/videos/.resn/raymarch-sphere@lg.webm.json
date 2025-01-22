@@ -1,12 +1,12 @@
 {
-  "hash": "0252af2d7bd205b46b98ba3854a2ba8ced4bd0be",
-  "input_size": 8707717,
-  "output_size": 2391130,
-  "reduction": 0.27459895630507974,
-  "input": "videos/frame-clip-path..mp4",
-  "output": "videos/frame-clip-path.@lg.webm",
-  "modified": 1736519507083.0469,
-  "changed": 1736519507083.0469,
+  "hash": "721592e101f0a4f40e75a49bff009c57144ff5df",
+  "input_size": 9624281,
+  "output_size": 2130760,
+  "reduction": 0.22139420077198493,
+  "input": "videos/raymarch-sphere.mp4",
+  "output": "videos/raymarch-sphere@lg.webm",
+  "modified": 1737557180326.4739,
+  "changed": 1737557180326.7175,
   "opts": {
     "metadata": true,
     "format": [
@@ -16,7 +16,7 @@
     "quality": 60,
     "webm": {},
     "mp4": {
-      "alpha": false,
+      "alpha": true,
       "alphaQuality": 0.75
     },
     "threads": 0,
@@ -40,12 +40,12 @@
     "date": "",
     "synched": true,
     "duration": {
-      "raw": "00:00:05.12",
+      "raw": "00:00:05.27",
       "seconds": 5
     },
     "video": {
       "container": "matroska",
-      "bitrate": 3738,
+      "bitrate": 3236,
       "stream": 0,
       "codec": "vp9",
       "resolution": {

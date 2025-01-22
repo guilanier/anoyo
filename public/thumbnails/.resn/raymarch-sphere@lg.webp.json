@@ -1,12 +1,12 @@
 {
-  "hash": "f89db80f20c07981836c8c0503e67c45c1dac267",
-  "input_size": 525517,
-  "output_size": 53502,
-  "reduction": 0.10180831447888461,
-  "input": "thumbnails/raymarch-sphere.jpg",
+  "hash": "9df3b77a1ad7deadb82b123db1b2359e6fb66c54",
+  "input_size": 1125407,
+  "output_size": 28990,
+  "reduction": 0.025759569649024754,
+  "input": "thumbnails/raymarch-sphere.png",
   "output": "thumbnails/raymarch-sphere@lg.webp",
-  "modified": 1736520484226.449,
-  "changed": 1737390946672.7476,
+  "modified": 1737557170996.4744,
+  "changed": 1737557170997.3806,
   "opts": {
     "targetFiles": "**/*.{jpg,png,jpeg}",
     "sizes": {
@@ -23,7 +23,7 @@
     "name": "lg"
   },
   "additionalMeta": {
-    "width": 1596,
-    "height": 1596
+    "width": 1600,
+    "height": 1600
   }
 }

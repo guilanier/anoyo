@@ -13,13 +13,12 @@
         Vector3,
     } from 'three';
     import { Spherical } from 'three';
-    import { PointLightHelper } from 'three';
-    import { Object3D } from 'three';
     import { BoxGeometry } from 'three';
     import { MeshBasicMaterial } from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
     import { inject, onMounted, reactive, watch } from 'vue';
 
+    import { project } from '@resn/gozer-animation';
     import { clamp, lerp } from '@resn/gozer-math';
     import { simpleVs } from '@resn/gozer-three';
     import { Orbit } from '@resn/gozer-three';
@@ -41,11 +40,10 @@
 
     const propsSphere = {
         bulb: 0,
-        // zoom: sphericalDelta.radius /= dollyScale
     };
     const config = {
-        debugOrbit: true,
-        debugLight: true,
+        debugOrbit: false,
+        debugLight: false,
     };
 
     const vResolution = new Vector2();
@@ -55,6 +53,8 @@
     const sphTarget = new Spherical();
     const sphDelta = new Spherical();
     const sphLast = new Spherical();
+
+    const { set: setSpherical } = useDamp(sphCurrent, { lambda: 3 }, ['phi', 'theta']);
 
     const vPointer = new Vector2();
     const vPointerVl = new Vector2();
@@ -81,16 +81,15 @@
         ? new OrbitControls(camera, renderer.domElement)
         : new Orbit(camera, { sphericalDelta: sphDelta });
 
-    const minPolarAngle = 0;
-    const maxPolarAngle = Math.PI * 0.32;
+    const minPolarAngle = Math.PI * -0.1;
+    const maxPolarAngle = Math.PI * 0.25;
 
     onMounted(() => {
         gsap.timeline()
-            .fromTo(vPosSphere0, { y: 3 }, { y: 0, duration: 2, ease: 'power1.out' })
-            .fromTo(vLight0, { y: -4 }, { y: 0, duration: 4, delay: 2.5, ease: 'sine.out' });
+            .fromTo(vPosSphere0, { y: 3 }, { y: 0, duration: 2, ease: 'power1.out' }, 0)
+            .fromTo(vLight0, { y: -3 }, { y: 0, duration: 4, ease: 'sine.out' }, 1.5);
     });
 
-    const { set: setSpherical } = useDamp(sphCurrent, { lambda: 3 }, ['phi', 'theta']);
     const { set: setSphereProps } = useSpring(propsSphere, {
         stiffness: 40,
         damping: 15,
@@ -134,10 +133,12 @@
 
     const setPointer = ({ x, y }) => {
         vPointerVl.set(x, y).sub(vPointer);
+        vPointerVl.needsUpdate = true;
+
         vPointer.set(x, y);
 
-        const n = -0.0016;
-
+        // — ambient
+        const n = pointerDown.value ? -0.008 : -0.001;
         sphTarget.theta += vPointerVl.x * n;
         sphTarget.phi += vPointerVl.y * n;
 
@@ -148,6 +149,14 @@
 
     const setPointerDown = (bool) => {
         setSphereProps({ bulb: bool ? 1 : 0 });
+
+        if (!bool) {
+            const projTheta = project(vPointerVl.x, 0.1);
+            const projPhi = project(vPointerVl.y, 0.1);
+
+            sphTarget.theta += -projTheta;
+            sphTarget.phi += -projPhi;
+        }
     };
 
     const { isDown: pointerDown } = useWindowPointer(setPointer);
@@ -181,13 +190,13 @@
 
         // light
         vLight1.set(
-            Math.sin(tLight),
-            1 + Math.sin(tLight * 0.5) * 3.0,
-            -Math.cos(tLight * 0.2) * -2.0
+            Math.sin(tLight) * 1,
+            2 + Math.sin(tLight * 0.5) * 2,
+            -Math.cos(tLight * 0.2) * -2
         );
         vLight.copy(vLight0).add(vLight1);
         if (debugLight)
-            mLightDebugger.position.copy(vLight.clone().multiply(new Vector3(-1, 1, 1)));
+            mLightDebugger.position.copy(vLight.clone().multiply(new Vector3(-1, 1, -1)));
 
         // — sphere
         vPosSphere.copy(vPosSphere0);

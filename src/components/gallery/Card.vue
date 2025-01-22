@@ -85,7 +85,7 @@
             position: absolute;
             z-index: 1;
             opacity: 0;
-            transition: opacity 1000ms;
+            transition: opacity 600ms;
 
             video {
                 height: 100%;

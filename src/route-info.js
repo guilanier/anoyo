@@ -40,6 +40,7 @@ export const routeInfo = {
         description: '3d raymarching sphere',
         componentName: 'ComponentGl',
         image: './thumbnails/raymarch-sphere@lg.webp',
+        video: './videos/raymarch-sphere@lg.webm',
     },
 };
 

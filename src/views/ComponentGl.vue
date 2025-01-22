@@ -1,5 +1,5 @@
 <template>
-    <div class="component no-select">
+    <div class="component no-select" :data-name="componentData.id">
         <TweakPane :hiddenOnStart="nodeEnv == 'production'">
             <Renderer ref="refRenderer" :antialias="false" :autoResize="true" :autoRender="true">
                 <Component ref="refComponent" :is="component" />
@@ -38,9 +38,14 @@
 </script>
 
 <style lang="scss">
+    @use '@resn/gozer-styles' as *;
     .component {
         position: fixed;
         inset: 0;
         cursor: pointer;
+
+        &[data-name='raymarch-sphere'] {
+            @include grabbingCursor;
+        }
     }
 </style>
