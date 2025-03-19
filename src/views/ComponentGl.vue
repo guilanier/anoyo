@@ -42,11 +42,11 @@
     .component {
         position: fixed;
         inset: 0;
-        cursor: none;
-        // cursor: pointer;
+        cursor: pointer;
+        // cursor: none; // for recordings
 
         &[data-name='raymarch-sphere'] {
-            // @include grabbingCursor;
+            @include grabbingCursor;
         }
     }
 </style>
