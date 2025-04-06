@@ -1,4 +1,3 @@
-<template></template>
 <script setup>
     import { Mesh, PlaneGeometry, ShaderMaterial, Vector2 } from 'three';
     import { inject, onMounted, ref, watch } from 'vue';
@@ -8,7 +7,7 @@
     import { simpleVs } from '@resn/gozer-three';
     import { useDamp, useRaf, useResize, useSpring, useWindowPointer } from '@resn/gozer-vue';
 
-    import fragmentShader from './shaders/2024-04-08-5:31:15-sdf-lensBlur.frag';
+    import fragmentShader from './shaders/2025-04-06-23:32:40-sdf:comet.frag';
 
     const { renderer, scene, orthoCamera } = inject('renderer');
 

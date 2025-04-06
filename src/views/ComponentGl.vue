@@ -14,7 +14,9 @@
 
     import { Renderer, TweakPane } from '@resn/gozer-vue';
 
+    import Comet from '@/components/Comet/index.vue';
     import RaymarchSphere from '@/components/RaymarchSphere/index.vue';
+    import SDFLensBlur from '@/components/SDFLensBlur/index.vue';
     import TextLens from '@/components/TextLens/index.vue';
 
     const route = useRoute();
@@ -24,8 +26,10 @@
 
     const nodeEnv = import.meta.env.MODE;
     const componentTypes = [
-        { id: 'raymarch-sphere', component: RaymarchSphere },
+        { id: 'sdf-lens-blur', component: SDFLensBlur },
         { id: 'text-lens', component: TextLens },
+        { id: 'raymarch-sphere', component: RaymarchSphere },
+        { id: 'comet', component: Comet },
     ];
     const componentData = componentTypes.find((c) => {
         const test = new RegExp(`\\b${c.id}\\b`, 'i').test(route.path);
