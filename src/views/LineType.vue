@@ -17,7 +17,7 @@
 
 <script setup>
     import { usePreferredColorScheme } from '@vueuse/core';
-    import gsap from 'gsap';
+    import gsap from '@resn/gsap';
     import { Color } from 'three';
     import { onMounted, reactive, ref, watch } from 'vue';
 

@@ -1,7 +1,7 @@
 import { SplineCurve, Vector2 } from "three";
 import { damp } from 'three/src/math/MathUtils';
 import Word from "./word";
-import { gsap } from "gsap";
+import { gsap } from "@resn/gsap";
 import { hexToRgb } from "@resn/gozer-color";
 import { isMobile } from "@resn/gozer-env";
 

@@ -1,4 +1,4 @@
-import gsap from 'gsap';
+import gsap from '@resn/gsap';
 import { HalfFloatType, ShaderMaterial, Vector2 } from 'three';
 import {
     defineComponent,

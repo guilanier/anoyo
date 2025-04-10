@@ -62,9 +62,6 @@ importers:
       eventemitter3:
         specifier: ^5.0.1
         version: 5.0.1
-      gsap:
-        specifier: file:src/libs/gsap-shockingly-green/npm-install-this/gsap-bonus.tgz
-        version: file:src/libs/gsap-shockingly-green/npm-install-this/gsap-bonus.tgz
       postprocessing:
         specifier: ^6.37.2
         version: 6.37.2(three@0.175.0)
@@ -2202,10 +2199,6 @@ packages:
 
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==, tarball: https://registry.npmjs.org/graphemer/-/graphemer-1.4.0.tgz}
-
-  gsap@file:src/libs/gsap-shockingly-green/npm-install-this/gsap-bonus.tgz:
-    resolution: {integrity: sha512-2AiMh8yUd1lqdVw35q0mZvB1+GO8GmmkE16+PSXkYcUDqw/u0dg0gJPp8kopTySJxFOcd0Y1tFYfxkjouuVs3A==, tarball: file:src/libs/gsap-shockingly-green/npm-install-this/gsap-bonus.tgz}
-    version: 3.10.4
 
   hard-rejection@2.1.0:
     resolution: {integrity: sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==, tarball: https://registry.npmjs.org/hard-rejection/-/hard-rejection-2.1.0.tgz}
@@ -6237,8 +6230,6 @@ snapshots:
   graceful-fs@4.2.11: {}
 
   graphemer@1.4.0: {}
-
-  gsap@file:src/libs/gsap-shockingly-green/npm-install-this/gsap-bonus.tgz: {}
 
   hard-rejection@2.1.0: {}
 

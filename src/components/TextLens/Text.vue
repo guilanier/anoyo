@@ -3,7 +3,7 @@
 </template>
 
 <script>
-    import gsap from 'gsap';
+    import gsap from '@resn/gsap';
     import {
         BufferGeometry,
         Color,
