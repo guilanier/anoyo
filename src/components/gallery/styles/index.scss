@@ -46,48 +46,4 @@ $bp-mobile-threshold: 767px;
 
 %theming {
     $base-hue: 230;
-
-    // $color-exdark: hsl($base-hue, 7%, 0%);
-    // $color-dark: hsl($base-hue, 7%, 20%);
-    // $color-light: hsl($base-hue, 7%, 70%);
-    // $color-exlight: hsl($base-hue, 7%, 75%);
-    // $bg-color: $color-dark;
-    // $fg-color: $color-exlight;
-    // $fg-color-0: rgba($fg-color, 0.1);
-
-    // @include themeVariable(
-    //     'font-family',
-    //     'font-family',
-    //     ('Roboto Mono', 'Source Code Pro', Menlo, Courier, monospace)
-    // );
-
-    // @include themeVariable('bs-br', 'base-border-radius', 6px);
-    // @include themeVariable('cnt-h-p', 'container-horizontal-padding', 4px);
-    // @include themeVariable('cnt-v-p', 'container-vertical-padding', 4px);
-    // @include themeVariable('elm-br', 'element-border-radius', 4px);
-    // @include themeVariable('bld-s', 'blade-spacing', 4px);
-    // @include themeVariable('bld-us', 'blade-unit-size', 20px);
-
-    // Base
-    // @include themeVariable('bs-bg', 'base-background-color', $bg-color);
-    // @include themeVariable('bs-sh', 'base-shadow-color', rgba(white, 0.1));
-
-    // Button
-    /*     @include themeVariable('btn-bg', 'button-background-color', $fg-color-0);
-    @include themeVariable(
-        'btn-bg-a',
-        'button-background-color-active',
-        color.adjust($fg-color-0, $lightness: 30%)
-    );
-    @include themeVariable(
-        'btn-bg-f',
-        'button-background-color-focus',
-        color.adjust($fg-color-0, $lightness: 10%)
-    );
-    @include themeVariable(
-        'btn-bg-h',
-        'button-background-color-hover',
-        color.adjust($fg-color-0, $lightness: 10%)
-    );
-    @include themeVariable('btn-fg', 'button-foreground-color', $bg-color); */
 }

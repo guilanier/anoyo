@@ -38,49 +38,6 @@
     const iActive = ref();
 
     const componentsReversed = computed(() => [...props.components].reverse());
-
-    /* 
-    const loadConfigs = () => {
-        const configs = window?.localStorage.getItem(localStorageId);
-        return configs ? JSON.parse(configs) : {};
-    };
-    const saveConfigs = (configs) =>
-        window?.localStorage.setItem(localStorageId, JSON.stringify(configs));
-        const checkConfig = (id) => {
-        const configs = loadConfigs();
-        return configs[id] || false;
-    };
-    const updateConfigs = () => {
-        let first = true;
-
-        configUrl.value = '';
-        const configs = loadConfigs();
-        refOptions.value?.forEach((el) => {
-            if (el.checked) {
-                const prefix = first ? '?' : '&';
-                configUrl.value += `${prefix}${el.name}=true`;
-                first = false;
-            }
-            configs[el.name] = el.checked;
-        });
-        saveConfigs(configs);
-    };
-
-    const groupBy = (arr, fn) =>
-        arr.map(typeof fn === 'function' ? fn : (val) => val[fn]).reduce((acc, val, i) => {
-            acc[val] = (acc[val] || []).concat(arr[i]);
-            return acc;
-        }, {});
-
-    const defaultCategory = 'General';
-    // Group by categories
-    const groupedComponents = Object.entries(groupBy(props.components, 'category')).map(
-        ([category, components]) => ({
-            category: category == 'undefined' ? defaultCategory : category,
-            components,
-        })
-    ); 
-    */
 </script>
 
 <style lang="scss">
@@ -161,7 +118,6 @@
 
         display: grid;
         gap: var(--gap-divided);
-        // gap: var(--gap);
 
         padding-top: var(--gap);
         width: 100%;
