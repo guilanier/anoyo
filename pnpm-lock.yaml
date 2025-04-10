@@ -57,8 +57,8 @@ importers:
         specifier: ^0.2.1
         version: 0.2.1(tweakpane@4.0.5)
       '@vueuse/core':
-        specifier: ^13.0.0
-        version: 13.0.0(vue@3.5.13(typescript@5.7.3))
+        specifier: ^13.1.0
+        version: 13.1.0(vue@3.5.13(typescript@5.7.3))
       eventemitter3:
         specifier: ^5.0.1
         version: 5.0.1
@@ -73,7 +73,7 @@ importers:
         version: 4.0.5
       vite-plugin-glsl:
         specifier: ^1.4.0
-        version: 1.4.0(rollup@4.36.0)(vite@6.2.5(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3))
+        version: 1.4.0(rollup@4.36.0)(vite@6.2.6(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.7.3)
@@ -83,10 +83,10 @@ importers:
     devDependencies:
       '@vitejs/plugin-vue':
         specifier: ^5.2.3
-        version: 5.2.3(vite@6.2.5(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3))(vue@3.5.13(typescript@5.7.3))
+        version: 5.2.3(vite@6.2.6(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3))(vue@3.5.13(typescript@5.7.3))
       '@vitejs/plugin-vue-jsx':
         specifier: ^4.1.2
-        version: 4.1.2(vite@6.2.5(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3))(vue@3.5.13(typescript@5.7.3))
+        version: 4.1.2(vite@6.2.6(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3))(vue@3.5.13(typescript@5.7.3))
       eslint:
         specifier: ^9.24.0
         version: 9.24.0(jiti@2.4.2)
@@ -100,8 +100,8 @@ importers:
         specifier: ^1.86.3
         version: 1.86.3
       vite:
-        specifier: ^6.2.5
-        version: 6.2.5(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3)
+        specifier: ^6.2.6
+        version: 6.2.6(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3)
 
 packages:
 
@@ -1275,22 +1275,22 @@ packages:
   '@vueuse/core@10.11.1':
     resolution: {integrity: sha512-guoy26JQktXPcz+0n3GukWIy/JDNKti9v6VEMu6kV2sYBsWuGiTU8OWdg+ADfUbHg3/3DlqySDe7JmdHrktiww==, tarball: https://registry.npmjs.org/@vueuse/core/-/core-10.11.1.tgz}
 
-  '@vueuse/core@13.0.0':
-    resolution: {integrity: sha512-rkgb4a8/0b234lMGCT29WkCjPfsX0oxrIRR7FDndRoW3FsaC9NBzefXg/9TLhAgwM11f49XnutshM4LzJBrQ5g==, tarball: https://registry.npmjs.org/@vueuse/core/-/core-13.0.0.tgz}
+  '@vueuse/core@13.1.0':
+    resolution: {integrity: sha512-PAauvdRXZvTWXtGLg8cPUFjiZEddTqmogdwYpnn60t08AA5a8Q4hZokBnpTOnVNqySlFlTcRYIC8OqreV4hv3Q==, tarball: https://registry.npmjs.org/@vueuse/core/-/core-13.1.0.tgz}
     peerDependencies:
       vue: ^3.5.0
 
   '@vueuse/metadata@10.11.1':
     resolution: {integrity: sha512-IGa5FXd003Ug1qAZmyE8wF3sJ81xGLSqTqtQ6jaVfkeZ4i5kS2mwQF61yhVqojRnenVew5PldLyRgvdl4YYuSw==, tarball: https://registry.npmjs.org/@vueuse/metadata/-/metadata-10.11.1.tgz}
 
-  '@vueuse/metadata@13.0.0':
-    resolution: {integrity: sha512-TRNksqmvtvqsuHf7bbgH9OSXEV2b6+M3BSN4LR5oxWKykOFT9gV78+C2/0++Pq9KCp9KQ1OQDPvGlWNQpOb2Mw==, tarball: https://registry.npmjs.org/@vueuse/metadata/-/metadata-13.0.0.tgz}
+  '@vueuse/metadata@13.1.0':
+    resolution: {integrity: sha512-+TDd7/a78jale5YbHX9KHW3cEDav1lz1JptwDvep2zSG8XjCsVE+9mHIzjTOaPbHUAk5XiE4jXLz51/tS+aKQw==, tarball: https://registry.npmjs.org/@vueuse/metadata/-/metadata-13.1.0.tgz}
 
   '@vueuse/shared@10.11.1':
     resolution: {integrity: sha512-LHpC8711VFZlDaYUXEBbFBCQ7GS3dVU9mjOhhMhXP6txTV4EhYQg/KGnQuvt/sPAtoUKq7VVUnL6mVtFoL42sA==, tarball: https://registry.npmjs.org/@vueuse/shared/-/shared-10.11.1.tgz}
 
-  '@vueuse/shared@13.0.0':
-    resolution: {integrity: sha512-9MiHhAPw+sqCF/RLo8V6HsjRqEdNEWVpDLm2WBRW2G/kSQjb8X901sozXpSCaeLG0f7TEfMrT4XNaA5m1ez7Dg==, tarball: https://registry.npmjs.org/@vueuse/shared/-/shared-13.0.0.tgz}
+  '@vueuse/shared@13.1.0':
+    resolution: {integrity: sha512-IVS/qRRjhPTZ6C2/AM3jieqXACGwFZwWTdw5sNTSKk2m/ZpkuuN+ri+WCVUP8TqaKwJYt/KuMwmXspMAw8E6ew==, tarball: https://registry.npmjs.org/@vueuse/shared/-/shared-13.1.0.tgz}
     peerDependencies:
       vue: ^3.5.0
 
@@ -3694,8 +3694,8 @@ packages:
     peerDependencies:
       vite: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
 
-  vite@6.2.5:
-    resolution: {integrity: sha512-j023J/hCAa4pRIUH6J9HemwYfjB5llR2Ps0CWeikOtdR8+pAURAk0DoJC5/mm9kd+UgdnIy7d6HE4EAvlYhPhA==, tarball: https://registry.npmjs.org/vite/-/vite-6.2.5.tgz}
+  vite@6.2.6:
+    resolution: {integrity: sha512-9xpjNl3kR4rVDZgPNdTL0/c6ao4km69a/2ihNQbcANz8RuCOK3hQBmLSJf3bRKVQjVMda+YvizNE8AwvogcPbw==, tarball: https://registry.npmjs.org/vite/-/vite-6.2.6.tgz}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
     peerDependencies:
@@ -5113,19 +5113,19 @@ snapshots:
       '@typescript-eslint/types': 5.62.0
       eslint-visitor-keys: 3.4.3
 
-  '@vitejs/plugin-vue-jsx@4.1.2(vite@6.2.5(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3))(vue@3.5.13(typescript@5.7.3))':
+  '@vitejs/plugin-vue-jsx@4.1.2(vite@6.2.6(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3))(vue@3.5.13(typescript@5.7.3))':
     dependencies:
       '@babel/core': 7.26.10
       '@babel/plugin-transform-typescript': 7.26.8(@babel/core@7.26.10)
       '@vue/babel-plugin-jsx': 1.2.5(@babel/core@7.26.10)
-      vite: 6.2.5(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3)
+      vite: 6.2.6(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3)
       vue: 3.5.13(typescript@5.7.3)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-vue@5.2.3(vite@6.2.5(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3))(vue@3.5.13(typescript@5.7.3))':
+  '@vitejs/plugin-vue@5.2.3(vite@6.2.6(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3))(vue@3.5.13(typescript@5.7.3))':
     dependencies:
-      vite: 6.2.5(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3)
+      vite: 6.2.6(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3)
       vue: 3.5.13(typescript@5.7.3)
 
   '@vue/babel-helper-vue-transform-on@1.2.5': {}
@@ -5224,16 +5224,16 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/core@13.0.0(vue@3.5.13(typescript@5.7.3))':
+  '@vueuse/core@13.1.0(vue@3.5.13(typescript@5.7.3))':
     dependencies:
       '@types/web-bluetooth': 0.0.21
-      '@vueuse/metadata': 13.0.0
-      '@vueuse/shared': 13.0.0(vue@3.5.13(typescript@5.7.3))
+      '@vueuse/metadata': 13.1.0
+      '@vueuse/shared': 13.1.0(vue@3.5.13(typescript@5.7.3))
       vue: 3.5.13(typescript@5.7.3)
 
   '@vueuse/metadata@10.11.1': {}
 
-  '@vueuse/metadata@13.0.0': {}
+  '@vueuse/metadata@13.1.0': {}
 
   '@vueuse/shared@10.11.1(vue@3.5.13(typescript@5.7.3))':
     dependencies:
@@ -5242,7 +5242,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@vueuse/shared@13.0.0(vue@3.5.13(typescript@5.7.3))':
+  '@vueuse/shared@13.1.0(vue@3.5.13(typescript@5.7.3))':
     dependencies:
       vue: 3.5.13(typescript@5.7.3)
 
@@ -7762,14 +7762,14 @@ snapshots:
       spdx-correct: 3.2.0
       spdx-expression-parse: 3.0.1
 
-  vite-plugin-glsl@1.4.0(rollup@4.36.0)(vite@6.2.5(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3)):
+  vite-plugin-glsl@1.4.0(rollup@4.36.0)(vite@6.2.6(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3)):
     dependencies:
       '@rollup/pluginutils': 5.1.4(rollup@4.36.0)
-      vite: 6.2.5(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3)
+      vite: 6.2.6(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3)
     transitivePeerDependencies:
       - rollup
 
-  vite@6.2.5(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3):
+  vite@6.2.6(@types/node@20.5.1)(jiti@2.4.2)(sass@1.86.3):
     dependencies:
       esbuild: 0.25.1
       postcss: 8.5.3
