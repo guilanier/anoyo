@@ -1,4 +1,198 @@
-var Xn=Object.defineProperty;var gn=(E,A,n)=>A in E?Xn(E,A,{enumerable:!0,configurable:!0,writable:!0,value:n}):E[A]=n;var L=(E,A,n)=>gn(E,typeof A!="symbol"?A+"":A,n);import{i as X,b as fn,j as Rn,w as p,k as cn,p as Nn,l as Bn,m as yn,_ as hn,n as bn,r as Tn,s as un,o as Y,c as Sn,q as Yn,v as wn,a as zn,g as an,x as tn,F as Wn,d as kn,y as vn,z as qn,u as b,A as Kn,B as Qn}from"./index-BvvnXPzC.js";import{T as Zn}from"./TweakPane-CoPnHxF8.js";import{V as jn,x as $n,y as Jn,c as ne,T as ee,g as Ae,j as Ee,N as ie,n as fe}from"./index-C1doF_mK.js";import{V,a as l,C as nn,S as Fn,M as mn,P as Me,x as Un,E as Cn,h as Dn,b as $,N as de,O as Le,B as _e,F as Ln,U as Re,c as Te}from"./three.core-F4kNzIcW.js";import{E as J}from"./useDamp-v6ZPrLXu.js";import{B as On,g as Pn}from"./index-umWQtT2g.js";import{g as Se,l as _n,s as ae,d as te}from"./scale-Dysxp_Xs.js";import{E as xn,i as Ie}from"./is-tablet-CwWrv5SO.js";function sn(E,A){return E*A/(1-A)}var re=`#ifdef GLSLVIEWER
+var Bn=Object.defineProperty;var yn=(E,A,n)=>A in E?Bn(E,A,{enumerable:!0,configurable:!0,writable:!0,value:n}):E[A]=n;var a=(E,A,n)=>yn(E,typeof A!="symbol"?A+"":A,n);import{i as H,r as en,w as F,b as Z,j as Tn,k as un,l as hn,p as vn,m as bn,_ as Yn,q as wn,s as Fn,c as an,o as W,v as zn,g as Sn,x as kn,a as Wn,y as tn,F as qn,d as Kn,u as k,z as mn,A as Qn,B as jn,C as Zn}from"./index-CqyAqkvn.js";import{g as rn,T as $n}from"./TweakPane-CHppHnrX.js";import{F as Un,y as Dn,c as xn,V as Jn,T as ne,g as ee,j as Ae,N as Ee,n as ie}from"./index-qg5D6tRa.js";import{V as U,x as On,h as on,S as ln,M as Pn,P as pn,a as c,b as nn,C as An,E as sn,N as fe,O as Me,B as de,F as Ln,U as _e,c as Le}from"./three.core-CEX1JmUP.js";import{i as Gn,E as Vn}from"./is-tablet-CwWrv5SO.js";import{g as Re,_ as Te}from"./index-CSZ0hdZ_.js";import{_ as h}from"./useDamp-qvnp14AQ.js";import{B as cn}from"./usePane-DTsl7LLF.js";import{l as Rn,s as ae,d as Se}from"./scale-BbkfoRx7.js";var te=`#ifdef GL_ES
+precision mediump float;
+#endif
+
+varying vec4 v_position;
+varying vec4 v_normal;
+varying vec2 v_texcoord;
+varying vec4 v_color;
+
+uniform mat4 u_projectionMatrix;
+uniform mat4 u_modelViewMatrix;
+uniform mat4 u_normalMatrix;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+uniform float u_time;
+
+uniform float u_size;
+uniform float u_blur;
+uniform float u_stroke;
+uniform float u_borderRadius;
+
+#define uResolution u_resolution
+#define uPointer u_mouse
+
+#ifndef FNC_COORD
+#define FNC_COORD
+vec2 coord(in vec2 p) {
+	p = p / uResolution.xy;
+	
+	if (uResolution.x > uResolution.y) {
+		p.x *= uResolution.x / uResolution.y;
+		p.x += (uResolution.y - uResolution.x) / uResolution.y / 2.0;
+	} else {
+		p.y *= uResolution.y / uResolution.x;
+		p.y += (uResolution.x - uResolution.y) / uResolution.x / 2.0;
+	}
+	
+	p -= 0.5;
+	p *= vec2(-1.0, 1.0);
+	return p;
+}
+#endif
+
+#define rx 1.0 / min(uResolution.x, uResolution.y)
+#define uv0 gl_FragCoord.xy / uResolution.xy
+#define st0 coord(gl_FragCoord.xy)
+#define mx coord(uPointer)
+
+#ifndef FNC_AASTEP
+#define FNC_AASTEP
+
+#if defined(GL_OES_standard_derivatives)
+#extension GL_OES_standard_derivatives : enable
+#endif
+
+float aastep(float threshold, float value) {
+#if !defined(GL_ES) || __VERSION__ >= 300 || defined(GL_OES_standard_derivatives)
+    float afwidth = 0.7 * length(vec2(dFdx(value), dFdy(value)));
+    return smoothstep(threshold-afwidth, threshold+afwidth, value);
+#elif defined(AA_EDGE)
+    float afwidth = AA_EDGE;
+    return smoothstep(threshold-afwidth, threshold+afwidth, value);
+#else 
+    return step(threshold, value);
+#endif
+}
+#endif
+
+#ifndef FNC_FILL
+#define FNC_FILL
+float fill(float x, float size, float edge) {
+    return 1.0 - smoothstep(size - edge, size + edge, x);
+}
+
+float fill(float x, float size) {
+    return 1.0 - aastep(size, x);
+}
+#endif
+#ifndef FNC_STROKE
+#define FNC_STROKE
+
+#ifndef FNC_AASTEP
+#define FNC_AASTEP
+
+#if defined(GL_OES_standard_derivatives)
+#extension GL_OES_standard_derivatives : enable
+#endif
+
+float aastep(float threshold, float value) {
+#if !defined(GL_ES) || __VERSION__ >= 300 || defined(GL_OES_standard_derivatives)
+    float afwidth = 0.7 * length(vec2(dFdx(value), dFdy(value)));
+    return smoothstep(threshold-afwidth, threshold+afwidth, value);
+#elif defined(AA_EDGE)
+    float afwidth = AA_EDGE;
+    return smoothstep(threshold-afwidth, threshold+afwidth, value);
+#else 
+    return step(threshold, value);
+#endif
+}
+#endif
+#if !defined(FNC_SATURATE) && !defined(saturate)
+#define FNC_SATURATE
+#define saturate(V) clamp(V, 0.0, 1.0)
+#endif
+
+float stroke(float x, float size, float w) {
+    float d = aastep(size, x + w * 0.5) - aastep(size, x - w * 0.5);
+    return saturate(d);
+}
+
+float stroke(float x, float size, float w, float edge) {
+    float d = smoothstep(size - edge, size + edge, x + w * 0.5) - smoothstep(size - edge, size + edge, x - w * 0.5);
+    return saturate(d);
+}
+
+#endif
+#ifndef CIRCLESDF_FNC
+#define CIRCLESDF_FNC(POS_UV) length(POS_UV)
+#endif
+
+#ifndef FNC_CIRCLESDF
+#define FNC_CIRCLESDF
+
+float circleSDF(in vec2 v) {
+#ifdef CENTER_2D
+    v -= CENTER_2D;
+#else
+    v -= 0.5;
+#endif
+    return CIRCLESDF_FNC(v) * 2.0;
+}
+#endif
+#ifndef FNC_RECTSDF
+#define FNC_RECTSDF
+
+float rectSDF(vec2 p, vec2 b, float r) {
+    vec2 d = abs(p - 0.5) * 4.2 - b + vec2(r);
+    return min(max(d.x, d.y), 0.0) + length(max(d, 0.0)) - r;   
+}
+
+float rectSDF(vec2 p, float b, float r) {
+    return rectSDF(p, vec2(b), r);
+}
+
+float rectSDF(in vec2 st, in vec2 s) {
+    #ifdef CENTER_2D
+        st -= CENTER_2D;
+        st *= 2.0;
+    #else
+        st = st * 2.0 - 1.0;
+    #endif
+    return max( abs(st.x / s.x),
+                abs(st.y / s.y) );
+}
+
+float rectSDF(in vec2 st, in float s) {
+    return rectSDF(st, vec2(s) );
+}
+
+float rectSDF(in vec2 st) {
+    return rectSDF(st, vec2(1.0));
+}
+
+#endif
+
+void main() {
+    
+    vec2 st = st0 + 0.5;
+    vec2 stPointer = st - mx;
+    
+    float blurSize = u_blur != 0.0 ? u_blur : 0.25;
+    float blurShape = fill(circleSDF(stPointer), blurSize, blurSize * 2.0);
+    
+    float brd = mix(0.04, 0.0, u_stroke);
+    float brdRad = u_borderRadius != 0.0 ? u_borderRadius : 0.02;
+    float size = u_size != 0.0 ? u_size : 0.6;
+    
+    float sdShapeRectRnd = rectSDF(st, 0.5, brdRad);
+    float sdShape = sdShapeRectRnd;
+    
+    float sdfStro = stroke(sdShape, size, brd, blurShape) * 4.0;
+    float sdfFill = fill(sdShape, size, blurShape) * 2.0;
+    
+    float sdf;
+    sdf = mix(sdfStro, sdfFill, u_stroke);
+    sdf = sdfFill;
+    
+    float shapeOut = sdf;
+    float sd = clamp(shapeOut, 0.0, 1.0);
+    
+    vec3 color = vec3(0.0);
+    color = vec3(sd);
+    
+    gl_FragColor = vec4(color, 1.0);
+}`;const re={__name:"index",setup(E){const{renderer:A,scene:n,orthoCamera:e}=H("renderer"),i=new U,f=new U,M=en(0),d={pSizeBlur:.25},R={pStroke:0,pBorderRadius:.01},{set:I}=h(d,{lambda:6},["pSizeBlur"]),{set:T}=Un(R,{stiffness:90,damping:12,mass:1}),{set:s}=h(i,{lambda:12},["x","y"]);let o,_;const C=()=>{_=new ln({vertexShader:Dn,fragmentShader:te,uniforms:{u_resolution:{value:f},u_mouse:{value:i},u_size:{value:Gn?.8:.6},u_blur:{value:.25},u_stroke:{value:0},u_borderRadius:{value:.01}},extensions:{derivatives:!0},transparent:!1}),o=new Pn(new pn(1,1),_),o.scale.set(window.innerWidth,window.innerHeight,1),o.layers.set(1),n.add(o)};Re(t=>{const{width:u,height:v}=t,D=xn(window.devicePixelRatio,1,2);f.set(u,v).multiplyScalar(D),o==null||o.scale.set(u,v)});const{isDown:r}=On(({x:t,y:u})=>{const v=A.getPixelRatio();s({x:t*v,y:f.y-u*v})});return F(r,t=>{I(t?{pSizeBlur:.5}:{pSizeBlur:.25}),t||(M.value=(M.value+1)%4)}),F(M,t=>{switch(t){case 0:T({pStroke:0,pBorderRadius:.01});break;case 1:T({pStroke:1,pBorderRadius:.5});break;case 2:T({pStroke:1,pBorderRadius:-.2});break;case 3:T({pStroke:0,pBorderRadius:.5});break}}),on(()=>{const t=_==null?void 0:_.uniforms;t&&(t.u_blur.value=d.pSizeBlur,t.u_stroke.value=R.pStroke,t.u_borderRadius.value=R.pBorderRadius),A.clear(),A.render(n,e)}),Z(C),()=>{}}};function Nn(E,A){return E*A/(1-A)}var Ie=`#ifdef GLSLVIEWER
 varying vec2 v_texcoord;
 #else
 varying vec2 vUv;
@@ -5421,7 +5615,12 @@ Material raymarchCast( in vec3 ro, in vec3 rd ) {
     m.valid = false;
     for (int i = 0; i < RAYMARCH_SAMPLES; i++) {
         Material res = RAYMARCH_MAP_FNC(ro + rd * t);
-        if (res.sdf < RAYMARCH_MIN_HIT_DIST || t > tmax) 
+#ifdef RAYMARCH_ABS_DIST
+        float dist = abs(res.sdf);
+#else
+        float dist = res.sdf;
+#endif
+        if (dist < RAYMARCH_MIN_HIT_DIST || t > tmax) 
             break;
         m = res;
         t += res.sdf;
@@ -10128,7 +10327,12 @@ Material raymarchCast( in vec3 ro, in vec3 rd ) {
     m.valid = false;
     for (int i = 0; i < RAYMARCH_SAMPLES; i++) {
         Material res = RAYMARCH_MAP_FNC(ro + rd * t);
-        if (res.sdf < RAYMARCH_MIN_HIT_DIST || t > tmax) 
+#ifdef RAYMARCH_ABS_DIST
+        float dist = abs(res.sdf);
+#else
+        float dist = res.sdf;
+#endif
+        if (dist < RAYMARCH_MIN_HIT_DIST || t > tmax) 
             break;
         m = res;
         t += res.sdf;
@@ -14440,7 +14644,12 @@ Material raymarchCast( in vec3 ro, in vec3 rd ) {
     m.valid = false;
     for (int i = 0; i < RAYMARCH_SAMPLES; i++) {
         Material res = RAYMARCH_MAP_FNC(ro + rd * t);
-        if (res.sdf < RAYMARCH_MIN_HIT_DIST || t > tmax) 
+#ifdef RAYMARCH_ABS_DIST
+        float dist = abs(res.sdf);
+#else
+        float dist = res.sdf;
+#endif
+        if (dist < RAYMARCH_MIN_HIT_DIST || t > tmax) 
             break;
         m = res;
         t += res.sdf;
@@ -19332,9 +19541,19 @@ void materialMultiply(Material mat, float f, Material r) {
 const float RAYMARCH_MULTISAMPLE_FACTOR = 1.0/float(RAYMARCH_MULTISAMPLE);
 #endif
 
+vec3 raymarchModelPosition(vec2 st) {
+#if !defined(RAYMARCH_SPHERICAL)
+    float fov = 1.0 / tan(RAYMARCH_CAMERA_FOV * DEG2RAD * 0.5);
+    return normalize(vec3(st*2.0-1.0, fov));
+#else
+    float theta = length(st) * RAYMARCH_CAMERA_FOV * DEG2RAD * 0.5;
+    float phi = atan(st.y, st.x);
+    return vec3(sin(theta) * cos(phi), sin(theta) * sin(phi), -cos(theta));
+#endif
+}
+
 vec4 raymarch(mat4 viewMatrix, vec2 st, out float eyeDepth, out Material mat) {
 
-    float fov = 1.0 / tan(RAYMARCH_CAMERA_FOV * DEG2RAD * 0.5);
     vec3 camera = viewMatrix[3].xyz;
     vec3 cameraForward = viewMatrix[2].xyz;
     mat3 viewMatrix3 = toMat3(viewMatrix);
@@ -19353,7 +19572,7 @@ vec4 raymarch(mat4 viewMatrix, vec2 st, out float eyeDepth, out Material mat) {
     vec2 offset = rotate( vec2(0.5, 0.0), EIGHTH_PI);
 
     for (int i = 0; i < RAYMARCH_MULTISAMPLE; i++) {
-        vec3 rayDirection = viewMatrix3 * normalize(vec3((st + offset * pixel)*2.0-1.0, fov));
+        vec3 rayDirection = viewMatrix3 * raymarchModelPosition(st + offset * pixel);
 
         float sampleDepth = 0.0;
         float dist = 0.0;
@@ -19384,7 +19603,7 @@ vec4 raymarch(mat4 viewMatrix, vec2 st, out float eyeDepth, out Material mat) {
     
 #else 
 
-    vec3 rayDirection = viewMatrix3 * normalize(vec3(st*2.0-1.0, fov));
+    vec3 rayDirection = viewMatrix3 * raymarchModelPosition(st);
     float dist = 0.0;
 
     vec4 opaque = RAYMARCH_RENDER_FNC( camera, rayDirection, cameraForward, dist, eyeDepth, mat);
@@ -19462,7 +19681,7 @@ void main() {
     float a = res.a;
     
     gl_FragColor = vec4(color, a);
-}`;const Ce={__name:"index",setup(E){const{renderer:A,scene:n,registerRenderFn:e,camera:i,orthoCamera:f}=X("renderer");i.position.set(-.821371,3.52016,.17339);const M={bulb:0},d={debugOrbit:!1,debugLight:!1},S=new V,I=new l,a=new $,C=new $,U=new $,_=new $,{set:r}=J(a,{lambda:3},["phi","theta"]),o=new V,P=new V,F=new l,g=new l,B=new l;let q;const K=new l,y=new l,N=new jn(i,{sphericalDelta:U}),Mn=Math.PI*-.1,h=Math.PI*.25;fn(()=>{Se.timeline().fromTo(K,{y:3},{y:0,duration:2,ease:"power1.out"},0).fromTo(F,{y:-3},{y:0,duration:4,ease:"sine.out"},1.5)});const{set:dn}=$n(M,{stiffness:40,damping:15,mass:1.2}),Q=new nn,D=T=>T==="#000"||!T?!1:`vec3(${Q.set(T).convertLinearToSRGB().toArray().join(",")})`,O=Rn({COLOR_BCK:"#000",COLOR_AMB:"#000",COLOR_LIGHT:"#000",COLOR_BAC:"#000",COLOR_FRE:"#000",COLOR_DOM:"#000"}),m=new Fn({vertexShader:Jn,fragmentShader:re,uniforms:{u_resolution:{value:S},u_camera:{value:I},u_time:{value:0},u_light:{value:B},u_posSphere:{value:y},u_scSphere:{value:1.2},u_unionSphere:{value:2}}}),G=new mn(new Me(1,1),m);G.name="Mesh",G.layers.set(1),n.add(G);const Z=({x:T,y:c})=>{P.set(T,c).sub(o),P.needsUpdate=!0,o.set(T,c);const x=R.value?-.008:-.001;C.theta+=P.x*x,C.phi+=P.y*x,C.phi=ne(C.phi,Mn,h),r({phi:C.phi,theta:C.theta})},j=T=>{if(dn({bulb:T?1:0}),!T){const c=sn(P.x,.1),x=sn(P.y,.1);C.theta+=-c,C.phi+=-x}},{isDown:R}=Un(Z);Cn(({width:T,height:c})=>{G.scale.set(T,c,1),S.set(T,c)}),p(R,j);let u=0,s=0;return Dn(({delta:T})=>{const{debugLight:c}=d,{bulb:x}=M;u+=T*.0012*_n(x,1,.5),s+=T*.0012;const Hn=u+2;U.theta=a.theta-_.theta,U.phi=a.phi-_.phi,_.copy(a),P.needsUpdate||P.set(0,0),P.needsUpdate=!1,N==null||N.update(),g.set(Math.sin(s)*1,2+Math.sin(s*.5)*2,-Math.cos(s*.2)*-2),B.copy(F).add(g),c&&q.position.copy(B.clone().multiply(new l(-1,1,-1))),y.copy(K),y.y+=-.5+Math.sin(Hn*.8)*1,m.uniforms.u_time.value=u,m.uniforms.u_scSphere.value=_n(x,1.2,1.4),m.uniforms.u_unionSphere.value=_n(x,2.2,1.2),I.copy(i.position)}),e(()=>{A.clear(),A.render(n,f),A.clearDepth(),A.render(n,i)}),p(O,T=>{const c={COLOR_BCK:D(T.COLOR_BCK),COLOR_AMB:D(T.COLOR_AMB),COLOR_LIG:D(T.COLOR_LIGHT),COLOR_BAC:D(T.COLOR_BAC),COLOR_FRE:D(T.COLOR_FRE),COLOR_DOM:D(T.COLOR_DOM)};Object.assign(m.defines,c),m.needsUpdate=!0},{immediate:!0}),On([{value:O}],{title:"RaymarchSphere",expanded:!0}),(T,c)=>cn(T.$slots,"default")}};var v;(function(E){E.LOAD_START="load-start",E.LOAD_PRIORITY="load-priority",E.LOAD_COMPLETE="load-complete",E.LOAD_PROGRESS="load-progress",E.LOAD_ERROR="load-error",E.LOAD_CANCELLED="load-cancelled"})(v||(v={}));var t;(function(E){E.QUEUED="queued",E.LOADING="loading",E.ERROR="error",E.COMPLETE="complete",E.CANCELLED="cancelled"})(t||(t={}));class en extends xn{constructor(n,e){super();L(this,"id");L(this,"url");L(this,"state",t.QUEUED);L(this,"type");L(this,"opts");L(this,"priority",0);L(this,"_accuratePercentage",null);L(this,"_parent");this.url=n,this.opts=e}get parent(){return this._parent}async start(){return this.setState(t.LOADING),this.emitProgress(),this.load(this.opts||{}).then(n=>(this.emitProgress(),this.state!==t.CANCELLED&&this.setState(t.COMPLETE),n)).catch(n=>(console.error("Failed to load : ",n),this.setState(t.ERROR,n),n))}setState(n,e){if(this.state!==n)switch(this.state=n,this.state){case t.LOADING:this.emit(v.LOAD_START,{loader:this});break;case t.COMPLETE:this.emit(v.LOAD_COMPLETE,{loader:this,data:this.data});break;case t.ERROR:this.emit(v.LOAD_ERROR,{loader:this,error:e});break;case t.CANCELLED:this.emit(v.LOAD_CANCELLED,{loader:this});break}}emitProgress(){this.emit(v.LOAD_PROGRESS,{loader:this,progress:this.progress()})}setAccuratePercentage(n){this._accuratePercentage=n}progress(){return this.state===t.COMPLETE||this.state===t.CANCELLED||this.state===t.ERROR?{count:1,total:1,percentage:1}:{count:0,total:1,percentage:this._accuratePercentage>0?this._accuratePercentage:0}}setParent(n){this._parent=n}}class z{constructor(){L(this,"register",{})}static create(A=[]){const n=new z;return A.forEach(e=>n.merge(e)),n}registerLoader(A,n){const e=A,{RESOLVE:i}=e;if(i)(!this.register[i.type]||n)&&(this.register[i.type]={Construct:e,...i});else throw new Error("No resolve metadata found on Loader.")}loaderFromURL(A){const[n,e]=A.split("#"),i=`.${n.split(".").pop()}`;let f=null;if(e){const M=this.register[e];f=M?new M.Construct(n):null}else if(i){const M=Object.values(this.register).filter(d=>d.extensions.filter(S=>i===S).length>0);f=M.length>0?new M[0].Construct(n):null}else throw new Error(`Couldn't parse url when trying to resolve: ${A}`);if(f)return f;throw new Error(`Couldn't find Loader to handle url : ${A} / ${i}`)}merge(A){Object.entries(A.register).forEach(([,n])=>{this.registerLoader(n.Construct,!0)})}}var In;(function(E){E.STATS_UPDATE="stats-update"})(In||(In={}));const En=class En extends xn{constructor(n={}){super();L(this,"opts");L(this,"_queue",new Map);L(this,"_locked",!1);this.opts=n,n.concurrency=n.concurrency||En.DEFAULT_CONCURRENCY}add(n,e){if(this._locked)throw new Error(`LoaderScheduler is locked. Cannot add new loaders. This may be because new loaders should not be added outside the Vue lifecycle. URL: ${n.url||void 0}`);this._queue.has(n)||(this._queue.set(n,{loader:n,cb:e}),this.next())}next(){const n=this.stats(),e=Math.max(0,this.opts.concurrency-n.loading),{queued:i}=n.loaders;e>0&&n.queued>0?(i.sort((f,M)=>M.priority-f.priority),i.slice(0,e).forEach(f=>{f.start().then(()=>{this._queue.get(f).cb(f),this.next()})})):n.queued,this.emit(In.STATS_UPDATE,n)}lock(){this._locked=!0}unlock(){this._locked=!1}dispose(){this._queue.clear()}stats(){const n=[],e=[],i=[],f=[];for(const M of this._queue.values()){const d=M.loader.state;d===t.COMPLETE?n.push(M.loader):d===t.QUEUED?e.push(M.loader):d===t.LOADING?M.loader instanceof k||i.push(M.loader):d===t.ERROR&&f.push(M.loader)}return{queued:e.length,loading:i.length,complete:n.length,errored:f.length,loaders:{queued:e,loading:i,complete:n,errored:f}}}};L(En,"DEFAULT_CONCURRENCY",10);let W=En;const Oe=E=>Object.getPrototypeOf(E)===Object.prototype,w=class w extends en{constructor(n,e={}){super("",e);L(this,"_loaders",[]);L(this,"_resolvable",[]);L(this,"_resolver");L(this,"_scheduler");L(this,"_returnRecord",!1);if(e.resolver&&e.resolver instanceof z&&(this._resolver=e.resolver),e.scheduler&&e.scheduler instanceof W&&(this._scheduler=e.scheduler),n instanceof Array)this._returnRecord=!1,n.forEach((i,f)=>{typeof i=="string"?this._resolvable.push([f.toString(),i]):this.addLoader(i)});else if(Oe(n))this._returnRecord=!0,Object.entries(n).forEach(([i,f])=>{if(f instanceof en)f.id=i,this.addLoader(f);else if(typeof f=="string")this._resolvable.push([i,f]);else throw new Error("Unhandled LoaderRecord type.")});else throw new Error("Unknown supplied loader format.")}get resolver(){return this._resolver}get scheduler(){return this._scheduler}get loaders(){return this._loaders}addLoader(n){this._loaders.indexOf(n)===-1&&(this._loaders.push(n),n.setParent(this))}start(){return this.resolve(!0),super.start()}schedulerNearestParent(){if(this._scheduler)return this._scheduler;{let n=null,e=this.parent;for(;e&&!n;)n=e.scheduler,e=e.parent;return n}}async load(){const n=this.schedulerNearestParent();return n?new Promise(e=>{this.loaders.length===0&&e(this.data),this.loaders.forEach(i=>{const f=()=>{this.emitProgress()};i.on(v.LOAD_PROGRESS,f),n.add(i,()=>{i.removeListener(v.LOAD_PROGRESS,f);const M=this.progress();M.count===M.total&&e(this.data)})})}):this.loaders.length===0?this.data:Promise.all(this.loaders.map(e=>e.start().then(()=>{this.emitProgress()}))).then(()=>this.data)}progress(){const n=this.loaders.reduce((e,i)=>{const f=i.progress();return e.count+=f.count,e.total+=f.total,e.percentage+=f.percentage,e},{count:0,percentage:0,total:0});return this.loaders.length>0?n.percentage/=this.loaders.length:n.percentage,n}resolverChain(){const n=this._resolver?[this._resolver]:[];let e=this.parent;for(;e;)e.resolver&&n.unshift(e.resolver),e=e.parent;return n}resolve(n=!0){if(this._resolvable.length>0){const e=this.resolverChain(),i=z.create(e);this._resolvable.forEach(([f,M],d)=>{const S=i.loaderFromURL(M);S&&(S.id=f,this._loaders.push(S),this._resolvable[d]=null)}),this._resolvable=this._resolvable.filter(f=>f!==null)}n&&this._loaders.forEach(e=>{e instanceof w&&e.resolve(!0)})}loadersRecursive(){return this._loaders.flatMap(n=>n instanceof w?n.loadersRecursive():n)}async cancel(){this.loaders.forEach(n=>n.cancel())}async dispose(){this.loaders.forEach(n=>n.dispose()),this._scheduler&&this._scheduler.dispose()}get data(){return this._returnRecord?this._loaders.reduce((n,e)=>(n[e.id]=e.data,n),{}):this._loaders.map(n=>n.data)}};L(w,"DEFAULT_CONCURRENCY",10);let k=w;class oe extends k{constructor(A={}){super([],{resolver:new z,scheduler:new W({concurrency:A.concurrency||W.DEFAULT_CONCURRENCY})}),A.loaders&&A.loaders.forEach(n=>this.registerLoader(n))}registerLoader(A){this.resolver.registerLoader(A)}lock(){this.scheduler.lock()}unlock(){this.scheduler.unlock()}}class pn extends en{constructor(n,e){super(n,e);L(this,"_controller");L(this,"_data");this._controller=new AbortController}async load(n){return new Promise((e,i)=>{fetch(this.url,{...n,signal:this._controller.signal}).then(f=>{if(f.status===200)return f.json();i({status:f.status,statusText:f.statusText})}).then(f=>(this._data=f,f)).then(e)})}async cancel(){this._controller&&this._controller.abort()}async dispose(){this._data=null}get data(){return this._data}}L(pn,"RESOLVE",{type:"json",extensions:[".json"]});const le=E=>({decode:!1,crossOrigin:"",decoding:"async",initTexture:!0,...E}),H=class H extends en{constructor(){super(...arguments);L(this,"_image",null);L(this,"_data",null)}static setGlobals(n){H.globals=n}async load(n){const e=le(n),i=this._image=new Image,f=new ee,M=e.renderer||H.globals.renderer;if(!M&&e.initTexture)throw new Error("TextureLoader: Could not initialise texture. No renderer set.");return new Promise((d,S)=>{i.addEventListener("error",a=>{S(a.error)});const I=a=>{f.image=a,f.needsUpdate=!0,e.initTexture&&M&&M.initTexture(f),this._data=f,d(f)};i.addEventListener("load",()=>e.decode?i.decode().then(()=>I):I(i)),i.decoding=e.decoding,i.crossOrigin=e.crossOrigin,i.src=this.url})}async cancel(){this._image&&(this._image.src="")}async dispose(){this._image=null,this._data&&this._data.dispose()}get data(){return this._data}};L(H,"RESOLVE",{type:"texture",extensions:[".jpg",".jpeg",".png",".gif",".webp"]}),L(H,"globals",{});let An=H;const Gn=(E,A)=>{const n=X(E,()=>null,!0),e=A.add(n==null?void 0:n.current),i={chain:[...n?n.chain:[],e],current:e,root:n?n.root:e,parent:n?n.current:void 0};return Nn(E,i),Bn(()=>{A.remove(i.current,i.parent)}),i},rn="LOADER_CHAIN",Pe=E=>{let A;return E?A=Gn(rn,{add:n=>{const e=new oe(E);return n&&n.addLoader(e),e},remove:(n,e)=>{e&&n.cancel()}}):A=X(rn),A.root},se=E=>Gn(rn,{add:A=>{const n=new k(E);return A&&A.addLoader(n),n},remove:(A,n)=>{if(n){A.dispose();const e=n.loaders.indexOf(A);n.loaders.splice(e,1),A.setParent(null)}}}).current,ce=(E,A=()=>{})=>{const n=se(E);return n.once(v.LOAD_COMPLETE,A),n},Vn="ASSETS_PROVIDER_KEY",Ne=(E=noop)=>{const A=X(Vn);if(!A)throw new Error("Assets provider not found");return fn(()=>{A.loader.state==="complete"&&E({data:A.loader.data}),A.loader.once(v.LOAD_COMPLETE,E)}),A},ue=yn({setup(){const n={assets:null,loader:ce({fontMap:"textures/TitleLens/fellix-bold.png#texture",fontData:"textures/TitleLens/fellix-bold.json"},({data:e})=>{n.assets=e})};Nn(Vn,n)},render(){return this.$slots.default()}});var ve=`#ifndef FNC_COORD
+}`;const Ce={__name:"index",setup(E){const{renderer:A,scene:n,registerRenderFn:e,camera:i,orthoCamera:f}=H("renderer");i.position.set(-.821371,3.52016,.17339);const M={bulb:0},d=new U,R=new c,I=new nn,T=new nn,s=new nn,o=new nn,{set:_}=h(I,{lambda:3},["phi","theta"]),C=new U,r=new U,X=new c,t=new c,u=new c,v=new c,D=new c,b=new Jn(i,{sphericalDelta:s}),dn=Math.PI*-.1,m=Math.PI*.25;Z(()=>{rn.timeline().fromTo(v,{y:3},{y:0,duration:2,ease:"power1.out"},0).fromTo(X,{y:-3},{y:0,duration:4,ease:"sine.out"},1.5)});const{set:_n}=Un(M,{stiffness:40,damping:15,mass:1.2}),Y=new An,x=S=>S==="#000"||!S?!1:`vec3(${Y.set(S).convertLinearToSRGB().toArray().join(",")})`,w=Tn({COLOR_BCK:"#000",COLOR_AMB:"#000",COLOR_LIGHT:"#000",COLOR_BAC:"#000",COLOR_FRE:"#000",COLOR_DOM:"#000"}),p=new ln({vertexShader:Dn,fragmentShader:Ie,uniforms:{u_resolution:{value:d},u_camera:{value:R},u_time:{value:0},u_light:{value:u},u_posSphere:{value:D},u_scSphere:{value:1.2},u_unionSphere:{value:2}}}),l=new Pn(new pn(1,1),p);l.name="Mesh",l.layers.set(1),n.add(l);const $=({x:S,y:P})=>{r.set(S,P).sub(C),r.needsUpdate=!0,C.set(S,P);const B=z.value?-.008:-.001;T.theta+=r.x*B,T.phi+=r.y*B,T.phi=xn(T.phi,dn,m),_({phi:T.phi,theta:T.theta})},J=S=>{if(_n({bulb:S?1:0}),!S){const P=Nn(r.x,.1),B=Nn(r.y,.1);T.theta+=-P,T.phi+=-B}},{isDown:z}=On($);sn(({width:S,height:P})=>{l.scale.set(S,P,1),d.set(S,P)}),F(z,J);let g=0,L=0;return on(({delta:S})=>{const{bulb:P}=M;g+=S*.0012*Rn(P,1,.5),L+=S*.0012;const B=g+2;s.theta=I.theta-o.theta,s.phi=I.phi-o.phi,o.copy(I),r.needsUpdate||r.set(0,0),r.needsUpdate=!1,b==null||b.update(),t.set(Math.sin(L)*1,2+Math.sin(L*.5)*2,-Math.cos(L*.2)*-2),u.copy(X).add(t),D.copy(v),D.y+=-.5+Math.sin(B*.8)*1,p.uniforms.u_time.value=g,p.uniforms.u_scSphere.value=Rn(P,1.2,1.4),p.uniforms.u_unionSphere.value=Rn(P,2.2,1.2),R.copy(i.position)}),e(()=>{A.clear(),A.render(n,f),A.clearDepth(),A.render(n,i)}),F(w,S=>{const P={COLOR_BCK:x(S.COLOR_BCK),COLOR_AMB:x(S.COLOR_AMB),COLOR_LIG:x(S.COLOR_LIGHT),COLOR_BAC:x(S.COLOR_BAC),COLOR_FRE:x(S.COLOR_FRE),COLOR_DOM:x(S.COLOR_DOM)};Object.assign(p.defines,P),p.needsUpdate=!0},{immediate:!0}),cn([{value:w}],{title:"RaymarchSphere",expanded:!0}),(S,P)=>un(S.$slots,"default")}};var N;(function(E){E.LOAD_START="load-start",E.LOAD_PRIORITY="load-priority",E.LOAD_COMPLETE="load-complete",E.LOAD_PROGRESS="load-progress",E.LOAD_ERROR="load-error",E.LOAD_CANCELLED="load-cancelled"})(N||(N={}));var O;(function(E){E.QUEUED="queued",E.LOADING="loading",E.ERROR="error",E.COMPLETE="complete",E.CANCELLED="cancelled"})(O||(O={}));class En extends Vn{constructor(n,e){super();a(this,"id");a(this,"url");a(this,"state",O.QUEUED);a(this,"type");a(this,"opts");a(this,"priority",0);a(this,"_accuratePercentage",null);a(this,"_parent");this.url=n,this.opts=e}get parent(){return this._parent}async start(){return this.setState(O.LOADING),this.emitProgress(),this.load(this.opts||{}).then(n=>(this.emitProgress(),this.state!==O.CANCELLED&&this.setState(O.COMPLETE),n)).catch(n=>(console.error("Failed to load : ",n),this.setState(O.ERROR,n),n))}setState(n,e){if(this.state!==n)switch(this.state=n,this.state){case O.LOADING:this.emit(N.LOAD_START,{loader:this});break;case O.COMPLETE:this.emit(N.LOAD_COMPLETE,{loader:this,data:this.data});break;case O.ERROR:this.emit(N.LOAD_ERROR,{loader:this,error:e});break;case O.CANCELLED:this.emit(N.LOAD_CANCELLED,{loader:this});break}}emitProgress(){this.emit(N.LOAD_PROGRESS,{loader:this,progress:this.progress()})}setAccuratePercentage(n){this._accuratePercentage=n}progress(){return this.state===O.COMPLETE||this.state===O.CANCELLED||this.state===O.ERROR?{count:1,total:1,percentage:1}:{count:0,total:1,percentage:this._accuratePercentage>0?this._accuratePercentage:0}}setParent(n){this._parent=n}}class K{constructor(){a(this,"register",{})}static create(A=[]){const n=new K;return A.forEach(e=>n.merge(e)),n}registerLoader(A,n){const e=A,{RESOLVE:i}=e;if(i)(!this.register[i.type]||n)&&(this.register[i.type]={Construct:e,...i});else throw new Error("No resolve metadata found on Loader.")}loaderFromURL(A){const[n,e]=A.split("#"),i=`.${n.split(".").pop()}`;let f=null;if(e){const M=this.register[e];f=M?new M.Construct(n):null}else if(i){const M=Object.values(this.register).filter(d=>d.extensions.filter(R=>i===R).length>0);f=M.length>0?new M[0].Construct(n):null}else throw new Error(`Couldn't parse url when trying to resolve: ${A}`);if(f)return f;throw new Error(`Couldn't find Loader to handle url : ${A} / ${i}`)}merge(A){Object.entries(A.register).forEach(([,n])=>{this.registerLoader(n.Construct,!0)})}}var In;(function(E){E.STATS_UPDATE="stats-update"})(In||(In={}));const Mn=class Mn extends Vn{constructor(n={}){super();a(this,"opts");a(this,"_queue",new Map);a(this,"_locked",!1);this.opts=n,n.concurrency=n.concurrency||Mn.DEFAULT_CONCURRENCY}add(n,e){if(this._locked)throw new Error(`LoaderScheduler is locked. Cannot add new loaders. This may be because new loaders should not be added outside the Vue lifecycle. URL: ${n.url||void 0}`);this._queue.has(n)||(this._queue.set(n,{loader:n,cb:e}),this.next())}next(){const n=this.stats(),e=Math.max(0,this.opts.concurrency-n.loading),{queued:i}=n.loaders;e>0&&n.queued>0?(i.sort((f,M)=>M.priority-f.priority),i.slice(0,e).forEach(f=>{f.start().then(()=>{this._queue.get(f).cb(f),this.next()})})):n.queued,this.emit(In.STATS_UPDATE,n)}lock(){this._locked=!0}unlock(){this._locked=!1}dispose(){this._queue.clear()}stats(){const n=[],e=[],i=[],f=[];for(const M of this._queue.values()){const d=M.loader.state;d===O.COMPLETE?n.push(M.loader):d===O.QUEUED?e.push(M.loader):d===O.LOADING?M.loader instanceof j||i.push(M.loader):d===O.ERROR&&f.push(M.loader)}return{queued:e.length,loading:i.length,complete:n.length,errored:f.length,loaders:{queued:e,loading:i,complete:n,errored:f}}}};a(Mn,"DEFAULT_CONCURRENCY",10);let Q=Mn;const Oe=E=>Object.getPrototypeOf(E)===Object.prototype,q=class q extends En{constructor(n,e={}){super("",e);a(this,"_loaders",[]);a(this,"_resolvable",[]);a(this,"_resolver");a(this,"_scheduler");a(this,"_returnRecord",!1);if(e.resolver&&e.resolver instanceof K&&(this._resolver=e.resolver),e.scheduler&&e.scheduler instanceof Q&&(this._scheduler=e.scheduler),n instanceof Array)this._returnRecord=!1,n.forEach((i,f)=>{typeof i=="string"?this._resolvable.push([f.toString(),i]):this.addLoader(i)});else if(Oe(n))this._returnRecord=!0,Object.entries(n).forEach(([i,f])=>{if(f instanceof En)f.id=i,this.addLoader(f);else if(typeof f=="string")this._resolvable.push([i,f]);else throw new Error("Unhandled LoaderRecord type.")});else throw new Error("Unknown supplied loader format.")}get resolver(){return this._resolver}get scheduler(){return this._scheduler}get loaders(){return this._loaders}addLoader(n){this._loaders.indexOf(n)===-1&&(this._loaders.push(n),n.setParent(this))}start(){return this.resolve(!0),super.start()}schedulerNearestParent(){if(this._scheduler)return this._scheduler;{let n=null,e=this.parent;for(;e&&!n;)n=e.scheduler,e=e.parent;return n}}async load(){const n=this.schedulerNearestParent();return n?new Promise(e=>{this.loaders.length===0&&e(this.data),this.loaders.forEach(i=>{const f=()=>{this.emitProgress()};i.on(N.LOAD_PROGRESS,f),n.add(i,()=>{i.removeListener(N.LOAD_PROGRESS,f);const M=this.progress();M.count===M.total&&e(this.data)})})}):this.loaders.length===0?this.data:Promise.all(this.loaders.map(e=>e.start().then(()=>{this.emitProgress()}))).then(()=>this.data)}progress(){const n=this.loaders.reduce((e,i)=>{const f=i.progress();return e.count+=f.count,e.total+=f.total,e.percentage+=f.percentage,e},{count:0,percentage:0,total:0});return this.loaders.length>0?n.percentage/=this.loaders.length:n.percentage,n}resolverChain(){const n=this._resolver?[this._resolver]:[];let e=this.parent;for(;e;)e.resolver&&n.unshift(e.resolver),e=e.parent;return n}resolve(n=!0){if(this._resolvable.length>0){const e=this.resolverChain(),i=K.create(e);this._resolvable.forEach(([f,M],d)=>{const R=i.loaderFromURL(M);R&&(R.id=f,this._loaders.push(R),this._resolvable[d]=null)}),this._resolvable=this._resolvable.filter(f=>f!==null)}n&&this._loaders.forEach(e=>{e instanceof q&&e.resolve(!0)})}loadersRecursive(){return this._loaders.flatMap(n=>n instanceof q?n.loadersRecursive():n)}async cancel(){this.loaders.forEach(n=>n.cancel())}async dispose(){this.loaders.forEach(n=>n.dispose()),this._scheduler&&this._scheduler.dispose()}get data(){return this._returnRecord?this._loaders.reduce((n,e)=>(n[e.id]=e.data,n),{}):this._loaders.map(n=>n.data)}};a(q,"DEFAULT_CONCURRENCY",10);let j=q;class oe extends j{constructor(A={}){super([],{resolver:new K,scheduler:new Q({concurrency:A.concurrency||Q.DEFAULT_CONCURRENCY})}),A.loaders&&A.loaders.forEach(n=>this.registerLoader(n))}registerLoader(A){this.resolver.registerLoader(A)}lock(){this.scheduler.lock()}unlock(){this.scheduler.unlock()}}class Hn extends En{constructor(n,e){super(n,e);a(this,"_controller");a(this,"_data");this._controller=new AbortController}async load(n){return new Promise((e,i)=>{fetch(this.url,{...n,signal:this._controller.signal}).then(f=>{if(f.status===200)return f.json();i({status:f.status,statusText:f.statusText})}).then(f=>(this._data=f,f)).then(e)})}async cancel(){this._controller&&this._controller.abort()}async dispose(){this._data=null}get data(){return this._data}}a(Hn,"RESOLVE",{type:"json",extensions:[".json"]});const le=E=>({decode:!1,crossOrigin:"",decoding:"async",initTexture:!0,...E}),y=class y extends En{constructor(){super(...arguments);a(this,"_image",null);a(this,"_data",null)}static setGlobals(n){y.globals=n}async load(n){const e=le(n),i=this._image=new Image,f=new ne,M=e.renderer||y.globals.renderer;if(!M&&e.initTexture)throw new Error("TextureLoader: Could not initialise texture. No renderer set.");return new Promise((d,R)=>{i.addEventListener("error",T=>{R(T.error)});const I=T=>{f.image=T,f.needsUpdate=!0,e.initTexture&&M&&M.initTexture(f),this._data=f,d(f)};i.addEventListener("load",()=>e.decode?i.decode().then(()=>I):I(i)),i.decoding=e.decoding,i.crossOrigin=e.crossOrigin,i.src=this.url})}async cancel(){this._image&&(this._image.src="")}async dispose(){this._image=null,this._data&&this._data.dispose()}get data(){return this._data}};a(y,"RESOLVE",{type:"texture",extensions:[".jpg",".jpeg",".png",".gif",".webp"]}),a(y,"globals",{});let fn=y;const Xn=(E,A)=>{const n=H(E,()=>null,!0),e=A.add(n==null?void 0:n.current),i={chain:[...n?n.chain:[],e],current:e,root:n?n.root:e,parent:n?n.current:void 0};return vn(E,i),hn(()=>{A.remove(i.current,i.parent)}),i},Cn="LOADER_CHAIN",Pe=E=>{let A;return E?A=Xn(Cn,{add:n=>{const e=new oe(E);return n&&n.addLoader(e),e},remove:(n,e)=>{e&&n.cancel()}}):A=H(Cn),A.root},se=E=>Xn(Cn,{add:A=>{const n=new j(E);return A&&A.addLoader(n),n},remove:(A,n)=>{if(n){A.dispose();const e=n.loaders.indexOf(A);n.loaders.splice(e,1),A.setParent(null)}}}).current,ce=(E,A=()=>{})=>{const n=se(E);return n.once(N.LOAD_COMPLETE,A),n},gn="ASSETS_PROVIDER_KEY",Ne=(E=noop)=>{const A=H(gn);if(!A)throw new Error("Assets provider not found");return Z(()=>{A.loader.state==="complete"&&E({data:A.loader.data}),A.loader.once(N.LOAD_COMPLETE,E)}),A},ue=bn({setup(){const n={assets:null,loader:ce({fontMap:"textures/TitleLens/fellix-bold.png#texture",fontData:"textures/TitleLens/fellix-bold.json"},({data:e})=>{n.assets=e})};vn(gn,n)},render(){return this.$slots.default()}});var ve=`#ifndef FNC_COORD
 #define FNC_COORD
 vec2 coord(in vec2 p) {
 	p = p / uResolution.xy;
@@ -19555,7 +19774,7 @@ float sdCircle(in vec2 st) {
     return sdCircle(st, vec2(.5));
 }
 
-#endif`;class xe extends Fn{constructor(A,n){A=Object.assign({vertexShader:pe,fragmentShader:Ge,type:"LensMaterial",extensions:{derivatives:!0},transparent:!0,depthTest:!1,depthTest:!1},A),super(A),this.defines={HAS_REVERSE:!1,HAS_MASKING:!1,HAS_BLENDING:!1,CENTER_ALIGN:!0,LOW_RES:!1,USE_DEBUG:!1,...A.defines};const e={u_time:{value:0},u_alpha:{value:0},u_progressBlur0:{value:0},u_progressBlur1:{value:0},u_pointer:{value:new V},u_pointerBlur:{value:.25},u_color:{value:new nn("#000000")},u_colorBlending:{value:new nn("#ffffff")}};this.uniforms={...e,...this.uniforms},Ae(this)}}const pe=`
+#endif`;class xe extends ln{constructor(A,n){A=Object.assign({vertexShader:pe,fragmentShader:Ge,type:"LensMaterial",extensions:{derivatives:!0},transparent:!0,depthTest:!1,depthTest:!1},A),super(A),this.defines={HAS_REVERSE:!1,HAS_MASKING:!1,HAS_BLENDING:!1,CENTER_ALIGN:!0,LOW_RES:!1,USE_DEBUG:!1,...A.defines};const e={u_time:{value:0},u_alpha:{value:0},u_progressBlur0:{value:0},u_progressBlur1:{value:0},u_pointer:{value:new U},u_pointerBlur:{value:.25},u_color:{value:new An("#000000")},u_colorBlending:{value:new An("#ffffff")}};this.uniforms={...e,...this.uniforms},ee(this)}}const pe=`
     varying vec2 vUv;
     varying vec3 vLocalPos;
     void main() {
@@ -19598,7 +19817,7 @@ float sdCircle(in vec2 st) {
     ${Ue}
     ${De}
     ${ae}
-    ${te}
+    ${Se}
 
     float getBlur(vec2 st, float f, float p) {
         float feather = (1.0 / uBounds.x) * f;
@@ -19696,4 +19915,4 @@ float sdCircle(in vec2 st) {
         // gl_FragColor = vec4(vec3(uvRemapped.x, 0., 1.), 1.);
         #endif
     }
-`,Ve={name:"TextLens",props:{id:{type:Number,default:Date.now()},text:{type:String,default:""},width:{type:Number,default:1/0},align:{type:String,default:"center"},blending:{type:Number,default:de},color:{type:String,default:"#ffffff"},lowQuality:{type:Boolean,default:!1},focused:{type:Boolean,default:!0},placeholder:{type:Boolean,default:!1}},emits:["text:focus","text:unfocus"],setup(E,{emit:A}){const n=Rn({posInner:new l(0,0,0),posOffset:new l(0,0,0),aBlur:0,aAlpha:1,sBase:Ie?22.2:13.4,sZoom:1,pSizePointerBlur:.25}),{renderer:e}=X("renderer"),i=Cn(({width:R,height:u})=>{const s=e.getPixelRatio();F.set(R*s,u*s)},{immediate:!0}),f=Rn({});Ne(({data:R})=>{f.fontMap=R.fontMap,f.fontData=R.fontData,D()});const M=bn(()=>n.sBase*n.sZoom*(16/1920*i.width)),{object:d}=Ee(null,{props:{s:M}}),S=new Le,I=new _e;let a=null,C=null;const U=new l,_=new l,r=new l(.5,0,0),o=new V,P=new l().copy(n.posOffset),F=new V,g=new V,B=new nn(E.color),{set:q}=J(U,{lambda:1.4}),{set:K}=J(n,{lambda:6},["pSizePointerBlur"]),{set:y}=J(g,{lambda:8},["x","y"]);let N;const Mn=async()=>{const R={tMap:{value:f.fontMap},uBounds:{value:_},uResolution:{value:F},u_pointer:{value:g},u_color:{value:B}};N=new xe({uniforms:R,defines:{HAS_MASKING:!0,CENTER_ALIGN:E.align==="center",LOW_RES:E.lowQuality},blending:E.blending}),C=new mn(I,N),C.layers.set(1),S.add(C)},h=R=>{if(!a)return;a.update({text:R});const{position:u,uv:s,id:on,index:ln}=a.buffers;I.setAttribute("position",new Ln(u,3)),I.setAttribute("uv",new Ln(s,2)),I.setAttribute("id",new Ln(on,1)),I.setIndex(new Re(ln,1)),I.computeBoundingBox(),I.boundingBox.getSize(_),q({x:Math.max(r.x-(_.x-r.x),0)},!0),r.copy(_),o.set(a.width,a.height),C.position.set(0,_.y*(_.y/a.height),0),q(_)},{isDown:dn}=Un(({x:R,y:u})=>{const s=e.getPixelRatio();y({x:R*s,y:F.y-u*s})});p(dn,R=>{K({pSizePointerBlur:R?.5:.25})}),p(n.posInner,R=>S.position.copy(R).add(P),{immediate:!0});const Q=()=>{const{aAlpha:R,aBlur:u}=n;N&&(N.u_progressBlur0=u,N.u_progressBlur1=E.placeholder?1:_.x==0?0:Math.max(0,U.x/_.x),N.u_pointerBlur=n.pSizePointerBlur,N.u_alpha=R)},D=()=>{a=new ie({font:f.fontData,text:E.text,width:E.width,align:E.align,letterSpacing:E.letterSpacing,lineHeight:E.lineHeight,maxTimes:120}),d.add(S),Mn(),h(E.text),Q()};let O;const m=()=>{O==null||O.kill(),E.placeholder?O=Pn.timeline().fromTo(n,{aAlpha:0},{aAlpha:1,duration:3},.1).fromTo(n,{sZoom:1.6},{sZoom:1,duration:2.4,ease:"sine.out"},0).fromTo(n,{aBlur:0},{aBlur:1,duration:4,ease:"power2.out"},.2):Z()},G=()=>{O==null||O.kill(),O=Pn.timeline({onComplete:()=>A("text:unfocus",{id:E.id})}).to(n,{aAlpha:0,duration:1.4},.1).to(n,{sZoom:.7,duration:1.6,ease:"power3.out"},0).to(n,{aBlur:0,duration:2.5,ease:"power2.out"},0)},Z=()=>{n.aBlur=1,n.aAlpha=1,n.sZoom=1};Dn(Q),p(()=>E.text,R=>{O==null||O.kill(),E.focused&&(R==""&&(r.set(.5,0,0),_.set(0,0,0)),Z(),h(R))}),p(()=>E.focused,R=>R?m():G(),{immediate:!0}),p(()=>E.placeholder,R=>{R||(r.set(.5,0,0),_.set(0,0,0),h(E.text))});const j=On([],{title:"Text",expanded:!0});return j.addButton({title:"focus"}).on("click",()=>m()),j.addButton({title:"unfocus"}).on("click",()=>G()),{object:d}}};function He(E,A,n,e,i,f){return cn(E.$slots,"default")}const Xe=hn(Ve,[["render",He]]),ge=16,Be={__name:"index",setup(E){const{renderer:A,scene:n,registerRenderFn:e}=X("renderer"),i=new Te(-1,1,1,-1,0,10);i.layers.set(1),Cn(({width:_,height:r})=>{i.left=-_/2,i.right=_/2,i.top=r/2,i.bottom=-r/2,i.updateProjectionMatrix()});const f=Pe({concurrency:10,loaders:[pn,An]});An.setGlobals({renderer:A});const M=Tn(null),d=Tn([{id:Date.now(),text:"TYPE.",focused:!1}]),S=un(""),I=()=>{d.value[d.value.length-1]&&(d.value[d.value.length-1].focused=!1),d.value.push({id:Date.now(),focused:!0,placeholder:!1}),S.value=""},a=()=>{M.value.focus()},C=_=>{_.key==="Enter"&&I()},U=({id:_})=>{const r=d.value.findIndex(o=>o.id===_);r!==-1&&d.value.splice(r,1)};return p(S,_=>{_.length>=ge&&I(),_.length>0&&d.value[0].placeholder==!0&&(d.value[0].placeholder=!1)}),On([],{title:"Title Lens",expanded:!0}),fn(()=>{f.start(),f.lock(),d.value[0].focused=!0,d.value[0].placeholder=!0,setTimeout(()=>{M.value.focus()},1500)}),e(()=>{A.clear(),A.render(n,i)}),(_,r)=>(Y(),Sn("div",{class:"textLens",onClick:a},[Yn(zn("input",{ref_key:"refInput",ref:M,class:"textLens__input",onKeyup:C,"onUpdate:modelValue":r[0]||(r[0]=o=>S.value=o),placeholder:""},null,544),[[wn,S.value]]),an(b(ue),null,{default:tn(()=>[(Y(!0),Sn(Wn,null,kn(d.value,(o,P)=>{var F;return Y(),vn(Xe,qn({key:o.id,ref_for:!0},o,{text:o.placeholder?"TYPE.":o.focused?S.value.toUpperCase():(F=S.value.value)==null?void 0:F.toUpperCase(),"onText:unfocus":U}),null,16,["text"])}),128))]),_:1})]))}},ye=["data-name"],Qe={__name:"ComponentGl",setup(E){const A=Kn(),n=Tn(),e=un(),i="production",M=[{id:"raymarch-sphere",component:Ce},{id:"text-lens",component:Be}].find(d=>new RegExp(`\\b${d.id}\\b`,"i").test(A.path));return e.value=M.component,fn(()=>document.body.style.overflow="hidden"),(d,S)=>(Y(),Sn("div",{class:"component no-select","data-name":b(M).id},[an(b(Zn),{hiddenOnStart:b(i)=="production"},{default:tn(()=>[an(b(fe),{ref:"refRenderer",antialias:!1,autoResize:!0,autoRender:!0},{default:tn(()=>[(Y(),vn(Qn(e.value),{ref_key:"refComponent",ref:n},null,512))]),_:1},512)]),_:1},8,["hiddenOnStart"])],8,ye))}};export{Qe as default};
+`,Ve={name:"TextLens",props:{id:{type:Number,default:Date.now()},text:{type:String,default:""},width:{type:Number,default:1/0},align:{type:String,default:"center"},blending:{type:Number,default:fe},color:{type:String,default:"#ffffff"},lowQuality:{type:Boolean,default:!1},focused:{type:Boolean,default:!0},placeholder:{type:Boolean,default:!1}},emits:["text:focus","text:unfocus"],setup(E,{emit:A}){const n=Tn({posInner:new c(0,0,0),posOffset:new c(0,0,0),aBlur:0,aAlpha:1,sBase:Gn?22.2:13.4,sZoom:1,pSizePointerBlur:.25}),{renderer:e}=H("renderer"),i=sn(({width:L,height:G})=>{const V=e.getPixelRatio();t.set(L*V,G*V)},{}),f=Tn({});Ne(({data:L})=>{f.fontMap=L.fontMap,f.fontData=L.fontData,p()});const M=wn(()=>n.sBase*n.sZoom*(16/1920*i.width)),{object:d}=Ae(null,{props:{s:M}}),R=new Me,I=new de;let T=null,s=null;const o=new c,_=new c,C=new c(.5,0,0),r=new U,X=new c().copy(n.posOffset),t=new U,u=new U,v=new An(E.color),{set:D}=h(o,{lambda:1.4}),{set:b}=h(n,{lambda:6},["pSizePointerBlur"]),{set:dn}=h(u,{lambda:8},["x","y"]);let m;const _n=async()=>{const L={tMap:{value:f.fontMap},uBounds:{value:_},uResolution:{value:t},u_pointer:{value:u},u_color:{value:v}};m=new xe({uniforms:L,defines:{HAS_MASKING:!0,CENTER_ALIGN:E.align==="center",LOW_RES:E.lowQuality},blending:E.blending}),s=new Pn(I,m),s.layers.set(1),R.add(s)},Y=L=>{if(!T)return;T.update({text:L});const{position:G,uv:V,id:S,index:P}=T.buffers;I.setAttribute("position",new Ln(G,3)),I.setAttribute("uv",new Ln(V,2)),I.setAttribute("id",new Ln(S,1)),I.setIndex(new _e(P,1)),I.computeBoundingBox(),I.boundingBox.getSize(_),D({x:Math.max(C.x-(_.x-C.x),0)},!0),C.copy(_),r.set(T.width,T.height),s.position.set(0,_.y*(_.y/T.height),0),D(_)},{isDown:x}=On(({x:L,y:G})=>{const V=e.getPixelRatio();dn({x:L*V,y:t.y-G*V})});F(x,L=>{b({pSizePointerBlur:L?.5:.25})}),F(n.posInner,L=>R.position.copy(L).add(X),{immediate:!0});const w=()=>{const{aAlpha:L,aBlur:G}=n;m&&(m.u_progressBlur0=G,m.u_progressBlur1=E.placeholder?1:_.x==0?0:Math.max(0,o.x/_.x),m.u_pointerBlur=n.pSizePointerBlur,m.u_alpha=L)},p=()=>{T=new Ee({font:f.fontData,text:E.text,width:E.width,align:E.align,letterSpacing:E.letterSpacing,lineHeight:E.lineHeight,maxTimes:120}),d.add(R),_n(),Y(E.text),w()};let l;const $=()=>{l==null||l.kill(),E.placeholder?l=rn.timeline().fromTo(n,{aAlpha:0},{aAlpha:1,duration:3},.1).fromTo(n,{sZoom:1.6},{sZoom:1,duration:2.4,ease:"sine.out"},0).fromTo(n,{aBlur:0},{aBlur:1,duration:4,ease:"power2.out"},.2):z()},J=()=>{l==null||l.kill(),l=rn.timeline({onComplete:()=>A("text:unfocus",{id:E.id})}).to(n,{aAlpha:0,duration:1.4},.1).to(n,{sZoom:.7,duration:1.6,ease:"power3.out"},0).to(n,{aBlur:0,duration:2.5,ease:"power2.out"},0)},z=()=>{n.aBlur=1,n.aAlpha=1,n.sZoom=1};on(w),F(()=>E.text,L=>{l==null||l.kill(),E.focused&&(L==""&&(C.set(.5,0,0),_.set(0,0,0)),z(),Y(L))}),F(()=>E.focused,L=>L?$():J(),{immediate:!0}),F(()=>E.placeholder,L=>{L||(C.set(.5,0,0),_.set(0,0,0),Y(E.text))});const g=cn([],{title:"Text",expanded:!0});return g.addButton({title:"focus"}).on("click",()=>$()),g.addButton({title:"unfocus"}).on("click",()=>J()),{object:d}}};function He(E,A,n,e,i,f){return un(E.$slots,"default")}const Xe=Yn(Ve,[["render",He]]),ge=16,Be={__name:"index",setup(E){const{renderer:A,scene:n,registerRenderFn:e}=H("renderer"),i=new Le(-1,1,1,-1,0,10);i.layers.set(1),sn(({width:_,height:C})=>{i.left=-_/2,i.right=_/2,i.top=C/2,i.bottom=-C/2,i.updateProjectionMatrix()});const f=Pe({concurrency:10,loaders:[Hn,fn]});fn.setGlobals({renderer:A});const M=en(null),d=en([{id:Date.now(),text:"TYPE.",focused:!1}]),R=Fn(""),I=()=>{d.value[d.value.length-1]&&(d.value[d.value.length-1].focused=!1),d.value.push({id:Date.now(),focused:!0,placeholder:!1}),R.value=""},T=()=>{M.value.focus()},s=_=>{_.key==="Enter"&&I()},o=({id:_})=>{const C=d.value.findIndex(r=>r.id===_);C!==-1&&d.value.splice(C,1)};return F(R,_=>{_.length>=ge&&I(),_.length>0&&d.value[0].placeholder==!0&&(d.value[0].placeholder=!1)}),cn([],{title:"Title Lens",expanded:!0}),Z(()=>{f.start(),f.lock(),d.value[0].focused=!0,d.value[0].placeholder=!0,setTimeout(()=>{M.value.focus()},1500)}),e(()=>{A.clear(),A.render(n,i)}),(_,C)=>(W(),an("div",{class:"textLens",onClick:T},[zn(Wn("input",{ref_key:"refInput",ref:M,class:"textLens__input",onKeyup:s,"onUpdate:modelValue":C[0]||(C[0]=r=>R.value=r),placeholder:""},null,544),[[kn,R.value]]),Sn(k(ue),null,{default:tn(()=>[(W(!0),an(qn,null,Kn(d.value,(r,X)=>{var t;return W(),mn(Xe,Qn({key:r.id,ref_for:!0},r,{text:r.placeholder?"TYPE.":r.focused?R.value.toUpperCase():(t=R.value.value)==null?void 0:t.toUpperCase(),"onText:unfocus":o}),null,16,["text"])}),128))]),_:1})]))}},ye=["data-name"],je={__name:"ComponentGl",setup(E){const A=jn(),n=en(),e=Fn(),i="production",M=[{id:"sdf-lens-blur",component:Te},{id:"text-lens",component:Be},{id:"raymarch-sphere",component:Ce},{id:"comet",component:re}].find(d=>new RegExp(`\\b${d.id}\\b`,"i").test(A.path));return e.value=M.component,Z(()=>document.body.style.overflow="hidden"),(d,R)=>(W(),an("div",{class:"component no-select","data-name":k(M).id},[Sn(k($n),{hiddenOnStart:k(i)=="production"},{default:tn(()=>[Sn(k(ie),{ref:"refRenderer",antialias:!1,autoResize:!0,autoRender:!0},{default:tn(()=>[(W(),mn(Zn(e.value),{ref_key:"refComponent",ref:n},null,512))]),_:1},512)]),_:1},8,["hiddenOnStart"])],8,ye))}};export{je as default};
