@@ -1,17 +1,17 @@
 {
-    "name": "vite-template",
+    "name": "anoyo-website",
     "version": "1.0.0",
     "private": true,
     "type": "module",
     "scripts": {
+        "build": "NODE_ENV=production vite build && cp dist/index.html dist/404.html",
         "compress:images": "resn compression:img",
         "compress:video": "resn compression:video",
         "compress:video-posters": "resn poster:extract",
         "deploy": "gh-pages -d dist",
+        "deps:clean": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && pnpm store prune && rm -rf pnpm-lock.yaml && pnpm i",
         "dev": "vite",
-        "preview": "vite preview",
-        "build": "NODE_ENV=production vite build && cp dist/index.html dist/404.html",
-        "deps:clean": "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' + && pnpm store prune && rm -rf pnpm-lock.yaml && pnpm i"
+        "preview": "vite preview"
     },
     "dependencies": {
         "@resn/cli": "^1.8.6",

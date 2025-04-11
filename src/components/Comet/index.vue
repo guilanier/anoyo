@@ -11,7 +11,7 @@
 
     const { renderer, scene, orthoCamera } = inject('renderer');
 
-        const vPointerDamped = new Vector2();
+    const vPointerDamped = new Vector2();
     const vResolution = new Vector2();
 
     const iState = ref(0);
@@ -49,7 +49,7 @@
             transparent: false,
         });
 
-            mesh = new Mesh(new PlaneGeometry(1, 1), shader);
+        mesh = new Mesh(new PlaneGeometry(1, 1), shader);
         mesh.scale.set(window.innerWidth, window.innerHeight, 1);
         mesh.layers.set(1);
 
@@ -69,9 +69,8 @@
     });
 
     watch(pointerDown, (bool) => {
-        
-            setProps0Damped({ pSizeBlur: bool ? 0.5 : 0.25 });
-        
+        setProps0Damped({ pSizeBlur: bool ? 0.5 : 0.25 });
+
         if (!bool) iState.value = (iState.value + 1) % 4;
     });
 
