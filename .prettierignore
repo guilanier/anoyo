@@ -3,7 +3,7 @@ dist
 __remove__
 shared
 tools/prettier-config/__tests__/fixtures
-__deprectae__
+__deprecate__
 build
 .output
 .nuxt
