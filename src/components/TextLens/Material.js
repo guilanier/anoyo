@@ -10,7 +10,7 @@ import glslScale from '@resn/gozer-glsl/transform/scale.glsl';
 import { materialEasyUniforms } from '@resn/gozer-three';
 
 class TextLensMaterial extends ShaderMaterial {
-    constructor(props, options) {
+    constructor(props) {
         props = Object.assign(
             {
                 vertexShader,
@@ -18,7 +18,6 @@ class TextLensMaterial extends ShaderMaterial {
                 type: 'LensMaterial',
                 extensions: { derivatives: true },
                 transparent: true,
-                depthTest: false,
                 depthTest: false,
             },
             props

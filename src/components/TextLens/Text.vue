@@ -3,7 +3,6 @@
 </template>
 
 <script>
-    import gsap from '@resn/gsap';
     import {
         BufferGeometry,
         Color,
@@ -27,6 +26,7 @@
         useViewportResize,
         useWindowPointer,
     } from '@resn/gozer-vue';
+    import { gsap } from '@resn/gsap';
 
     import { useAssets } from './AssetsProvider';
     import TextLensMaterial from './Material';
