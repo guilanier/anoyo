@@ -1,26 +1,24 @@
 {
-  "hash": "598b6b728f236730a11b8a7b75eb95e85ceecf2d",
+  "hash": "af818ce511d0cf5809c19d2a8bb601c44c17f230",
   "input_size": 1326534,
-  "output_size": 323952,
-  "reduction": 0.24420934555767135,
+  "output_size": 229593,
+  "reduction": 0.17307735798705498,
   "input": "videos/text-lens.mp4",
   "output": "videos/text-lens@lg.webm",
-  "modified": 1736519794013.0422,
-  "changed": 1736519794013.0422,
+  "modified": 1744362885152.235,
+  "changed": 1744362885152.235,
   "opts": {
     "metadata": true,
     "format": [
-      "mp4",
       "webm"
     ],
-    "quality": 60,
+    "quality": 30,
     "webm": {},
     "mp4": {
-      "alpha": true,
+      "alpha": false,
       "alphaQuality": 0.75
     },
     "threads": 0,
-    "crf": 20,
     "targetFiles": "**/*.{mp4,mov}",
     "audio": false,
     "sizes": {
@@ -45,7 +43,7 @@
     },
     "video": {
       "container": "matroska",
-      "bitrate": 506,
+      "bitrate": 358,
       "stream": 0,
       "codec": "vp9",
       "resolution": {

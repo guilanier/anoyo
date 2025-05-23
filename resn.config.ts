@@ -32,13 +32,12 @@ const baseGltfOpts: Omit<CompressGltfOpts, 'name'> & { targetFiles: string } = {
 };
 
 const baseVideoOpts: Omit<CompressVideoOpts, 'name'> & { targetFiles: string } = {
-    crf: 20,
     baseDir,
     targetFiles: '**/*.{mp4,mov}',
     outputDir,
     audio: false,
-    format: ['mp4', 'webm'],
-    quality: 60,
+    format: ['webm'],
+    quality: 30,
     sizes: {
         lg: 1,
     },
@@ -95,11 +94,6 @@ export default defineResnConfig({
                 name: 'Video Compression',
                 ...baseVideoOpts,
                 ignore: ['**/*-alpha.{mp4,mov}'],
-            },
-            {
-                name: 'Video w/Alpha Compression',
-                ...baseVideoOpts,
-                ...VideoAlphaPreset,
             },
         ],
     },

@@ -1,26 +1,24 @@
 {
-  "hash": "146839bcb1d447da31c49da93f91ef491b89c459",
+  "hash": "5590c0574dc4ad96514b350e5bfc170f736e7035",
   "input_size": 3079839,
-  "output_size": 910867,
-  "reduction": 0.29575149869847095,
+  "output_size": 678192,
+  "reduction": 0.2202037184411263,
   "input": "videos/line-type.mp4",
   "output": "videos/line-type@lg.webm",
-  "modified": 1736520006631.5146,
-  "changed": 1736520006631.5146,
+  "modified": 1744362885070.966,
+  "changed": 1744362885070.966,
   "opts": {
     "metadata": true,
     "format": [
-      "mp4",
       "webm"
     ],
-    "quality": 60,
+    "quality": 30,
     "webm": {},
     "mp4": {
-      "alpha": true,
+      "alpha": false,
       "alphaQuality": 0.75
     },
     "threads": 0,
-    "crf": 20,
     "targetFiles": "**/*.{mp4,mov}",
     "audio": false,
     "sizes": {
@@ -45,7 +43,7 @@
     },
     "video": {
       "container": "matroska",
-      "bitrate": 1424,
+      "bitrate": 1060,
       "stream": 0,
       "codec": "vp9",
       "resolution": {

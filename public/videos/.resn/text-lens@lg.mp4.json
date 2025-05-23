@@ -1,19 +1,19 @@
 {
-  "hash": "598b6b728f236730a11b8a7b75eb95e85ceecf2d",
+  "hash": "ca9186b5221c2c16bd41a3aec5bae24b70ca883c",
   "input_size": 1326534,
-  "output_size": 353902,
-  "reduction": 0.26678698020555824,
+  "output_size": 596511,
+  "reduction": 0.44967637467264315,
   "input": "videos/text-lens.mp4",
   "output": "videos/text-lens@lg.mp4",
-  "modified": 1736519794013.0422,
-  "changed": 1736519794013.0422,
+  "modified": 1744362885152.235,
+  "changed": 1744362885152.235,
   "opts": {
     "metadata": true,
     "format": [
       "mp4",
       "webm"
     ],
-    "quality": 60,
+    "quality": 80,
     "webm": {},
     "mp4": {
       "alpha": true,
@@ -45,7 +45,7 @@
     },
     "video": {
       "container": "mov",
-      "bitrate": 553,
+      "bitrate": 932,
       "stream": 0,
       "codec": "hevc",
       "resolution": {

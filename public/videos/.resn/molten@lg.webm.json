@@ -1,26 +1,24 @@
 {
-  "hash": "c0b3378ee247ed15b070fcd5bfcc888b6e871d30",
+  "hash": "e4b763fb1328ccd62d5d67377b8ad29ca944170f",
   "input_size": 3796807,
-  "output_size": 1101100,
-  "reduction": 0.29000683995789095,
+  "output_size": 852339,
+  "reduction": 0.22448836614555334,
   "input": "videos/molten.mp4",
   "output": "videos/molten@lg.webm",
-  "modified": 1736519762176.1497,
-  "changed": 1736519762176.1497,
+  "modified": 1744362885090.8064,
+  "changed": 1744362885090.8064,
   "opts": {
     "metadata": true,
     "format": [
-      "mp4",
       "webm"
     ],
-    "quality": 60,
+    "quality": 30,
     "webm": {},
     "mp4": {
-      "alpha": true,
+      "alpha": false,
       "alphaQuality": 0.75
     },
     "threads": 0,
-    "crf": 20,
     "targetFiles": "**/*.{mp4,mov}",
     "audio": false,
     "sizes": {
@@ -45,7 +43,7 @@
     },
     "video": {
       "container": "matroska",
-      "bitrate": 1721,
+      "bitrate": 1332,
       "stream": 0,
       "codec": "vp9",
       "resolution": {

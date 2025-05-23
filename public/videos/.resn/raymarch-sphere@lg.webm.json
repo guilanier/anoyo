@@ -1,26 +1,24 @@
 {
-  "hash": "6f259770af48a673425f1a0d8110f76e7afd4d3b",
+  "hash": "912dc6a3d051d66d1b0fdac06a0952dac48e799a",
   "input_size": 9900891,
-  "output_size": 1439349,
-  "reduction": 0.145375704065422,
+  "output_size": 789830,
+  "reduction": 0.0797736284542472,
   "input": "videos/raymarch-sphere.mp4",
   "output": "videos/raymarch-sphere@lg.webm",
-  "modified": 1737558054285.5642,
-  "changed": 1737558054285.8047,
+  "modified": 1744362885127.0974,
+  "changed": 1744362885127.0974,
   "opts": {
     "metadata": true,
     "format": [
-      "mp4",
       "webm"
     ],
-    "quality": 60,
+    "quality": 30,
     "webm": {},
     "mp4": {
-      "alpha": true,
+      "alpha": false,
       "alphaQuality": 0.75
     },
     "threads": 0,
-    "crf": 20,
     "targetFiles": "**/*.{mp4,mov}",
     "audio": false,
     "sizes": {
@@ -45,7 +43,7 @@
     },
     "video": {
       "container": "matroska",
-      "bitrate": 2264,
+      "bitrate": 1242,
       "stream": 0,
       "codec": "vp9",
       "resolution": {

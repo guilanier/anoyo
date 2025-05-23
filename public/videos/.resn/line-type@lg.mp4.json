@@ -1,19 +1,19 @@
 {
-  "hash": "146839bcb1d447da31c49da93f91ef491b89c459",
+  "hash": "99704c3f425c8458fbdbfc72c5da8be3ed079598",
   "input_size": 3079839,
-  "output_size": 1030339,
-  "reduction": 0.33454313683280196,
+  "output_size": 1644270,
+  "reduction": 0.5338818035618096,
   "input": "videos/line-type.mp4",
   "output": "videos/line-type@lg.mp4",
-  "modified": 1736520006631.5146,
-  "changed": 1736520006631.5146,
+  "modified": 1744362885070.966,
+  "changed": 1744362885070.966,
   "opts": {
     "metadata": true,
     "format": [
       "mp4",
       "webm"
     ],
-    "quality": 60,
+    "quality": 80,
     "webm": {},
     "mp4": {
       "alpha": true,
@@ -45,7 +45,7 @@
     },
     "video": {
       "container": "mov",
-      "bitrate": 1610,
+      "bitrate": 2570,
       "stream": 0,
       "codec": "hevc",
       "resolution": {
