@@ -1,6 +1,6 @@
 import { Vector2 } from "three";
 import { inRange, map } from '@resn/gozer-math';
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 import { drawCircle } from "@resn/gozer-canvas";
 import { hexToRgb } from "@resn/gozer-color";
 

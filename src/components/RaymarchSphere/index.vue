@@ -30,7 +30,7 @@
         useViewportResize,
         useWindowPointer,
     } from '@resn/gozer-vue';
-    import { gsap } from '@resn/gsap';
+    import { gsap } from 'gsap';
 
     import fragmentShader from './2024-10-03-15:35:46-raymarch:spheres-space.frag';
 

@@ -1,7 +1,6 @@
 <template>
     <div class="molten">
-        <TweakPane :hiddenOnStart="true">
-            <!-- <TweakPane :hiddenOnStart="nodeEnv == 'production'"> -->
+        <TweakPane :hiddenOnStart="nodeEnv == 'production'">
             <SmoothScrollLenis :options="{ infinite: true, lerp: 0.1, duration: 1 }">
                 <Renderer
                     ref="refRenderer"
@@ -28,9 +27,9 @@
     import { onMounted, reactive, ref, shallowRef } from 'vue';
 
     import { Alea } from '@resn/gozer-math';
-    import { Renderer, ScrollerKey, SmoothScrollLenis, TweakPane, usePane } from '@resn/gozer-vue';
-    import { gsap } from '@resn/gsap';
-    import { ScrollTrigger } from '@resn/gsap/all';
+    import { Renderer, SmoothScrollLenis, TweakPane, usePane } from '@resn/gozer-vue';
+    import { gsap } from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
     import MoltenGLLayer from '@/components/Molten/MoltenGLLayer.vue';
     import MoltenItem from '@/components/Molten/MoltenItem.vue';
@@ -54,7 +53,6 @@
             cursorVectors: {},
         }))
     );
-
     gsap.registerPlugin(ScrollTrigger);
 
     ScrollTrigger.config({
