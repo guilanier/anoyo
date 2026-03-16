@@ -42,13 +42,15 @@ export const routeInfo = {
         image: './thumbnails/raymarch-sphere@lg.webp',
         video: './videos/raymarch-sphere@lg.webm',
     },
-    Comet: {
-        name: 'Comet',
-        path: '/comet',
-        componentName: 'ComponentGl',
-        // image: './thumbnails/comet@lg.webp',
-        // video: './videos/comet@lg.webm',
-    },
+    ...(import.meta.env.DEV ? {
+        Comet: {
+            name: 'Comet',
+            path: '/comet',
+            componentName: 'ComponentGl',
+            // image: './thumbnails/comet@lg.webp',
+            // video: './videos/comet@lg.webm',
+        },
+    } : {})
 };
 
 export const getComponents = () => {

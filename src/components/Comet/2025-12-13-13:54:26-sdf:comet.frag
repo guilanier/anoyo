@@ -16,8 +16,6 @@ uniform float u_time;
 
 uniform float u_size;
 uniform float u_blur;
-uniform float u_stroke;
-uniform float u_borderRadius;
 
 #define uResolution u_resolution
 #define uPointer u_mouse
@@ -26,36 +24,42 @@ uniform float u_borderRadius;
 
 #include "lygia/draw/fill.glsl"
 #include "lygia/draw/stroke.glsl"
+#include "lygia/draw/circle.glsl"
 #include "lygia/sdf/circleSDF.glsl"
 #include "lygia/sdf/rectSDF.glsl"
+#include "lygia/space/scale.glsl"
 
 void main() {
     
     vec2 st = st0 + 0.5;
-    vec2 stPointer = st - mx;
+    vec2 cMouse = mx;
+    vec2 stPointer = st - cMouse;
+    stPointer = 1.0 - stPointer;
     
-    float blurSize = u_blur != 0.0 ? u_blur : 0.25;
-    float blurShape = fill(circleSDF(stPointer), blurSize, blurSize * 2.0);
+    float blurSize = u_blur != 0.0 ? u_blur : 0.6;
+    // float blurAmount = circleSDF(stPointer);
+    float blurAmount = fill(
+        circleSDF(stPointer),
+        blurSize * 1.0,
+        blurSize * 2.0
+    ) * 2.0;
     
-    float brd = mix(0.04, 0.0, u_stroke);
-    float brdRad = u_borderRadius != 0.0 ? u_borderRadius : 0.02;
-    float size = u_size != 0.0 ? u_size : 0.6;
+    float size = u_size != 0.0 ? u_size : 0.1;
     
-    float sdShapeRectRnd = rectSDF(st, 0.5, brdRad);
-    float sdShape = sdShapeRectRnd;
+    float sdCircle = circleSDF(st);
+    float sdShape = sdCircle;
     
-    float sdfStro = stroke(sdShape, size, brd, blurShape) * 4.0;
-    float sdfFill = fill(sdShape, size, blurShape) * 2.0;
+    float sdfFill = fill(sdShape, size, blurAmount) * 2.0;
     
     float sdf;
-    sdf = mix(sdfStro, sdfFill, u_stroke);
     sdf = sdfFill;
     
     float shapeOut = sdf;
-    float sd = clamp(shapeOut, 0.0, 1.0);
+    float sd = saturate(shapeOut);
     
     vec3 color = vec3(0.0);
     color = vec3(sd);
+    // color = vec3(blurAmount);
     
     gl_FragColor = vec4(color, 1.0);
 }

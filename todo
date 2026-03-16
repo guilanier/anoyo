@@ -2,13 +2,14 @@ Comet - https://www.cosmos.so/giyomu/anoyo:
     ■ basic interaction
     ■ magnetic snap to cursor with more intensity blur on snap 
     ■ stars coming in like for eclipse (once snap or intensity)
+    ■ offset the stars in the direction of the comet
     ■ camera small shake to imply speed @low
 Droplet:
     ■ reuse comet snap interaction for transition
     ■ simple line in the middle
 General:
     ■ add rounded todo border following app guidelines
-    ■ add little 3d icon (modelize svg to 3d) https://studio.morflax.com/
+    ■ add little 3d icon (modelize svg to 3d) https://studio.morflax.com/ | https://www.vecto3d.xyz/
 
 Archive:
     ✓ try to find something better for x interaction @done(25-04-06 23:19) @project(Raymarch Sphere)
