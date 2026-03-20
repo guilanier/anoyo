@@ -8,7 +8,7 @@
 
     import fragmentShader from './2025-12-13-13:54:26-sdf:comet.frag';
 
-    const { renderer, scene, orthoCamera } = inject('renderer');
+        const { renderer, scene, orthoCamera } = inject('renderer');
 
     const vPointerDamped = new Vector2();
     const vResolution = new Vector2();
