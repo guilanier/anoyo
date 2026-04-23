@@ -1,4 +1,4 @@
-function s(n,e,t){return e+n*(t-e)}var a=`float aastep(float threshold, float value) {
+function e(e,t,n){return t+e*(n-t)}var t=`float aastep(float threshold, float value) {
     float afwidth = length(vec2(dFdx(value), dFdy(value))) * 0.70710678118654757;
     return smoothstep(threshold - afwidth, threshold + afwidth, value);
 }
@@ -63,7 +63,7 @@ vec3 field(float d) {
 	grd = mix(grd, c4, max(d2 * 0.85, max(d0 * 0.25, d1 * 0.06125)) * clamp(1.25 - d, 0.0, 1.0));
 	
 	return grd;
-}`,c=`#ifndef FNC_SCALE
+}`,n=`#ifndef FNC_SCALE
 #define FNC_SCALE
 float scale(in float st, in float s, in float center) {
   return (st - center) * s + center;
@@ -116,4 +116,4 @@ vec3 scale(in vec3 st, in vec3 s) {
 vec3 scale(in vec3 st, in float value) {
   return scale(st, vec3(value));
 }
-#endif`;export{a as d,s as l,c as s};
+#endif`;export{t as n,e as r,n as t};
