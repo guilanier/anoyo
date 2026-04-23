@@ -1,0 +1,29 @@
+{
+  "hash": "6e56b87a4dab9e9011165de6be182a33081dab1c",
+  "input_size": 69022,
+  "output_size": 31580,
+  "reduction": 0.457535278606821,
+  "input": "thumbnails/line-type.jpg",
+  "output": "thumbnails/line-type@lg.webp",
+  "modified": 1736520294491.4487,
+  "changed": 1736520294493.2085,
+  "opts": {
+    "targetFiles": "**/*.{jpg,png,jpeg}",
+    "sizes": {
+      "lg": 1
+    },
+    "quality": 80,
+    "format": [
+      "webp"
+    ]
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "width": 1600,
+    "height": 1600
+  }
+}

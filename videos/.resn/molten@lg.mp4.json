@@ -1,0 +1,81 @@
+{
+  "hash": "9b1d8fb1f708206be8ecb268df4ca74f04d1ac4b",
+  "input_size": 3796807,
+  "output_size": 1373451,
+  "reduction": 0.3617384291590276,
+  "input": "videos/molten.mp4",
+  "output": "videos/molten@lg.mp4",
+  "modified": 1744362885090.8064,
+  "changed": 1744362885090.8064,
+  "opts": {
+    "metadata": true,
+    "format": [
+      "mp4",
+      "webm"
+    ],
+    "quality": 80,
+    "webm": {},
+    "mp4": {
+      "alpha": true,
+      "alphaQuality": 0.75
+    },
+    "threads": 0,
+    "crf": 20,
+    "targetFiles": "**/*.{mp4,mov}",
+    "audio": false,
+    "sizes": {
+      "lg": 1
+    }
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "title": "",
+    "artist": "",
+    "album": "",
+    "track": "",
+    "date": "",
+    "synched": true,
+    "duration": {
+      "raw": "00:00:05.12",
+      "seconds": 5
+    },
+    "video": {
+      "container": "mov",
+      "bitrate": 2147,
+      "stream": 0,
+      "codec": "hevc",
+      "resolution": {
+        "w": 1600,
+        "h": 1600
+      },
+      "resolutionSquare": {
+        "w": 1600,
+        "h": 1600
+      },
+      "aspect": {
+        "x": 1,
+        "y": 1,
+        "string": "1:1",
+        "value": 1
+      },
+      "rotate": 0,
+      "fps": 60,
+      "pixelString": "1:1",
+      "pixel": 1
+    },
+    "audio": {
+      "codec": "",
+      "bitrate": "",
+      "sample_rate": 0,
+      "stream": 0,
+      "channels": {
+        "raw": "",
+        "value": ""
+      }
+    }
+  }
+}

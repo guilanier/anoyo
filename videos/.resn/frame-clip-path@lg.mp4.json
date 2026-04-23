@@ -1,0 +1,81 @@
+{
+  "hash": "17e51df354b30b1390244c58112b7459d097a4bf",
+  "input_size": 8707717,
+  "output_size": 6517031,
+  "reduction": 0.748420165699,
+  "input": "videos/frame-clip-path.mp4",
+  "output": "videos/frame-clip-path@lg.mp4",
+  "modified": 1744362885058.2935,
+  "changed": 1744362885058.2935,
+  "opts": {
+    "metadata": true,
+    "format": [
+      "mp4",
+      "webm"
+    ],
+    "quality": 80,
+    "webm": {},
+    "mp4": {
+      "alpha": true,
+      "alphaQuality": 0.75
+    },
+    "threads": 0,
+    "crf": 20,
+    "targetFiles": "**/*.{mp4,mov}",
+    "audio": false,
+    "sizes": {
+      "lg": 1
+    }
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "title": "",
+    "artist": "",
+    "album": "",
+    "track": "",
+    "date": "",
+    "synched": true,
+    "duration": {
+      "raw": "00:00:05.12",
+      "seconds": 5
+    },
+    "video": {
+      "container": "mov",
+      "bitrate": 10189,
+      "stream": 0,
+      "codec": "hevc",
+      "resolution": {
+        "w": 1600,
+        "h": 1600
+      },
+      "resolutionSquare": {
+        "w": 1600,
+        "h": 1600
+      },
+      "aspect": {
+        "x": 1,
+        "y": 1,
+        "string": "1:1",
+        "value": 1
+      },
+      "rotate": 0,
+      "fps": 60,
+      "pixelString": "1:1",
+      "pixel": 1
+    },
+    "audio": {
+      "codec": "",
+      "bitrate": "",
+      "sample_rate": 0,
+      "stream": 0,
+      "channels": {
+        "raw": "",
+        "value": ""
+      }
+    }
+  }
+}

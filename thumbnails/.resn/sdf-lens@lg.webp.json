@@ -1,0 +1,29 @@
+{
+  "hash": "d58ee59647d3103836c626559bfc5c621b153b74",
+  "input_size": 185339,
+  "output_size": 11082,
+  "reduction": 0.059793135821386754,
+  "input": "thumbnails/sdf-lens.png",
+  "output": "thumbnails/sdf-lens@lg.webp",
+  "modified": 1736442907269.9248,
+  "changed": 1736442907270.125,
+  "opts": {
+    "targetFiles": "**/*.{jpg,png,jpeg}",
+    "sizes": {
+      "lg": 1
+    },
+    "quality": 80,
+    "format": [
+      "webp"
+    ]
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "width": 1600,
+    "height": 1600
+  }
+}

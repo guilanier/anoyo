@@ -1,0 +1,29 @@
+{
+  "hash": "fbfaee7ba178b68be740ab6f944f9072184b89d5",
+  "input_size": 1081255,
+  "output_size": 27996,
+  "reduction": 0.025892134602845767,
+  "input": "thumbnails/raymarch-sphere.png",
+  "output": "thumbnails/raymarch-sphere@lg.webp",
+  "modified": 1737558070025.6655,
+  "changed": 1737558070026.2278,
+  "opts": {
+    "targetFiles": "**/*.{jpg,png,jpeg}",
+    "sizes": {
+      "lg": 1
+    },
+    "quality": 80,
+    "format": [
+      "webp"
+    ]
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "width": 1600,
+    "height": 1600
+  }
+}

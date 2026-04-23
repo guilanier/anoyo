@@ -1,0 +1,29 @@
+{
+  "hash": "a92f92c1ff0e72a10e6678e4fb3402f19a797faa",
+  "input_size": 56771,
+  "output_size": 14054,
+  "reduction": 0.24755597047788483,
+  "input": "thumbnails/text-lens.jpg",
+  "output": "thumbnails/text-lens@lg.webp",
+  "modified": 1736517886362.5046,
+  "changed": 1736517886362.6438,
+  "opts": {
+    "targetFiles": "**/*.{jpg,png,jpeg}",
+    "sizes": {
+      "lg": 1
+    },
+    "quality": 80,
+    "format": [
+      "webp"
+    ]
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "width": 1600,
+    "height": 1600
+  }
+}

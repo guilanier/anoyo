@@ -1,0 +1,79 @@
+{
+  "hash": "1bca1d72cbaa57c252260e33e1b99843ef70ba5c",
+  "input_size": 4928240,
+  "output_size": 400079,
+  "reduction": 0.08118090839731831,
+  "input": "videos/sdf-lens.mp4",
+  "output": "videos/sdf-lens@lg.webm",
+  "modified": 1744362885142.4102,
+  "changed": 1744726616001.6924,
+  "opts": {
+    "metadata": true,
+    "format": [
+      "webm"
+    ],
+    "quality": 30,
+    "webm": {},
+    "mp4": {
+      "alpha": false,
+      "alphaQuality": 0.75
+    },
+    "threads": 0,
+    "targetFiles": "**/*.{mp4,mov}",
+    "audio": false,
+    "sizes": {
+      "lg": 1
+    }
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "title": "",
+    "artist": "",
+    "album": "",
+    "track": "",
+    "date": "",
+    "synched": true,
+    "duration": {
+      "raw": "00:00:05.12",
+      "seconds": 5
+    },
+    "video": {
+      "container": "matroska",
+      "bitrate": 625,
+      "stream": 0,
+      "codec": "vp9",
+      "resolution": {
+        "w": 1600,
+        "h": 1600
+      },
+      "resolutionSquare": {
+        "w": 1600,
+        "h": 1600
+      },
+      "aspect": {
+        "x": 1,
+        "y": 1,
+        "string": "1:1",
+        "value": 1
+      },
+      "rotate": 0,
+      "fps": 60,
+      "pixelString": "1:1",
+      "pixel": 1
+    },
+    "audio": {
+      "codec": "",
+      "bitrate": "",
+      "sample_rate": 0,
+      "stream": 0,
+      "channels": {
+        "raw": "",
+        "value": ""
+      }
+    }
+  }
+}

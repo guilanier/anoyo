@@ -1,0 +1,81 @@
+{
+  "hash": "77f26c1516fcf1bdc6ddbf6e69e9317f1822113c",
+  "input_size": 9900891,
+  "output_size": 4724920,
+  "reduction": 0.4772216965119604,
+  "input": "videos/raymarch-sphere.mp4",
+  "output": "videos/raymarch-sphere@lg.mp4",
+  "modified": 1744362885127.0974,
+  "changed": 1744362885127.0974,
+  "opts": {
+    "metadata": true,
+    "format": [
+      "mp4",
+      "webm"
+    ],
+    "quality": 80,
+    "webm": {},
+    "mp4": {
+      "alpha": true,
+      "alphaQuality": 0.75
+    },
+    "threads": 0,
+    "crf": 20,
+    "targetFiles": "**/*.{mp4,mov}",
+    "audio": false,
+    "sizes": {
+      "lg": 1
+    }
+  },
+  "sizing": {
+    "type": "scale",
+    "size": 1,
+    "name": "lg"
+  },
+  "additionalMeta": {
+    "title": "",
+    "artist": "",
+    "album": "",
+    "track": "",
+    "date": "",
+    "synched": true,
+    "duration": {
+      "raw": "00:00:05.08",
+      "seconds": 5
+    },
+    "video": {
+      "container": "mov",
+      "bitrate": 7435,
+      "stream": 0,
+      "codec": "hevc",
+      "resolution": {
+        "w": 1600,
+        "h": 1600
+      },
+      "resolutionSquare": {
+        "w": 1600,
+        "h": 1600
+      },
+      "aspect": {
+        "x": 1,
+        "y": 1,
+        "string": "1:1",
+        "value": 1
+      },
+      "rotate": 0,
+      "fps": 60,
+      "pixelString": "1:1",
+      "pixel": 1
+    },
+    "audio": {
+      "codec": "",
+      "bitrate": "",
+      "sample_rate": 0,
+      "stream": 0,
+      "channels": {
+        "raw": "",
+        "value": ""
+      }
+    }
+  }
+}
